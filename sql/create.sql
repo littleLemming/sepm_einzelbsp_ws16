@@ -1,9 +1,8 @@
-!!!!unique kombi von rennen-nummer & jockey-svnr bzw rennen-nummer & pferde-chipnummer!!!!
-
 CREATE TABLE Pferd
     (
     chip_nr int NOT NULL UNIQUE,
     name varchar(255) NOT NULL,
+    rasse varchar(255) NOT NULL,
     bild varchar(255) NOT NULL,
     del BOOLEAN NOT NULL,
     min_gesw int NOT NULL CHECK(40 <= min_gesw AND min_gesw <= 60),
@@ -18,7 +17,9 @@ CREATE TABLE Jockey
     (
     svnr int NOT NULL UNIQUE,
     können int NOT NULL,
-    name varchar(255) NOT NULL,
+    vorname varchar(255) NOT NULL,
+    nachname varchar(255) NOT NULL,
+    gewicht int,
     del BOOLEAN NOT NULL,
     PRIMARY KEY(svnr)
     );
