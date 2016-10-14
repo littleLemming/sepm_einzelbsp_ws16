@@ -12,7 +12,7 @@ CREATE TABLE Pferd
     );
 
 ALTER TABLE Pferd ADD CONSTRAINT gesw_constraint
-CHECK(min_gesw <= max_gesw);
+    CHECK(min_gesw <= max_gesw);
 
 CREATE TABLE Jockey
     (
@@ -35,3 +35,7 @@ CREATE TABLE Rennergebnis
 
 ALTER TABLE Rennergebnis ADD FOREIGN KEY (chip_nr) REFERENCES Pferd(chip_nr);
 ALTER TABLE Rennergebnis ADD FOREIGN KEY (svnr) REFERENCES Jockey(svnr);
+ALTER TABLE Rennergebnis
+    ADD CONSTRAINT unique_pferd_rennen UNIQUE(renn_id,chip_nr);
+ALTER TABLE Rennergebnis
+    ADD CONSTRAINT unique_jockey_rennen UNIQUE(renn_id,svnr);
