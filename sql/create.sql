@@ -1,8 +1,9 @@
 CREATE TABLE Pferd
     (
-    chip_nr int NOT NULL UNIQUE,
+    chip_nr varchar(4) NOT NULL UNIQUE,
     name varchar(255) NOT NULL,
     rasse varchar(255) NOT NULL,
+    alter_jahre int NOT NULL,
     bild varchar(255) NOT NULL,
     del BOOLEAN NOT NULL,
     min_gesw int NOT NULL CHECK(40 <= min_gesw AND min_gesw <= 60),
@@ -17,9 +18,9 @@ CREATE TABLE Jockey
     (
     svnr int NOT NULL UNIQUE,
     können int NOT NULL,
-    vorname varchar(255) NOT NULL,
-    nachname varchar(255) NOT NULL,
-    gewicht int,
+    name varchar(255) NOT NULL,
+    geburtsdatum DATE NOT NULL,
+    gewicht int NOT NULL,
     del BOOLEAN NOT NULL,
     PRIMARY KEY(svnr)
     );
@@ -27,7 +28,7 @@ CREATE TABLE Jockey
 CREATE TABLE Rennergebnis
     (
     renn_id int NOT NULL,
-    chip_nr int NOT NULL,
+    chip_nr varchar(4) NOT NULL,
     svnr int NOT NULL,
     geschw double NOT NULL,
     platz int NOT NULL,
