@@ -11,6 +11,15 @@ public class Jockey {
     private int gewicht;
     private boolean del;
 
+    public Jockey(int svnr, int können, String name, Date geburtsdatum, int gewicht, boolean del) {
+        this.svnr = svnr;
+        this.können = können;
+        this.name = name;
+        this.geburtsdatum = geburtsdatum;
+        this.gewicht = gewicht;
+        this.del = del;
+    }
+
     public int getSvnr() {
         return svnr;
     }
