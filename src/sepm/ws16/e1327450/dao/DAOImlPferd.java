@@ -1,10 +1,14 @@
 package sepm.ws16.e1327450.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Pferd;
-
 import java.util.List;
 
 public class DAOImlPferd implements DAOPferd {
+
+    final static Logger logger = LoggerFactory.getLogger(DAOImlPferd.class);
+
     @Override
     public void save(Pferd p) throws PersistenceException {
 

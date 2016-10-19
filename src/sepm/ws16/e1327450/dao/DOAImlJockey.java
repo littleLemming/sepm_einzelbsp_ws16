@@ -1,11 +1,15 @@
 package sepm.ws16.e1327450.dao;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Jockey;
 
 import java.sql.Date;
 import java.util.List;
 
 public class DOAImlJockey implements DAOJockey {
+
+    final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
 
     @Override
     public void save(Jockey j) throws PersistenceException {
