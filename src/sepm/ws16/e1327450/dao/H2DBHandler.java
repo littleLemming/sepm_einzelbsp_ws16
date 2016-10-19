@@ -11,22 +11,23 @@ public class H2DBHandler {
 
     public static Connection getConnection() {
         if(connection == null) {
-            logger.debug("no database-connection established yet");
+            logger.info("no database-connection established yet");
             try {
-                logger.debug("trying to connect to driver");
+                logger.info("trying to connect to h2 driver");
                 Class.forName("org.h2.Driver");
             } catch (Exception e) {
-                logger.error("could not connect to driver");
+                logger.error("could not connect to h2 driver");
                 return null;
             }
+            logger.info("successfully connected to h2 driver");
             try {
-                logger.debug("trying to set up connection");
+                logger.info("trying to set up database-connection");
                 connection = DriverManager.getConnection("jdbc:h2:~/database_ws16", "sa", "");
             } catch (Exception e) {
-                logger.error("could not get database-handler");
+                logger.error("could not get database-connection");
                 return null;
             }
-            logger.debug("succesfully set up database-connection. connection : " + connection);
+            logger.info("succesfully set up database-connection. connection : " + connection);
         }
         return connection;
     }
