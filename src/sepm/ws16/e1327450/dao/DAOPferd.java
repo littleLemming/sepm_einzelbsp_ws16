@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface DAOPferd {
+
     void save(Pferd p) throws PersistenceException;
 
     Pferd load(int chip_nr) throws PersistenceException;
@@ -23,4 +24,5 @@ public interface DAOPferd {
     int getFreeChip_Nr() throws PersistenceException;
 
     boolean isFreeChip_Nr(int chip_nr) throws PersistenceException;
+
 }
