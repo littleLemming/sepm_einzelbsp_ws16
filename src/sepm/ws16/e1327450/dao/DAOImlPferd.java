@@ -15,7 +15,7 @@ public class DAOImlPferd implements DAOPferd {
     }
 
     @Override
-    public Pferd load(int chip_nr) throws PersistenceException {
+    public Pferd load(String chip_nr) throws PersistenceException {
         return null;
     }
 

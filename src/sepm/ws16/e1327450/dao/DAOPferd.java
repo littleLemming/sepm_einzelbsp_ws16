@@ -9,7 +9,7 @@ public interface DAOPferd {
 
     void save(Pferd p) throws PersistenceException;
 
-    Pferd load(int chip_nr) throws PersistenceException;
+    Pferd load(String chip_nr) throws PersistenceException;
 
     void delete(Pferd p) throws PersistenceException;
 
