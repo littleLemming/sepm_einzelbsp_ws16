@@ -6,10 +6,8 @@ import sepm.ws16.e1327450.dao.DAOPferd;
 import sepm.ws16.e1327450.dao.PersistenceException;
 import org.junit.Test;
 import sepm.ws16.e1327450.domain.Pferd;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
