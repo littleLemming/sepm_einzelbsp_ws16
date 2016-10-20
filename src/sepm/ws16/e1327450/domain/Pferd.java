@@ -7,11 +7,10 @@ public class Pferd {
     private String rasse;
     private int alter_jahre;
     private String bild;
-    private boolean del;
     private int min_gesw;
     private int max_gesw;
 
-    public Pferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, boolean del, int min_gesw, int max_gesw) {
+    public Pferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) {
         if(chip_nr.length() != 4 || min_gesw < 40 || max_gesw > 60 || min_gesw > max_gesw) {
             return;
         }
@@ -20,7 +19,6 @@ public class Pferd {
         this.rasse = rasse;
         this.alter_jahre = alter_jahre;
         this.bild = bild;
-        this.del = del;
         this.min_gesw = min_gesw;
         this.max_gesw = max_gesw;
     }
@@ -65,14 +63,6 @@ public class Pferd {
         this.bild = bild;
     }
 
-    public boolean isDel() {
-        return del;
-    }
-
-    public void setDel(boolean del) {
-        this.del = del;
-    }
-
     public int getMin_gesw() {
         return min_gesw;
     }
@@ -97,7 +87,6 @@ public class Pferd {
         Pferd pferd = (Pferd) o;
 
         if (alter_jahre != pferd.alter_jahre) return false;
-        if (del != pferd.del) return false;
         if (min_gesw != pferd.min_gesw) return false;
         if (max_gesw != pferd.max_gesw) return false;
         if (chip_nr != null ? !chip_nr.equals(pferd.chip_nr) : pferd.chip_nr != null) return false;
@@ -113,7 +102,6 @@ public class Pferd {
         result = 31 * result + (rasse != null ? rasse.hashCode() : 0);
         result = 31 * result + alter_jahre;
         result = 31 * result + (bild != null ? bild.hashCode() : 0);
-        result = 31 * result + (del ? 1 : 0);
         result = 31 * result + min_gesw;
         result = 31 * result + max_gesw;
         return result;
@@ -127,7 +115,6 @@ public class Pferd {
                 ", rasse='" + rasse + '\'' +
                 ", alter_jahre=" + alter_jahre +
                 ", bild='" + bild + '\'' +
-                ", del=" + del +
                 ", min_gesw=" + min_gesw +
                 ", max_gesw=" + max_gesw +
                 '}';

@@ -9,15 +9,13 @@ public class Jockey {
     private String name;
     private Date geburtsdatum;
     private int gewicht;
-    private boolean del;
 
-    public Jockey(int svnr, int können, String name, Date geburtsdatum, int gewicht, boolean del) {
+    public Jockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) {
         this.svnr = svnr;
         this.können = können;
         this.name = name;
         this.geburtsdatum = geburtsdatum;
         this.gewicht = gewicht;
-        this.del = del;
     }
 
     public int getSvnr() {
@@ -60,14 +58,6 @@ public class Jockey {
         this.gewicht = gewicht;
     }
 
-    public boolean isDel() {
-        return del;
-    }
-
-    public void setDel(boolean del) {
-        this.del = del;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,7 +68,6 @@ public class Jockey {
         if (svnr != jockey.svnr) return false;
         if (können != jockey.können) return false;
         if (gewicht != jockey.gewicht) return false;
-        if (del != jockey.del) return false;
         if (name != null ? !name.equals(jockey.name) : jockey.name != null) return false;
         return geburtsdatum != null ? geburtsdatum.equals(jockey.geburtsdatum) : jockey.geburtsdatum == null;
 
@@ -91,7 +80,6 @@ public class Jockey {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (geburtsdatum != null ? geburtsdatum.hashCode() : 0);
         result = 31 * result + gewicht;
-        result = 31 * result + (del ? 1 : 0);
         return result;
     }
 
@@ -103,7 +91,6 @@ public class Jockey {
                 ", name='" + name + '\'' +
                 ", geburtsdatum=" + geburtsdatum +
                 ", gewicht=" + gewicht +
-                ", del=" + del +
                 '}';
     }
 }
