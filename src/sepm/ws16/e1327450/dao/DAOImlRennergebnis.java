@@ -3,11 +3,19 @@ package sepm.ws16.e1327450.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Rennergebnis;
+
+import java.sql.Connection;
 import java.util.List;
 
 public class DAOImlRennergebnis implements  DAORennergebnis {
 
-    final static Logger logger = LoggerFactory.getLogger(DAORennergebnis.class);
+    final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
+    private Connection connection;
+
+    public DAOImlRennergebnis(Connection connection) throws PersistenceException {
+        logger.info("DOAImlJockey("+connection+")");
+        this.connection = connection;
+    }
 
     @Override
     public void save(Rennergebnis r) throws PersistenceException {

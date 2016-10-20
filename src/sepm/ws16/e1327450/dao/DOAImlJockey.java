@@ -4,12 +4,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Jockey;
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
 
 public class DOAImlJockey implements DAOJockey {
 
     final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
+    private Connection connection;
+
+    public DOAImlJockey(Connection connection) throws PersistenceException {
+        logger.info("DOAImlJockey("+connection+")");
+        this.connection = connection;
+    }
 
     @Override
     public void save(Jockey j) throws PersistenceException {
