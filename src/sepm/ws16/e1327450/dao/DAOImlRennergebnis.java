@@ -15,7 +15,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public Rennergebnis load(int chip_nr) throws PersistenceException {
+    public Rennergebnis load(int renn_id, String chip_nr, int svnr) throws PersistenceException {
         logger.info("load("+chip_nr+")");
         return null;
     }

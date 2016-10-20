@@ -7,7 +7,7 @@ public interface DAORennergebnis {
 
     void save(Rennergebnis r) throws PersistenceException;
 
-    Rennergebnis load(int chip_nr) throws PersistenceException;
+    Rennergebnis load(int renn_id, String chip_nr, int svnr) throws PersistenceException;
 
     void delete(Rennergebnis r) throws PersistenceException;
 
