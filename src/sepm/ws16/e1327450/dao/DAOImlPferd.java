@@ -45,7 +45,7 @@ public class DAOImlPferd implements DAOPferd {
     @Override
     public String getFreeChip_Nr() throws PersistenceException {
         logger.info("getFreeChip_Nr()");
-        return 0;
+        return null;
     }
 
     @Override
