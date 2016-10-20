@@ -43,13 +43,13 @@ public class DAOImlPferd implements DAOPferd {
     }
 
     @Override
-    public int getFreeChip_Nr() throws PersistenceException {
+    public String getFreeChip_Nr() throws PersistenceException {
         logger.info("getFreeChip_Nr()");
         return 0;
     }
 
     @Override
-    public boolean isFreeChip_Nr(int chip_nr) throws PersistenceException {
+    public boolean isFreeChip_Nr(String chip_nr) throws PersistenceException {
         logger.info("isFreeChip_Nr("+chip_nr+")");
         return false;
     }
