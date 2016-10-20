@@ -17,7 +17,7 @@ public interface DAORennergebnis {
 
     List<Rennergebnis> loadCondition(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws PersistenceException;
 
-    int getFreeChip_Nr() throws PersistenceException;
+    int getFreeRenn_id() throws PersistenceException;
 
-    boolean isFreeChip_Nr(int chip_nr) throws PersistenceException;
+    boolean isFreeRenn_id(int renn_id) throws PersistenceException;
 }

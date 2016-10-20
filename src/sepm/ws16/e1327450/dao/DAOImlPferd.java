@@ -11,41 +11,46 @@ public class DAOImlPferd implements DAOPferd {
 
     @Override
     public void save(Pferd p) throws PersistenceException {
-
+        logger.info("save("+p.toString()+")");
     }
 
     @Override
     public Pferd load(String chip_nr) throws PersistenceException {
+        logger.info("load("+chip_nr+")");
         return null;
     }
 
     @Override
     public void delete(Pferd p) throws PersistenceException {
-
+        logger.info("delete("+p.toString()+")");
     }
 
     @Override
     public void update(Pferd p) throws PersistenceException {
-
+        logger.info("update("+p.toString()+")");
     }
 
     @Override
     public List<Pferd> loadAll() throws PersistenceException {
+        logger.info("loadAll()");
         return null;
     }
 
     @Override
-    public List<Pferd> loadCondition(String name, int min_alter, int max_alter, boolean deleted, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws PersistenceException {
+    public List<Pferd> loadCondition(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws PersistenceException {
+        logger.info("loadCondition("+name+","+min_alter+","+max_alter+","+min_min_gesw+","+max_min_gesw+","+min_max_gesw+","+max_max_gesw+")");
         return null;
     }
 
     @Override
     public int getFreeChip_Nr() throws PersistenceException {
+        logger.info("getFreeChip_Nr()");
         return 0;
     }
 
     @Override
     public boolean isFreeChip_Nr(int chip_nr) throws PersistenceException {
+        logger.info("isFreeChip_Nr("+chip_nr+")");
         return false;
     }
 }
