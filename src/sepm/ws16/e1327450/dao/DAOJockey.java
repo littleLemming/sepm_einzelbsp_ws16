@@ -12,8 +12,6 @@ public interface DAOJockey {
 
     void delete(Jockey j) throws PersistenceException;
 
-    void unDelete(Jockey j) throws PersistenceException;
-
     void update(Jockey j) throws PersistenceException;
 
     List<Jockey> loadAll() throws PersistenceException;

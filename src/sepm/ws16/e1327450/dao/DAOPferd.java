@@ -13,8 +13,6 @@ public interface DAOPferd {
 
     void delete(Pferd p) throws PersistenceException;
 
-    void unDelete(Pferd p) throws PersistenceException;
-
     void update(Pferd p) throws PersistenceException;
 
     List<Pferd> loadAll() throws PersistenceException;

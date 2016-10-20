@@ -27,11 +27,6 @@ public class DOAImlJockey implements DAOJockey {
     }
 
     @Override
-    public void unDelete(Jockey j) throws PersistenceException {
-
-    }
-
-    @Override
     public void update(Jockey j) throws PersistenceException {
 
     }

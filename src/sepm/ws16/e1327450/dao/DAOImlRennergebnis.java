@@ -25,11 +25,6 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public void unDelete(Rennergebnis r) throws PersistenceException {
-
-    }
-
-    @Override
     public void update(Rennergebnis r) throws PersistenceException {
 
     }

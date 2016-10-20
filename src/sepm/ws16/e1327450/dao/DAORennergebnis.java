@@ -11,8 +11,6 @@ public interface DAORennergebnis {
 
     void delete(Rennergebnis r) throws PersistenceException;
 
-    void unDelete(Rennergebnis r) throws PersistenceException;
-
     void update(Rennergebnis r) throws PersistenceException;
 
     List<Rennergebnis> loadAll() throws PersistenceException;

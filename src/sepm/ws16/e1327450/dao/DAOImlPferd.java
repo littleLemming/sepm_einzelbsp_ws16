@@ -25,11 +25,6 @@ public class DAOImlPferd implements DAOPferd {
     }
 
     @Override
-    public void unDelete(Pferd p) throws PersistenceException {
-
-    }
-
-    @Override
     public void update(Pferd p) throws PersistenceException {
 
     }
