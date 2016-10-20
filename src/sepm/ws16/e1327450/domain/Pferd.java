@@ -118,4 +118,18 @@ public class Pferd {
         result = 31 * result + max_gesw;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Pferd{" +
+                "chip_nr='" + chip_nr + '\'' +
+                ", name='" + name + '\'' +
+                ", rasse='" + rasse + '\'' +
+                ", alter_jahre=" + alter_jahre +
+                ", bild='" + bild + '\'' +
+                ", del=" + del +
+                ", min_gesw=" + min_gesw +
+                ", max_gesw=" + max_gesw +
+                '}';
+    }
 }

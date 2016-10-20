@@ -83,4 +83,15 @@ public class Rennergebnis {
         result = 31 * result + platz;
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Rennergebnis{" +
+                "renn_id=" + renn_id +
+                ", pferd=" + pferd.toString() +
+                ", jockey=" + jockey.toString() +
+                ", geschw=" + geschw +
+                ", platz=" + platz +
+                '}';
+    }
 }

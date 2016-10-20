@@ -94,4 +94,16 @@ public class Jockey {
         result = 31 * result + (del ? 1 : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Jockey{" +
+                "svnr=" + svnr +
+                ", können=" + können +
+                ", name='" + name + '\'' +
+                ", geburtsdatum=" + geburtsdatum +
+                ", gewicht=" + gewicht +
+                ", del=" + del +
+                '}';
+    }
 }
