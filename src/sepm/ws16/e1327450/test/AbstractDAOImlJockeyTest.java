@@ -195,9 +195,9 @@ public abstract class AbstractDAOImlJockeyTest {
         assertFalse(daoJockey.isFreeSvnr(2));
     }
 
-    /** test for free chip-nr **/
+    /** test for free svnr **/
     @Test
-    public void getFreeChip_NrTest() throws PersistenceException {
+    public void getFreeSvnrTest() throws PersistenceException {
         logger.info("getFreeChip_NrTest()");
         List<Integer> svnrList = new ArrayList<>();
         for(Jockey jockey : daoJockey.loadAll()) {
