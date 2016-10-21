@@ -9,11 +9,11 @@ import java.util.List;
 
 public class DAOImlPferd implements DAOPferd {
 
-    final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
+    final static Logger logger = LoggerFactory.getLogger(DAOImlJockey.class);
     private Connection connection;
 
     public DAOImlPferd(Connection connection) throws PersistenceException {
-        logger.info("DOAImlJockey("+connection+")");
+        logger.info("DAOImlPferd("+connection+")");
         this.connection = connection;
     }
 

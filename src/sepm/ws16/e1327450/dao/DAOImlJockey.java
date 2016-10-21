@@ -8,13 +8,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
 
-public class DOAImlJockey implements DAOJockey {
+public class DAOImlJockey implements DAOJockey {
 
-    final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
+    final static Logger logger = LoggerFactory.getLogger(DAOImlJockey.class);
     private Connection connection;
 
-    public DOAImlJockey(Connection connection) throws PersistenceException {
-        logger.info("DOAImlJockey("+connection+")");
+    public DAOImlJockey(Connection connection) throws PersistenceException {
+        logger.info("DAOImlJockey("+connection+")");
         this.connection = connection;
     }
 

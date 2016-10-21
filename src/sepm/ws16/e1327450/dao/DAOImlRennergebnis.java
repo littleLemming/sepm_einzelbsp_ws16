@@ -9,11 +9,11 @@ import java.util.List;
 
 public class DAOImlRennergebnis implements  DAORennergebnis {
 
-    final static Logger logger = LoggerFactory.getLogger(DOAImlJockey.class);
+    final static Logger logger = LoggerFactory.getLogger(DAOImlJockey.class);
     private Connection connection;
 
     public DAOImlRennergebnis(Connection connection) throws PersistenceException {
-        logger.info("DOAImlJockey("+connection+")");
+        logger.info("DAOImlRennergebnis("+connection+")");
         this.connection = connection;
     }
 

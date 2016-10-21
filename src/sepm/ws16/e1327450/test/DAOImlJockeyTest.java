@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.After;
 import org.junit.Before;
+import sepm.ws16.e1327450.dao.DAOImlJockey;
 import sepm.ws16.e1327450.dao.DAOJockey;
-import sepm.ws16.e1327450.dao.DOAImlJockey;
 import sepm.ws16.e1327450.dao.H2DBHandler;
 import sepm.ws16.e1327450.dao.PersistenceException;
 
@@ -28,7 +28,7 @@ public class DAOImlJockeyTest extends AbstractDAOImlJockeyTest {
         logger.info("setUp(), connection: " + connection);
         DAOJockey daoJockey = null;
         try {
-            daoJockey = new DOAImlJockey(dbHandler.getConnection());
+            daoJockey = new DAOImlJockey(dbHandler.getConnection());
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
