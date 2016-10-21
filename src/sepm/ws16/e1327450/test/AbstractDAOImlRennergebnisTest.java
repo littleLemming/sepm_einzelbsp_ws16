@@ -125,10 +125,14 @@ public abstract class AbstractDAOImlRennergebnisTest {
     }
 
     /** save with null-value **/
-    @Test(expected = IllegalArgumentException.class)
-    public void createWithNullShouldThrowException() throws PersistenceException {
+    @Test
+    public void createWithNull() throws PersistenceException {
         logger.info("createWithNullShouldThrowException()");
-        daoRennergebnis.save(null);
+        Rennergebnis rennergebnis = null;
+        List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
+        assertFalse(rennergebnisList.contains(rennergebnis));
+        daoRennergebnis.save(rennergebnis);
+        assertFalse(rennergebnisList.contains(rennergebnis));
     }
 
     /** save with valid parameters **/

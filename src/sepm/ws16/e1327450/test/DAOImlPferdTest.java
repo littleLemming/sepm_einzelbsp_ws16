@@ -58,9 +58,9 @@ public class DAOImlPferdTest extends AbstractDAOImlPferdTest {
             e.printStackTrace();
         }
         try {
-            createWithNullShouldThrowException();
+            createWithNull();
         } catch (PersistenceException e) {
-            logger.error("createWithNullShouldThrowException() FAILED");
+            logger.error("createWithNull() FAILED");
             e.printStackTrace();
         }
         try {

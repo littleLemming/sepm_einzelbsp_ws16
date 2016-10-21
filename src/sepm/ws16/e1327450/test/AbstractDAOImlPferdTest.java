@@ -109,8 +109,8 @@ public abstract class AbstractDAOImlPferdTest {
 
 
     /** save with null-value **/
-    @Test(expected = IllegalArgumentException.class)
-    public void createWithNullShouldThrowException() throws PersistenceException {
+    @Test
+    public void createWithNull() throws PersistenceException {
         logger.info("createWithNullShouldThrowException()");
         daoPferd.save(null);
     }

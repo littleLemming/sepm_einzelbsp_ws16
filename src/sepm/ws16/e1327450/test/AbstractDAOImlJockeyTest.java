@@ -68,36 +68,34 @@ public abstract class AbstractDAOImlJockeyTest {
         Jockey jockey4 = new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39);
         Jockey jockey5 = new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61);
         Jockey jockey6 = new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59);
-        List<Jockey> jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,null,-1,-1);
+        List<Jockey> jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,-1,-1);
         jockeyList = daoJockey.loadAll();
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(50,100,null,null,null,-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(50,100,null,null,-1,-1);
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey0);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,"Princess Luna",null,null,-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(-1,-1,"Princess Luna",null,-1,-1);
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey6);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,java.sql.Date.valueOf("2003-01-01"),java.sql.Date.valueOf("2004-01-01"),-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,java.sql.Date.valueOf("2003-06-07"),-1,-1);
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey1);
-        jockeyList.add(jockey2);
-        jockeyList.add(jockey4);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,null,40,60);
+        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,40,60);
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey0);
         jockeyList.add(jockey1);
@@ -111,8 +109,8 @@ public abstract class AbstractDAOImlJockeyTest {
 
     /** save with null-value **/
     @Test(expected = IllegalArgumentException.class)
-    public void createWithNullShouldThrowException() throws PersistenceException {
-        logger.info("createWithNullShouldThrowException()");
+    public void createWithNull() throws PersistenceException {
+        logger.info("createWithNull()");
         daoJockey.save(null);
     }
 
