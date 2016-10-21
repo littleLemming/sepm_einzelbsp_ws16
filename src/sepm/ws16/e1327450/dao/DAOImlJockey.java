@@ -18,8 +18,6 @@ public class DAOImlJockey implements DAOJockey {
     private PreparedStatement loadAllStmt;
     private PreparedStatement deleteStmt;
     private PreparedStatement updateStmt;
-    private PreparedStatement getFreeSvnrStmt;
-    private PreparedStatement isFreeSvnrStmt;
 
     public DAOImlJockey(Connection connection) throws PersistenceException {
         logger.info("DAOImlJockey("+connection+")");
