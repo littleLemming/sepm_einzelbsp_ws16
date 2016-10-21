@@ -91,12 +91,13 @@ public class DAOImlJockey implements DAOJockey {
         try {
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
+            logger.info("HERE");
             if (!res.next()) return;
-            saveStmt.setInt(1,j.getKönnen());
-            saveStmt.setString(2,j.getName());
-            saveStmt.setDate(3,j.getGeburtsdatum());
-            saveStmt.setInt(4,j.getGewicht());
-            saveStmt.setInt(5,j.getSvnr());
+            updateStmt.setInt(1, j.getKönnen());
+            updateStmt.setString(2, j.getName());
+            updateStmt.setDate(3, j.getGeburtsdatum());
+            updateStmt.setInt(4, j.getGewicht());
+            updateStmt.setInt(5, j.getSvnr());
             updateStmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + updateStmt.toString());

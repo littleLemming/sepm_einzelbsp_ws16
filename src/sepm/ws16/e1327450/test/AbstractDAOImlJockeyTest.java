@@ -177,11 +177,11 @@ public abstract class AbstractDAOImlJockeyTest {
         assertTrue(jockeyList.contains(jockey));
         Jockey updatedJockey = new Jockey(7,55,"Applejack",java.sql.Date.valueOf("2005-07-04"),59);
         jockeyList = daoJockey.loadAll();
-        assertFalse(jockeyList.contains(jockey));
+        assertFalse(jockeyList.contains(updatedJockey));
         daoJockey.update(updatedJockey);
         jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
-        assertTrue(jockeyList.contains(jockey));
+        assertTrue(jockeyList.contains(updatedJockey));
         daoJockey.delete(updatedJockey);
     }
 
@@ -189,8 +189,8 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void isFreeSvnrTest() throws PersistenceException {
         logger.info("isFreeChip_NrTest()");
-        assertTrue(daoJockey.isFreeSvnr(33));
-        assertFalse(daoJockey.isFreeSvnr(2));
+        assertFalse(daoJockey.isFreeSvnr(33));
+        assertTrue(daoJockey.isFreeSvnr(2));
     }
 
     /** test for free svnr **/
