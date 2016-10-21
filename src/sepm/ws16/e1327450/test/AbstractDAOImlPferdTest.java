@@ -75,6 +75,7 @@ public abstract class AbstractDAOImlPferdTest {
             assertTrue(pferdListLoaded.contains(pferd));
         }
         pferdListLoaded = daoPferd.loadCondition("Philidor", -1, -1, -1, -1, -1, -1);
+        pferdList = new ArrayList<>();
         pferdList.add(pferd0);
         assertTrue(pferdList.size() == pferdListLoaded.size());
         for(Pferd pferd : pferdList) {
@@ -178,11 +179,11 @@ public abstract class AbstractDAOImlPferdTest {
         assertTrue(pferdList.contains(pferd));
         Pferd updatedPferd = new Pferd("0007","Frosty","Pinto-Mix",8,"0007_frosty_0.jpg",45,58);
         pferdList = daoPferd.loadAll();
-        assertFalse(pferdList.contains(pferd));
+        assertFalse(pferdList.contains(updatedPferd));
         daoPferd.update(updatedPferd);
         pferdList = daoPferd.loadAll();
         assertFalse(pferdList.contains(pferd));
-        assertTrue(pferdList.contains(pferd));
+        assertTrue(pferdList.contains(updatedPferd));
         daoPferd.delete(updatedPferd);
     }
 

@@ -189,8 +189,8 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void isFreeSvnrTest() throws PersistenceException {
         logger.info("isFreeChip_NrTest()");
-        assertFalse(daoJockey.isFreeSvnr(33));
-        assertTrue(daoJockey.isFreeSvnr(2));
+        assertTrue(daoJockey.isFreeSvnr(33));
+        assertFalse(daoJockey.isFreeSvnr(2));
     }
 
     /** test for free svnr **/

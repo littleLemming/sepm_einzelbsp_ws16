@@ -179,6 +179,6 @@ public class DAOImlJockey implements DAOJockey {
     @Override
     public boolean isFreeSvnr(int svnr) throws PersistenceException {
         logger.info("isFreeSvnr("+svnr+")");
-        return load(svnr) != null;
+        return load(svnr) == null;
     }
 }
