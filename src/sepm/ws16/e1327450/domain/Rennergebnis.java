@@ -1,6 +1,11 @@
 package sepm.ws16.e1327450.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Rennergebnis {
+
+    final static Logger logger = LoggerFactory.getLogger(Rennergebnis.class);
 
     private int renn_id;
     private Pferd pferd;
@@ -9,6 +14,7 @@ public class Rennergebnis {
     private int platz;
 
     public Rennergebnis(int renn_id, Pferd pferd, Jockey jockey, double geschw, int platz) {
+        logger.info("Rennergebnis("+renn_id+","+pferd.toString()+","+jockey.toString()+","+geschw+","+platz+")");
         this.renn_id = renn_id;
         this.pferd = pferd;
         this.jockey = jockey;
@@ -74,8 +80,8 @@ public class Rennergebnis {
         Jockey j0 = (Jockey) jockey;
         Jockey j1 = (Jockey) that.jockey;
 
-        if (p0 != null && p1 != null && !p0.equals(p1)) return false;
-        if (j0 != null && j1 != null && !j0.equals(j1)) return false;
+        if (!p0.equals(p1)) return false;
+        if (!j0.equals(j1)) return false;
 
         return true;
     }

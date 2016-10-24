@@ -40,7 +40,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void loadWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Rennergebnis rennergebnis = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(6),48.968,2);
+        Rennergebnis rennergebnis = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(6),56.955,1);
         Rennergebnis loadedRennergebnis = daoRennergebnis.load(0,"0000",6);
         assertTrue(rennergebnis.equals(loadedRennergebnis));
     }
@@ -51,7 +51,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         logger.info("loadWithNonExisting()");
         Rennergebnis loadedRennergebnis = daoRennergebnis.load(20,"0000",1);
         assertTrue(loadedRennergebnis == null);
-        loadedRennergebnis = daoRennergebnis.load(0,"0001",1);
+        loadedRennergebnis = daoRennergebnis.load(0,"0001",5);
         assertTrue(loadedRennergebnis == null);
     }
 
