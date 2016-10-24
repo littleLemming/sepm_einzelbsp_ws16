@@ -91,7 +91,6 @@ public class DAOImlJockey implements DAOJockey {
         try {
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
-            logger.info("HERE");
             if (!res.next()) return;
             updateStmt.setInt(1, j.getKönnen());
             updateStmt.setString(2, j.getName());

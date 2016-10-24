@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DAOImlRennergebnis implements  DAORennergebnis {
@@ -83,35 +84,134 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
 
     @Override
     public void delete(Rennergebnis r) throws PersistenceException {
+        if (r == null) return;
         logger.info("delete("+r.toString()+")");
+        try {
+            loadStmt.setInt(1,r.getRenn_id());
+            loadStmt.setString(2,r.getPferd().getChip_nr());
+            loadStmt.setInt(3,r.getJockey().getSvnr());
+            ResultSet res = loadStmt.executeQuery();
+            if (!res.next()) return;
+            deleteStmt.setInt(1,r.getRenn_id());
+            deleteStmt.setString(2,r.getPferd().getChip_nr());
+            deleteStmt.setInt(3,r.getJockey().getSvnr());
+            deleteStmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("could not execute db-request: " + deleteStmt.toString());
+            throw new PersistenceException(e.getMessage());
+        }
     }
 
     @Override
     public void update(Rennergebnis r) throws PersistenceException {
+        if (r == null) return;
         logger.info("update("+r.toString()+")");
+        try {
+            loadStmt.setInt(1,r.getRenn_id());
+            loadStmt.setString(2,r.getPferd().getChip_nr());
+            loadStmt.setInt(3,r.getJockey().getSvnr());
+            ResultSet res = loadStmt.executeQuery();
+            if (!res.next()) return;
+            updateStmt.setDouble(1, r.getGeschw());
+            updateStmt.setInt(2, r.getPlatz());
+            updateStmt.setInt(3, r.getRenn_id());
+            updateStmt.setString(4, r.getPferd().getChip_nr());
+            updateStmt.setInt(5, r.getJockey().getSvnr());
+            updateStmt.executeUpdate();
+        } catch (SQLException e) {
+            logger.error("could not execute db-request: " + updateStmt.toString());
+            throw new PersistenceException(e.getMessage());
+        }
     }
 
     @Override
     public List<Rennergebnis> loadAll() throws PersistenceException {
         logger.info("loadAll()");
-        return null;
+        List<Rennergebnis> rennergebnisList = new ArrayList<>();
+        try {
+            ResultSet res = loadAllStmt.executeQuery();
+            while(res.next()) {
+                Pferd pferd = daoPferd.load(res.getString("chip_nr"));
+                Jockey jockey = daoJockey.load(res.getInt("svnr"));
+                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
+            }
+        } catch (SQLException e) {
+            logger.error("could not execute db-request: " + loadAllStmt.toString());
+            throw new PersistenceException(e.getMessage());
+        }
+        return rennergebnisList;
     }
 
     @Override
     public List<Rennergebnis> loadCondition(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws PersistenceException {
         logger.info("loadCondition("+renn_id+","+chip_nr+","+svnr+","+min_gesw+","+max_gesw+","+min_platz+","+max_platz+")");
-        return null;
+        List<Rennergebnis> rennergebnisList = new ArrayList<>();
+        if(renn_id == -1 && chip_nr == null && svnr == -1 && min_gesw == -1 && max_gesw == -1 && min_platz == -1 && max_platz == -1){
+            return this.loadAll();
+        }
+        PreparedStatement loadConditionStmt;
+        String sqlQuery ="SELECT * FROM RENNERGEBNIS WHERE";
+        boolean addedFirst = false;
+        if(renn_id != -1 ){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " renn_id=" + renn_id;
+            addedFirst = true;
+        } if(chip_nr != null){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " chip_nr=" + chip_nr;
+            addedFirst = true;
+        } if(svnr != -1){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " svnr='" + svnr;
+            addedFirst = true;
+        } if(min_gesw != -1 ){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " gesw>=" + min_gesw;
+            addedFirst = true;
+        } if(max_gesw != -1){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " gesw<=" + max_gesw;
+        } if(min_platz != -1 ){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " platz>=" + min_platz;
+            addedFirst = true;
+        } if(max_platz != -1){
+            if(addedFirst) sqlQuery += " AND";
+            sqlQuery += " platz<=" + max_platz;
+        }
+        try{
+            loadConditionStmt = connection.prepareStatement(sqlQuery);
+            ResultSet res = loadConditionStmt.executeQuery();
+            while(res.next()) {
+                Pferd pferd = daoPferd.load(res.getString("chip_nr"));
+                Jockey jockey = daoJockey.load(res.getInt("svnr"));
+                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
+            }
+        }catch(SQLException e){
+            logger.error("could not execute db-request: " + sqlQuery);
+            throw new PersistenceException(e.getMessage());
+        }
+        return rennergebnisList;
     }
 
     @Override
     public int getFreeRenn_id() throws PersistenceException {
         logger.info("getFreeRenn_id()");
-        return 0;
+        int renn_id = loadAll().size();
+        List<Rennergebnis> rennergebnisList = loadAll();
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            if(renn_id == rennergebnis.getRenn_id()) renn_id++;
+        }
+        return renn_id;
     }
 
     @Override
     public boolean isFreeRenn_id(int renn_id) throws PersistenceException {
         logger.info("isFreeRenn_id("+renn_id+")");
-        return false;
+        List<Rennergebnis> rennergebnisList = loadAll();
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            if(renn_id == rennergebnis.getRenn_id()) return false;
+        }
+        return true;
     }
 }

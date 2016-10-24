@@ -202,7 +202,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void deleteNonExisting() throws PersistenceException {
         logger.info("deleteNonExisting()");
-        Rennergebnis rennergebnis = new Rennergebnis(1,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
+        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.delete(rennergebnis);
@@ -222,11 +222,11 @@ public abstract class AbstractDAOImlRennergebnisTest {
         assertTrue(rennergebnisList.contains(rennergebnis));
         Rennergebnis updatedRennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.334,1);
         rennergebnisList = daoRennergebnis.loadAll();
-        assertFalse(rennergebnisList.contains(rennergebnis));
+        assertFalse(rennergebnisList.contains(updatedRennergebnis));
         daoRennergebnis.update(updatedRennergebnis);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
-        assertTrue(rennergebnisList.contains(rennergebnis));
+        assertTrue(rennergebnisList.contains(updatedRennergebnis));
         daoRennergebnis.delete(updatedRennergebnis);
     }
 

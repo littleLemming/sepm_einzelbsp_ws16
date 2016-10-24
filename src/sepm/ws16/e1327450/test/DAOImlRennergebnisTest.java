@@ -39,72 +39,84 @@ public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
         dbHandler.getConnection().setAutoCommit(false);
         try {
             loadWithValid();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("loadWithValid() FAILED");
             e.printStackTrace();
         }
         try {
             loadWithNonExisting();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("loadWithNonExisting() FAILED");
             e.printStackTrace();
         }
         try {
             loadAllTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("loadAllTest() FAILED");
             e.printStackTrace();
         }
         try {
             loadConditionTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("loadConditionTest() FAILED");
             e.printStackTrace();
         }
         try {
             createWithNull();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("createWithNull() FAILED");
             e.printStackTrace();
         }
         try {
             createWithValid();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("createWithValid() FAILED");
             e.printStackTrace();
         }
         try {
             createWithExistingId();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("createWithExistingId() FAILED");
             e.printStackTrace();
         }
         try {
             deleteTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("deleteTest() FAILED");
             e.printStackTrace();
         }
         try {
             deleteNonExisting();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("deleteNonExisting() FAILED");
             e.printStackTrace();
         }
         try {
             updateTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("updateTest() FAILED");
             e.printStackTrace();
         }
         try {
             isFreeRenn_idTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("isFreeRenn_idTest() FAILED");
             e.printStackTrace();
         }
         try {
             getFreeRenn_idTest();
+            tearDown();
         } catch (PersistenceException e) {
             logger.error("getFreeRenn_idTest() FAILED");
             e.printStackTrace();
