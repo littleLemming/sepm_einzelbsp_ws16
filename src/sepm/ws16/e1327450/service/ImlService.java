@@ -16,7 +16,17 @@ public class ImlService implements Service {
     }
 
     @Override
+    public void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+
+    }
+
+    @Override
     public void saveJockey(Jockey jockey) throws ServiceException {
+
+    }
+
+    @Override
+    public void saveJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
 
     }
 
@@ -41,7 +51,17 @@ public class ImlService implements Service {
     }
 
     @Override
+    public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+
+    }
+
+    @Override
     public void updateJockey(Jockey jockey) throws ServiceException {
+
+    }
+
+    @Override
+    public void updateJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
 
     }
 

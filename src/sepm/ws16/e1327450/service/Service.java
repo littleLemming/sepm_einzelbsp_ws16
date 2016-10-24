@@ -13,7 +13,11 @@ public interface Service {
 
     void savePferd(Pferd pferd) throws ServiceException;
 
+    void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+
     void saveJockey(Jockey jockey) throws ServiceException;
+
+    void saveJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
 
     Pferd loadPferd(String chip_nr) throws ServiceException;
 
@@ -23,7 +27,11 @@ public interface Service {
 
     void updatePferd(Pferd pferd) throws ServiceException;
 
+    void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+
     void updateJockey(Jockey jockey) throws ServiceException;
+
+    void updateJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
 
     void deletePferde(Pferd pferd) throws ServiceException;
 
