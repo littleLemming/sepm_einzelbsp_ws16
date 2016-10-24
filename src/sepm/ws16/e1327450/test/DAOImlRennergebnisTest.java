@@ -4,17 +4,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sepm.ws16.e1327450.dao.DAOImlRennergebnis;
-import sepm.ws16.e1327450.dao.DAORennergebnis;
-import sepm.ws16.e1327450.dao.H2DBHandler;
-import sepm.ws16.e1327450.dao.PersistenceException;
+import sepm.ws16.e1327450.dao.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
 
-    final static Logger logger = LoggerFactory.getLogger(AbstractDAOImlJockeyTest.class);
+    final static Logger logger = LoggerFactory.getLogger(DAOImlRennergebnisTest.class);
 
     private H2DBHandler dbHandler;
 
@@ -27,12 +24,18 @@ public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
         Connection connection = dbHandler.getConnection();
         logger.info("setUp(), connection: " + connection);
         DAORennergebnis daoRennergebnis = null;
+        DAOPferd daoPferd = null;
+        DAOJockey daoJockey = null;
         try {
-            daoRennergebnis = new DAOImlRennergebnis(dbHandler.getConnection());
+            daoPferd = new DAOImlPferd(dbHandler.getConnection());
+            daoJockey = new DAOImlJockey(dbHandler.getConnection());
+            daoRennergebnis = new DAOImlRennergebnis(dbHandler.getConnection(),daoPferd,daoJockey);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
         setDAORennergebnis(daoRennergebnis);
+        setDaoPferd(daoPferd);
+        setDaoJockey(daoJockey);
         dbHandler.getConnection().setAutoCommit(false);
         try {
             loadWithValid();

@@ -66,9 +66,18 @@ public class Rennergebnis {
         if (renn_id != that.renn_id) return false;
         if (Double.compare(that.geschw, geschw) != 0) return false;
         if (platz != that.platz) return false;
-        if (pferd != null ? !pferd.equals(that.pferd) : that.pferd != null) return false;
-        return jockey != null ? jockey.equals(that.jockey) : that.jockey == null;
+        if (pferd.getClass() != that.pferd.getClass()) return false;
+        if (jockey.getClass() != that.jockey.getClass()) return false;
 
+        Pferd p0 = (Pferd) pferd;
+        Pferd p1 = (Pferd) that.pferd;
+        Jockey j0 = (Jockey) jockey;
+        Jockey j1 = (Jockey) that.jockey;
+
+        if (p0 != null && p1 != null && !p0.equals(p1)) return false;
+        if (j0 != null && j1 != null && !j0.equals(j1)) return false;
+
+        return true;
     }
 
     @Override

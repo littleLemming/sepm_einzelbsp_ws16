@@ -3,6 +3,8 @@ package sepm.ws16.e1327450.test;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sepm.ws16.e1327450.dao.DAOJockey;
+import sepm.ws16.e1327450.dao.DAOPferd;
 import sepm.ws16.e1327450.dao.DAORennergebnis;
 import sepm.ws16.e1327450.dao.PersistenceException;
 import sepm.ws16.e1327450.domain.Jockey;
@@ -19,17 +21,27 @@ public abstract class AbstractDAOImlRennergebnisTest {
     final static Logger logger = LoggerFactory.getLogger(AbstractDAOImlRennergebnisTest.class);
 
     protected DAORennergebnis daoRennergebnis;
+    protected DAOJockey daoJockey;
+    protected DAOPferd daoPferd;
 
     protected void setDAORennergebnis(DAORennergebnis daoRennergebnis) {
         this.daoRennergebnis = daoRennergebnis;
+    }
+
+    public void setDaoJockey(DAOJockey daoJockey) {
+        this.daoJockey = daoJockey;
+    }
+
+    public void setDaoPferd(DAOPferd daoPferd) {
+        this.daoPferd = daoPferd;
     }
 
     /** load valid renn-id **/
     @Test
     public void loadWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Rennergebnis rennergebnis = new Rennergebnis(0,new Pferd("0000","Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60),new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50),48.968,2);
-        Rennergebnis loadedRennergebnis = daoRennergebnis.load(0,"0000",1);
+        Rennergebnis rennergebnis = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(6),48.968,2);
+        Rennergebnis loadedRennergebnis = daoRennergebnis.load(0,"0000",6);
         assertTrue(rennergebnis.equals(loadedRennergebnis));
     }
 
@@ -48,13 +60,13 @@ public abstract class AbstractDAOImlRennergebnisTest {
     public void loadAllTest() throws PersistenceException {
         logger.info("loadAllTest()");
         List<Rennergebnis> rennergebnisList = new ArrayList<>();
-        rennergebnisList.add(new Rennergebnis(0,new Pferd("0001","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46),new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50),48.968,2));
-        rennergebnisList.add(new Rennergebnis(0,new Pferd("0005","Benji","Haflinger-Noriker",15,"0005_benji_1.jpg",40,44),new Jockey(0,58,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47),46.969,3));
-        rennergebnisList.add(new Rennergebnis(0,new Pferd("0000","Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60),new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59),56.955,1));
-        rennergebnisList.add(new Rennergebnis(1,new Pferd("0004","Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(2,301,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40),59.167,3));
-        rennergebnisList.add(new Rennergebnis(1,new Pferd("0003","Jaris","Fjordpony",9,"0003_jaris_2.jpg",56,59),new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61),62.457,1));
-        rennergebnisList.add(new Rennergebnis(1,new Pferd("0001","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46),new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50),48.968,4));
-        rennergebnisList.add(new Rennergebnis(1,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0001"),daoJockey.load(1),48.968,2));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0005"),daoJockey.load(0),46.969,3));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(6),56.955,1));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0004"),daoJockey.load(2),59.167,3));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0003"),daoJockey.load(5),62.457,1));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0001"),daoJockey.load(1),48.968,4));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0006"),daoJockey.load(4),61.120,2));
         List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadAll();
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
@@ -66,13 +78,13 @@ public abstract class AbstractDAOImlRennergebnisTest {
     public void loadConditionTest() throws PersistenceException {
         logger.info("loadConditionTest()");
         List<Rennergebnis> rennergebnisList = new ArrayList<>();
-        Rennergebnis rennergebnis0 = new Rennergebnis(0,new Pferd("0001","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46),new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50),48.968,2);
-        Rennergebnis rennergebnis1 = new Rennergebnis(0,new Pferd("0005","Benji","Haflinger-Noriker",15,"0005_benji_1.jpg",40,44),new Jockey(0,58,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47),46.969,3);
-        Rennergebnis rennergebnis2 = new Rennergebnis(0,new Pferd("0000","Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60),new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59),56.955,1);
-        Rennergebnis rennergebnis3 = new Rennergebnis(1,new Pferd("0004","Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(2,301,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40),59.167,3);
-        Rennergebnis rennergebnis4 = new Rennergebnis(1,new Pferd("0003","Jaris","Fjordpony",9,"0003_jaris_2.jpg",56,59),new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61),62.457,1);
-        Rennergebnis rennergebnis5 = new Rennergebnis(1,new Pferd("0001","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46),new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50),48.968,4);
-        Rennergebnis rennergebnis6 = new Rennergebnis(1,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
+        Rennergebnis rennergebnis0 = new Rennergebnis(0,daoPferd.load("0001"),daoJockey.load(1),48.968,2);
+        Rennergebnis rennergebnis1 = new Rennergebnis(0,daoPferd.load("0005"),daoJockey.load(0),46.969,3);
+        Rennergebnis rennergebnis2 = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(6),56.955,1);
+        Rennergebnis rennergebnis3 = new Rennergebnis(1,daoPferd.load("0004"),daoJockey.load(2),59.167,3);
+        Rennergebnis rennergebnis4 = new Rennergebnis(1,daoPferd.load("0003"),daoJockey.load(5),62.457,1);
+        Rennergebnis rennergebnis5 = new Rennergebnis(1,daoPferd.load("0001"),daoJockey.load(1),48.968,4);
+        Rennergebnis rennergebnis6 = new Rennergebnis(1,daoPferd.load("0006"),daoJockey.load(4),61.120,2);
         rennergebnisList = daoRennergebnis.loadAll();
         List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,null,-1,-1,-1,-1,-1);
         assertTrue(rennergebnisList.size() == rennergebnisListLoaded.size());
