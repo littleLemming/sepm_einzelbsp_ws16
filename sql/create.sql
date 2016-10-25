@@ -30,7 +30,7 @@ CREATE TABLE Rennergebnis
     svnr int NOT NULL,
     geschw double NOT NULL,
     platz int NOT NULL,
-    PRIMARY KEY(renn_id, chip_nr, renn_id)
+    PRIMARY KEY(renn_id, chip_nr, svnr)
     );
 
 ALTER TABLE Rennergebnis ADD FOREIGN KEY (chip_nr) REFERENCES Pferd(chip_nr);
