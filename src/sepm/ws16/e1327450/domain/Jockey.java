@@ -95,7 +95,7 @@ public class Jockey {
     }
 
     public boolean isValidJockey() {
-        if(gewicht < 1) {
+        if(gewicht < 40 || geburtsdatum == null || name == null || svnr < 0) {
             return false;
         } return true;
     }

@@ -121,7 +121,8 @@ public class Pferd {
     }
 
     public boolean isValidPferd() {
-        if(alter_jahre < 1 || min_gesw > max_gesw || min_gesw < 40 || max_gesw > 60) { //TODO bild gültig
+        //TODO bild gültig
+        if(chip_nr == null || chip_nr.length() != 4 || alter_jahre < 4 || alter_jahre > 30 || min_gesw > max_gesw || min_gesw < 40 || max_gesw > 60 || name == null || rasse == null || bild == null) {
             return false;
         } return true;
     }
