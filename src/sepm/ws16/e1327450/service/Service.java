@@ -45,12 +45,12 @@ public interface Service {
 
     List<Pferd> searchPferd(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws ServiceException;
 
-    List<Jockey> searchJockey(int mindKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht);
+    List<Jockey> searchJockey(int minKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht);
 
     List<Rennergebnis> searchRennergebnis(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz);
 
-    void doRennsimulation(int renn_id, Map<Pferd, Jockey> participants);
+    List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants);
 
-    void doStatistik(Pferd pferd, Jockey jockey);
+    Map<Integer,Integer> doStatistik(String chip_nr, int svnr);
 
 }
