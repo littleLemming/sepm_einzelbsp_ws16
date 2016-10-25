@@ -48,10 +48,13 @@ public class ImlService implements Service {
         logger.info("savePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
-                daoPferd.isFreeChip_Nr(pferd.getChip_nr());
+                if(!daoPferd.isFreeChip_Nr(pferd.getChip_nr())) {
+                    logger.error("could not save "+pferd.toString());
+                    throw new ServiceException("pferd with this chipnumber already exists");
+                }
             } catch (PersistenceException e) {
                 logger.error("could not save "+pferd.toString());
-                throw new ServiceException("pferd with this chipnumber already exists");
+                throw new ServiceException(e.getMessage());
             }
             try {
                 daoPferd.save(pferd);
@@ -77,10 +80,13 @@ public class ImlService implements Service {
         logger.info("saveJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
-                daoJockey.isFreeSvnr(jockey.getSvnr());
+                if(!daoJockey.isFreeSvnr(jockey.getSvnr())){
+                    logger.error("could not save "+jockey.toString());
+                    throw new ServiceException("jockey with this svnr already exists");
+                }
             } catch (PersistenceException e) {
                 logger.error("could not save "+jockey.toString());
-                throw new ServiceException("jockey with this svnr already exists");
+                throw new ServiceException(e.getMessage());
             }
             try {
                 daoJockey.save(jockey);
@@ -140,21 +146,65 @@ public class ImlService implements Service {
     @Override
     public void updatePferd(Pferd pferd) throws ServiceException {
         logger.info("updatePferd("+pferd.toString()+")");
+        if(pferd.isValidPferd()) {
+            try {
+                if(daoPferd.load(pferd.getChip_nr()) == null) {
+                    logger.error("could not update "+pferd.toString());
+                    throw new ServiceException("pferd with this chipnumber does not exists");
+                }
+            } catch (PersistenceException e) {
+                logger.error("could not update "+pferd.toString());
+                throw new ServiceException(e.getMessage());
+            }
+            try {
+                daoPferd.update(pferd);
+            } catch(PersistenceException e) {
+                logger.error("could not update "+pferd.toString());
+                throw new ServiceException(e.getMessage());
+            }
+        } else {
+            logger.error("could not save "+pferd.toString());
+            throw new ServiceException("invalid pferd");
+        }
     }
 
     @Override
     public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
         logger.info("updatePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
+        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
+        updatePferd(pferd);
     }
 
     @Override
     public void updateJockey(Jockey jockey) throws ServiceException {
         logger.info("updateJockey("+jockey.toString()+")");
+        if(jockey.isValidJockey()) {
+            try {
+                if(daoJockey.load(jockey.getSvnr()) == null){
+                    logger.error("could not update "+jockey.toString());
+                    throw new ServiceException("jockey with this svnr does not exists");
+                }
+            } catch (PersistenceException e) {
+                logger.error("could not update "+jockey.toString());
+                throw new ServiceException(e.getMessage());
+            }
+            try {
+                daoJockey.update(jockey);
+            } catch(PersistenceException e) {
+                logger.error("could not update "+jockey.toString());
+                throw new ServiceException(e.getMessage());
+            }
+        } else {
+            logger.error("could not save "+jockey.toString());
+            throw new ServiceException("invalid jockey");
+        }
     }
 
     @Override
     public void updateJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
         logger.info("updateJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
+        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
+        updateJockey(jockey);
     }
 
     @Override
