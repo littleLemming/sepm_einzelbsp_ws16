@@ -47,11 +47,9 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
         if (r == null) return;
         logger.info("save("+r.toString()+")");
         try {
-            loadStmt.setInt(1,r.getRenn_id());
-            loadStmt.setString(2,r.getPferd().getChip_nr());
-            loadStmt.setInt(3,r.getJockey().getSvnr());
-            ResultSet res = loadStmt.executeQuery();
-            if (res.next()) return;
+            if(load(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr()) != null) return;
+            if(loadCondition(r.getRenn_id(),r.getPferd().getChip_nr(),-1,-1,-1,-1,-1).size() != 0) return;
+            if(loadCondition(r.getRenn_id(),null,r.getJockey().getSvnr(),-1,-1,-1,-1).size() != 0) return;
             saveStmt.setInt(1,r.getRenn_id());
             saveStmt.setString(2,r.getPferd().getChip_nr());
             saveStmt.setInt(3,r.getJockey().getSvnr());
@@ -107,11 +105,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
         if (r == null) return;
         logger.info("update("+r.toString()+")");
         try {
-            loadStmt.setInt(1,r.getRenn_id());
-            loadStmt.setString(2,r.getPferd().getChip_nr());
-            loadStmt.setInt(3,r.getJockey().getSvnr());
-            ResultSet res = loadStmt.executeQuery();
-            if (!res.next()) return;
+            if(load(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr()) == null) return;
             updateStmt.setDouble(1, r.getGeschw());
             updateStmt.setInt(2, r.getPlatz());
             updateStmt.setInt(3, r.getRenn_id());
@@ -162,15 +156,15 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             addedFirst = true;
         } if(svnr != -1){
             if(addedFirst) sqlQuery += " AND";
-            sqlQuery += " svnr='" + svnr;
+            sqlQuery += " svnr=" + svnr;
             addedFirst = true;
         } if(min_gesw != -1 ){
             if(addedFirst) sqlQuery += " AND";
-            sqlQuery += " gesw>=" + min_gesw;
+            sqlQuery += " geschw>=" + min_gesw;
             addedFirst = true;
         } if(max_gesw != -1){
             if(addedFirst) sqlQuery += " AND";
-            sqlQuery += " gesw<=" + max_gesw;
+            sqlQuery += " geschw<=" + max_gesw;
         } if(min_platz != -1 ){
             if(addedFirst) sqlQuery += " AND";
             sqlQuery += " platz>=" + min_platz;
