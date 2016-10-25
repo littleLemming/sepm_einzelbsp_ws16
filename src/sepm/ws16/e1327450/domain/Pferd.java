@@ -119,4 +119,11 @@ public class Pferd {
                 ", max_gesw=" + max_gesw +
                 '}';
     }
+
+    public boolean isValidPferd() {
+        if(alter_jahre < 1 || min_gesw > max_gesw || min_gesw < 40 || max_gesw > 60) { //TODO bild gültig
+            return false;
+        } return true;
+    }
+
 }

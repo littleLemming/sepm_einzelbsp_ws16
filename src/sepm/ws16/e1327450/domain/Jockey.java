@@ -93,4 +93,11 @@ public class Jockey {
                 ", gewicht=" + gewicht +
                 '}';
     }
+
+    public boolean isValidJockey() {
+        if(gewicht < 1) {
+            return false;
+        } return true;
+    }
+
 }
