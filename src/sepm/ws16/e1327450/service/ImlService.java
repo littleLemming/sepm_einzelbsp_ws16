@@ -19,32 +19,15 @@ public class ImlService implements Service {
     private DAOJockey daoJockey;
     private DAORennergebnis daoRennergebnis;
 
-    public DAOPferd getDaoPferd() {
-        return daoPferd;
-    }
-
-    public void setDaoPferd(DAOPferd daoPferd) {
+    public ImlService(DAOPferd daoPferd, DAORennergebnis daoRennergebnis, DAOJockey daoJockey) {
         this.daoPferd = daoPferd;
-    }
-
-    public DAOJockey getDaoJockey() {
-        return daoJockey;
-    }
-
-    public void setDaoJockey(DAOJockey daoJockey) {
-        this.daoJockey = daoJockey;
-    }
-
-    public DAORennergebnis getDaoRennergebnis() {
-        return daoRennergebnis;
-    }
-
-    public void setDaoRennergebnis(DAORennergebnis daoRennergebnis) {
         this.daoRennergebnis = daoRennergebnis;
+        this.daoJockey = daoJockey;
     }
 
     @Override
     public void savePferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return;
         logger.info("savePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
@@ -70,6 +53,7 @@ public class ImlService implements Service {
 
     @Override
     public void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+        if(name == null || rasse == null || bild == null) return;
         logger.info("savePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
         savePferd(pferd);
@@ -77,6 +61,7 @@ public class ImlService implements Service {
 
     @Override
     public void saveJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return;
         logger.info("saveJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
@@ -102,6 +87,7 @@ public class ImlService implements Service {
 
     @Override
     public void saveJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+        if(name == null || geburtsdatum == null) return;
         logger.info("saveJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
         saveJockey(jockey);
@@ -122,7 +108,7 @@ public class ImlService implements Service {
     @Override
     public Jockey loadJockey(int svnr) throws ServiceException {
         logger.info("loadJockey("+svnr+")");
-       Jockey jockey = null;
+        Jockey jockey = null;
         try {
             jockey = daoJockey.load(svnr);
         } catch (PersistenceException e) {
@@ -133,6 +119,7 @@ public class ImlService implements Service {
 
     @Override
     public Rennergebnis loadRennergebnis(int renn_id, String chip_nr, int svnr) throws ServiceException {
+        if(chip_nr == null) return null;
         logger.info("loadRennergebnis("+renn_id+","+chip_nr+","+svnr+")");
         Rennergebnis rennergebnis = null;
         try {
@@ -145,6 +132,7 @@ public class ImlService implements Service {
 
     @Override
     public void updatePferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return;
         logger.info("updatePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
@@ -170,6 +158,7 @@ public class ImlService implements Service {
 
     @Override
     public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+        if(name == null || rasse == null || bild == null) return;
         logger.info("updatePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
         updatePferd(pferd);
@@ -177,6 +166,7 @@ public class ImlService implements Service {
 
     @Override
     public void updateJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return;
         logger.info("updateJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
@@ -202,6 +192,7 @@ public class ImlService implements Service {
 
     @Override
     public void updateJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+        if(name == null || geburtsdatum == null) return;
         logger.info("updateJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
         updateJockey(jockey);
@@ -209,11 +200,13 @@ public class ImlService implements Service {
 
     @Override
     public void deletePferde(Pferd pferd) throws ServiceException {
+        if(pferd == null) return;
         logger.info("deletePferd("+pferd.toString()+")");
     }
 
     @Override
     public void deleteJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return;
         logger.info("deleteJockey("+jockey.toString()+")");
     }
 
