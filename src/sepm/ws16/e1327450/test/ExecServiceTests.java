@@ -14,7 +14,11 @@ public class ExecServiceTests {
 
         try {
             serviceTest.setUp();
-            serviceTest.tearDown();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            serviceTest.setUp();
         } catch (SQLException e) {
             e.printStackTrace();
         }

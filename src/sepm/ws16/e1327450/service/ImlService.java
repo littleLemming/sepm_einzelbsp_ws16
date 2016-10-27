@@ -48,7 +48,6 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+pferd.toString());
-            throw new ServiceException("invalid pferd");
         }
     }
 
@@ -82,12 +81,11 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+jockey.toString());
-            throw new ServiceException("invalid jockey");
         }
     }
 
     @Override
-    public void saveJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+    public void saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
         if(name == null || geburtsdatum == null) return;
         logger.info("saveJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
@@ -192,11 +190,94 @@ public class ImlService implements Service {
     }
 
     @Override
-    public void updateJockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+    public void updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
         if(name == null || geburtsdatum == null) return;
         logger.info("updateJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
         updateJockey(jockey);
+    }
+
+    @Override
+    public boolean validPferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return false;
+        logger.info("validPferd("+pferd.toString()+")");
+        return pferd.isValidPferd();
+    }
+
+    @Override
+    public boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+        if(name == null || rasse == null || bild == null) return false;
+        logger.info("validPferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
+        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
+        return validPferd(pferd);
+    }
+
+    @Override
+    public String feedbackPferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return "kein Pferd angegeben";
+        logger.info("feedbackPferd("+pferd.toString()+")");
+        if(validPferd(pferd)) return "Pferd in Ordnung";
+        String s = "";
+        if(pferd.getChip_nr() == null) {
+            s += "keine Chip-Nummer angegeben | ";
+        } else {
+            if(pferd.getChip_nr().length() != 4) s += "chip_nummer nicht der Länge 4 | ";
+        }
+        if(pferd.getAlter_jahre() < 4 || pferd.getAlter_jahre() > 30) s += "Pferd muss zwischen 4 und 30 sein um Rennen laufen zu können | ";
+        if(pferd.getMin_gesw() > pferd.getMax_gesw()) s += "die minimale Geschwindigkeit muss kleiner als die maximale Geschdindigkeit sein | ";
+        if(pferd.getMin_gesw() < 40) s += "die minimale Geschwindikeit muss mindesens 40 betragen | ";
+        if(pferd.getMax_gesw() > 60) s += "die maximale Geschwindigketi kann maximal 60 betragen | ";
+        if(pferd.getName() == null) s += "kein Name angegeben | ";
+        if(pferd.getRasse() == null) s += "keine Rasse angegeben | ";
+        if(pferd.getBild() == null) s += "kein Bild angegeben | ";
+        //TODO check if bild valid
+        if (s != null && s.length() > 3) {
+            s = s.substring(0, s.length() - 3);
+        }
+        return s;
+    }
+
+    @Override
+    public String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
+        return feedbackPferd(pferd);
+    }
+
+    @Override
+    public boolean validJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return false;
+        logger.info("validJockey("+jockey.toString()+")");
+        return jockey.isValidJockey();
+    }
+
+    @Override
+    public boolean validJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+        if(name == null || geburtsdatum == null) return false;
+        logger.info("validJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
+        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
+        return validJockey(jockey);
+    }
+
+    @Override
+    public String feedbackJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return "kein Jockey angegeben";
+        logger.info("feedbackJockey("+jockey.toString()+")");
+        if(validJockey(jockey)) return "Jockey in Ordnung";
+        String s = "";
+        if(jockey.getSvnr() < 0) s += "keine gültige Svnr angegeben | ";
+        if(jockey.getGewicht() < 40) s += "untergewichtige Jockey dürfen nicht reiten - min 40 | ";
+        if(jockey.getName() == null) s += "kein Name angegeben | ";
+        if(jockey.getGeburtsdatum() == null) s += "kein Geburtsdatum angegeben | ";
+        if (s != null && s.length() > 3) {
+            s = s.substring(0, s.length() - 3);
+        }
+        return s;
+    }
+
+    @Override
+    public String feedbackJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
+        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
+        return feedbackJockey(jockey);
     }
 
     @Override
@@ -286,7 +367,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Jockey> searchJockey(int minKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException {
+    public List<Jockey> searchJockey(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException {
         logger.info("searchJockey("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         try {
             return daoJockey.loadCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht);

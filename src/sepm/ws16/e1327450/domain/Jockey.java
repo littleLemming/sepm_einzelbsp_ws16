@@ -5,12 +5,12 @@ import java.sql.Date;
 public class Jockey {
 
     private int svnr;
-    private int können;
+    private double können;
     private String name;
     private Date geburtsdatum;
     private int gewicht;
 
-    public Jockey(int svnr, int können, String name, Date geburtsdatum, int gewicht) {
+    public Jockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) {
         this.svnr = svnr;
         this.können = können;
         this.name = name;
@@ -26,11 +26,11 @@ public class Jockey {
         this.svnr = svnr;
     }
 
-    public int getKönnen() {
+    public double getKönnen() {
         return können;
     }
 
-    public void setKönnen(int können) {
+    public void setKönnen(double können) {
         this.können = können;
     }
 
@@ -66,7 +66,7 @@ public class Jockey {
         Jockey jockey = (Jockey) o;
 
         if (svnr != jockey.svnr) return false;
-        if (können != jockey.können) return false;
+        if (Double.compare(jockey.können, können) != 0) return false;
         if (gewicht != jockey.gewicht) return false;
         if (name != null ? !name.equals(jockey.name) : jockey.name != null) return false;
         return geburtsdatum != null ? geburtsdatum.equals(jockey.geburtsdatum) : jockey.geburtsdatum == null;
@@ -75,8 +75,11 @@ public class Jockey {
 
     @Override
     public int hashCode() {
-        int result = svnr;
-        result = 31 * result + können;
+        int result;
+        long temp;
+        result = svnr;
+        temp = Double.doubleToLongBits(können);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (geburtsdatum != null ? geburtsdatum.hashCode() : 0);
         result = 31 * result + gewicht;

@@ -25,7 +25,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void loadWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Jockey jockey = new Jockey(0,58,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
+        Jockey jockey = new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
         Jockey loadedJockey = daoJockey.load(0);
         assertTrue(jockey.equals(loadedJockey));
     }
@@ -43,13 +43,13 @@ public abstract class AbstractDAOImlJockeyTest {
     public void loadAllTest() throws PersistenceException {
         logger.info("loadAllTest()");
         List<Jockey> jockeyList = new ArrayList<>();
-        jockeyList.add(new Jockey(0,58,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47));
-        jockeyList.add(new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50));
-        jockeyList.add(new Jockey(2,301,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40));
-        jockeyList.add(new Jockey(3,30,"Fluttershy",java.sql.Date.valueOf("2004-01-04"),39));
-        jockeyList.add(new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39));
-        jockeyList.add(new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61));
-        jockeyList.add(new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59));
+        jockeyList.add(new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47));
+        jockeyList.add(new Jockey(1,29.0,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50));
+        jockeyList.add(new Jockey(2,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40));
+        jockeyList.add(new Jockey(3,30.0,"Fluttershy",java.sql.Date.valueOf("2004-01-04"),39));
+        jockeyList.add(new Jockey(4,48.0,"Rarity",java.sql.Date.valueOf("2003-10-11"),39));
+        jockeyList.add(new Jockey(5,287.0,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61));
+        jockeyList.add(new Jockey(6,201.0,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59));
         List<Jockey> jockeyListLoaded = daoJockey.loadAll();
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
@@ -61,20 +61,20 @@ public abstract class AbstractDAOImlJockeyTest {
     public void loadConditionTest() throws PersistenceException {
         logger.info("loadConditionTest()");
         List<Jockey> jockeyList = new ArrayList<>();
-        Jockey jockey0 = new Jockey(0,58,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
-        Jockey jockey1 = new Jockey(1,29,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50);
-        Jockey jockey2 = new Jockey(2,301,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
-        Jockey jockey3 = new Jockey(3,30,"Fluttershy",java.sql.Date.valueOf("2004-01-04"),39);
-        Jockey jockey4 = new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39);
-        Jockey jockey5 = new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61);
-        Jockey jockey6 = new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59);
+        Jockey jockey0 = new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
+        Jockey jockey1 = new Jockey(1,29.0,"Twilight Sparkle",java.sql.Date.valueOf("2003-06-07"),50);
+        Jockey jockey2 = new Jockey(2,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
+        Jockey jockey3 = new Jockey(3,30.0,"Fluttershy",java.sql.Date.valueOf("2004-01-04"),39);
+        Jockey jockey4 = new Jockey(4,48.0,"Rarity",java.sql.Date.valueOf("2003-10-11"),39);
+        Jockey jockey5 = new Jockey(5,287.0,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61);
+        Jockey jockey6 = new Jockey(6,201.0,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59);
         List<Jockey> jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,-1,-1);
         jockeyList = daoJockey.loadAll();
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(50,100,null,null,-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(50.0,100.0,null,null,-1,-1);
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey0);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
@@ -118,7 +118,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void createWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Jockey jockey = new Jockey(7,46,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
+        Jockey jockey = new Jockey(7,46.2,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
         List<Jockey> jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
         daoJockey.save(jockey);
@@ -130,7 +130,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void createWithExistingId() throws PersistenceException {
         logger.info("createWithExistingId()");
-        Jockey jockey = new Jockey(6,46,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
+        Jockey jockey = new Jockey(6,46.2,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
         List<Jockey> jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
         daoJockey.save(jockey);
@@ -142,7 +142,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void deleteTest() throws PersistenceException {
         logger.info("deleteTest()");
-        Jockey jockey = new Jockey(7,46,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
+        Jockey jockey = new Jockey(7,46.2,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
         List<Jockey> jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
         daoJockey.save(jockey);
@@ -157,7 +157,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void deleteNonExisting() throws PersistenceException {
         logger.info("deleteNonExisting()");
-        Jockey jockey = new Jockey(7,46,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
+        Jockey jockey = new Jockey(7,46.2,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
         List<Jockey> jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
         daoJockey.delete(jockey);
@@ -169,13 +169,13 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void updateTest() throws PersistenceException {
         logger.info("updateTest()");
-        Jockey jockey = new Jockey(7,46,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
+        Jockey jockey = new Jockey(7,46.2,"Applejack",java.sql.Date.valueOf("2005-07-04"),60);
         List<Jockey> jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(jockey));
         daoJockey.save(jockey);
         jockeyList = daoJockey.loadAll();
         assertTrue(jockeyList.contains(jockey));
-        Jockey updatedJockey = new Jockey(7,55,"Applejack",java.sql.Date.valueOf("2005-07-04"),59);
+        Jockey updatedJockey = new Jockey(7,55.7,"Applejack",java.sql.Date.valueOf("2005-07-04"),59);
         jockeyList = daoJockey.loadAll();
         assertFalse(jockeyList.contains(updatedJockey));
         daoJockey.update(updatedJockey);

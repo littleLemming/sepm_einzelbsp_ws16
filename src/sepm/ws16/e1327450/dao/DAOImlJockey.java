@@ -43,7 +43,7 @@ public class DAOImlJockey implements DAOJockey {
             ResultSet res = loadStmt.executeQuery();
             if (res.next()) return;
             saveStmt.setInt(1,j.getSvnr());
-            saveStmt.setInt(2,j.getKönnen());
+            saveStmt.setDouble(2,j.getKönnen());
             saveStmt.setString(3,j.getName());
             saveStmt.setDate(4,j.getGeburtsdatum());
             saveStmt.setInt(5,j.getGewicht());
@@ -61,7 +61,7 @@ public class DAOImlJockey implements DAOJockey {
             loadStmt.setInt(1,svnr);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return null;
-            return new Jockey(res.getInt("svnr"),res.getInt("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht"));
+            return new Jockey(res.getInt("svnr"),res.getDouble("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht"));
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadStmt.toString());
             throw new PersistenceException(e.getMessage());
@@ -92,7 +92,7 @@ public class DAOImlJockey implements DAOJockey {
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
-            updateStmt.setInt(1, j.getKönnen());
+            updateStmt.setDouble(1, j.getKönnen());
             updateStmt.setString(2, j.getName());
             updateStmt.setDate(3, j.getGeburtsdatum());
             updateStmt.setInt(4, j.getGewicht());
@@ -111,7 +111,7 @@ public class DAOImlJockey implements DAOJockey {
         try {
             ResultSet res = loadAllStmt.executeQuery();
             while(res.next()) {
-                jockeyList.add(new Jockey(res.getInt("svnr"),res.getInt("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht")));
+                jockeyList.add(new Jockey(res.getInt("svnr"),res.getDouble("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht")));
             }
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadAllStmt.toString());
@@ -121,7 +121,7 @@ public class DAOImlJockey implements DAOJockey {
     }
 
     @Override
-    public List<Jockey> loadCondition(int minKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException {
+    public List<Jockey> loadCondition(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException {
         logger.info("loadCondition("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         List<Jockey> jockeyList = new ArrayList<>();
         if(minKönnen == -1 && maxKönnen == -1 && name == null && geburtsdatum == null && minGewicht == -1 && maxGewicht == -1){
@@ -158,7 +158,7 @@ public class DAOImlJockey implements DAOJockey {
             loadConditionStmt = connection.prepareStatement(sqlQuery);
             ResultSet res = loadConditionStmt.executeQuery();
             while(res.next()) {
-                jockeyList.add(new Jockey(res.getInt("svnr"),res.getInt("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht")));
+                jockeyList.add(new Jockey(res.getInt("svnr"),res.getDouble("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht")));
             }
         }catch(SQLException e){
             logger.error("could not execute db-request: " + sqlQuery);

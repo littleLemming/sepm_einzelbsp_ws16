@@ -16,7 +16,7 @@ ALTER TABLE Pferd ADD CONSTRAINT gesw_constraint
 CREATE TABLE Jockey
     (
     svnr int NOT NULL UNIQUE,
-    können int NOT NULL,
+    können double NOT NULL,
     name varchar(255) NOT NULL,
     geburtsdatum DATE NOT NULL,
     gewicht int NOT NULL,

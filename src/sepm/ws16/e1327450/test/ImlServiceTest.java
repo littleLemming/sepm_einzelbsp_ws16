@@ -41,17 +41,16 @@ public class ImlServiceTest extends AbstractImlServiceTest {
         setService(service);
         try {
             saveTest();
-            tearDown();
         } catch (ServiceException e) {
             logger.error("saveTest() FAILED");
             e.printStackTrace();
         }
-    }
-
-    @After
-    public void tearDown() throws SQLException {
-        logger.info("tearDown()");
-        dbHandler.getConnection().rollback();
+        try {
+            valid_feedbackTest();
+        } catch (ServiceException e) {
+            logger.error("valid_feedbackTest() FAILED");
+            e.printStackTrace();
+        }
     }
 
 }

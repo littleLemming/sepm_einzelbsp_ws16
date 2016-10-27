@@ -16,7 +16,7 @@ public interface DAOJockey {
 
     List<Jockey> loadAll() throws PersistenceException;
 
-    List<Jockey> loadCondition(int mindKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException;
+    List<Jockey> loadCondition(double mindKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException;
 
     int getFreeSvnr() throws PersistenceException;
 
