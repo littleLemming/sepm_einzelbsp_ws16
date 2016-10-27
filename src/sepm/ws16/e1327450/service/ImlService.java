@@ -9,6 +9,7 @@ import sepm.ws16.e1327450.domain.Rennergebnis;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -202,58 +203,118 @@ public class ImlService implements Service {
     public void deletePferde(Pferd pferd) throws ServiceException {
         if(pferd == null) return;
         logger.info("deletePferd("+pferd.toString()+")");
+        try {
+            if(daoPferd.load(pferd.getChip_nr()) == null){
+                logger.error("could not delete "+pferd.toString());
+                throw new ServiceException("pferd with this chip_nr does not exists");
+            }
+        } catch (PersistenceException e) {
+            logger.error("could not delete "+pferd.toString());
+            throw new ServiceException(e.getMessage());
+        }
+        try {
+            daoPferd.delete(pferd);
+        } catch (PersistenceException e) {
+            logger.error("could not delete "+pferd.toString());
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public void deleteJockey(Jockey jockey) throws ServiceException {
         if(jockey == null) return;
         logger.info("deleteJockey("+jockey.toString()+")");
+        try {
+            if(daoJockey.load(jockey.getSvnr()) == null){
+                logger.error("could not delete "+jockey.toString());
+                throw new ServiceException("jockey with this svnr does not exists");
+            }
+        } catch (PersistenceException e) {
+            logger.error("could not delete "+jockey.toString());
+            throw new ServiceException(e.getMessage());
+        }
+        try {
+            daoJockey.delete(jockey);
+        } catch (PersistenceException e) {
+            logger.error("could not delete "+jockey.toString());
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public List<Pferd> loadAllPferd() throws ServiceException {
         logger.info("loadAllPferd()");
-        return null;
+        try {
+            return daoPferd.loadAll();
+        } catch(PersistenceException e) {
+            logger.error("could not load all pferde");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public List<Jockey> loadAllJockey() throws ServiceException {
         logger.info("loadAllJockey()");
-        return null;
+        try {
+            return daoJockey.loadAll();
+        } catch(PersistenceException e) {
+            logger.error("could not load all jockeys");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public List<Rennergebnis> loadAllRennergebnis() throws ServiceException {
         logger.info("loadAllRennergebnis()");
-        return null;
+        try {
+            return daoRennergebnis.loadAll();
+        } catch(PersistenceException e) {
+            logger.error("could not load all rennergebnise");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public List<Pferd> searchPferd(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws ServiceException {
         logger.info("searchPferd("+name+","+min_alter+","+max_alter+","+min_min_gesw+","+max_min_gesw+","+min_max_gesw+","+max_max_gesw+")");
-        return null;
+        try {
+            return daoPferd.loadCondition(name,min_alter,max_alter,min_min_gesw,max_min_gesw,min_max_gesw,max_max_gesw);
+        } catch(PersistenceException e) {
+            logger.error("could not load pferde");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
-    public List<Jockey> searchJockey(int minKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) {
+    public List<Jockey> searchJockey(int minKönnen, int maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException {
         logger.info("searchJockey("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
-        return null;
+        try {
+            return daoJockey.loadCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht);
+        } catch(PersistenceException e) {
+            logger.error("could not load all pferde");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
-    public List<Rennergebnis> searchRennergebnis(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) {
+    public List<Rennergebnis> searchRennergebnis(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws ServiceException {
         logger.info("searchRennergebnis("+renn_id+","+chip_nr+","+svnr+","+min_gesw+","+max_gesw+","+min_platz+","+max_platz+")");
-        return null;
+        try {
+            return daoRennergebnis.loadCondition(renn_id,chip_nr,svnr,min_gesw,max_gesw,min_platz,max_platz);
+        } catch(PersistenceException e) {
+            logger.error("could not load all rennergebnise");
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
-    public List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants) {
+    public List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants) throws ServiceException {
         logger.info("doRennsimulation("+renn_id+","+participants.toString()+")");
         return null;
     }
 
     @Override
-    public Map<Integer,Integer> doStatistik(String chip_nr, int svnr) {
+    public Map<Integer,Integer> doStatistik(String chip_nr, int svnr) throws ServiceException {
         logger.info("doStatistik("+chip_nr+","+svnr+")");
         return null;
     }
