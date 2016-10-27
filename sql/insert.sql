@@ -1,10 +1,10 @@
-INSERT INTO "PUBLIC"."PFERD" VALUES('0000','Philidor','Trakhner',22,'0000_philidor_1.jpg',53,60);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0001','Rusty','Shetland Pony',16,'0001_rusty_0.jpg',40,46);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0002','Kori','Huzule',13,'0002_kori_1.jpg',40,51);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0003','Jaris','Fjordpony',9,'0003_jaris_2.jpg',56,59);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0004','Pia','Haflinger',17,'0004_pia_0.jpg',43,55);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0005','Benji','Haflinger-Noriker',15,'0005_benji_1.jpg',40,44);
-INSERT INTO "PUBLIC"."PFERD" VALUES('0006','Szilja','Araber',12,'0000_szilja_0.jpg',48,57);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0000','Philidor','Trakhner',22,'0000_philidor_1.jpg',53.0,60.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0001','Rusty','Shetland Pony',16,'0001_rusty_0.jpg',40.0,46.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0002','Kori','Huzule',13,'0002_kori_1.jpg',40.0,51.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0003','Jaris','Fjordpony',9,'0003_jaris_2.jpg',56.0,59.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0004','Pia','Haflinger',17,'0004_pia_0.jpg',43.0,55.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0005','Benji','Haflinger-Noriker',15,'0005_benji_1.jpg',40.0,44.0);
+INSERT INTO "PUBLIC"."PFERD" VALUES('0006','Szilja','Araber',12,'0000_szilja_0.jpg',48.0,57.0);
 
 
 INSERT INTO "PUBLIC"."JOCKEY" VALUES(0,58.0,'Pinkie Pie','2004-08-12',47);

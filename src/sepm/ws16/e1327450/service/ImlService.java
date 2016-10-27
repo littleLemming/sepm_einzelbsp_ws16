@@ -52,7 +52,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+    public void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         if(name == null || rasse == null || bild == null) return;
         logger.info("savePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
@@ -156,7 +156,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+    public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         if(name == null || rasse == null || bild == null) return;
         logger.info("updatePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
@@ -205,7 +205,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+    public boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         if(name == null || rasse == null || bild == null) return false;
         logger.info("validPferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
@@ -238,7 +238,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException {
+    public String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
         return feedbackPferd(pferd);
     }
@@ -356,7 +356,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Pferd> searchPferd(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws ServiceException {
+    public List<Pferd> searchPferd(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) throws ServiceException {
         logger.info("searchPferd("+name+","+min_alter+","+max_alter+","+min_min_gesw+","+max_min_gesw+","+min_max_gesw+","+max_max_gesw+")");
         try {
             return daoPferd.loadCondition(name,min_alter,max_alter,min_min_gesw,max_min_gesw,min_max_gesw,max_max_gesw);

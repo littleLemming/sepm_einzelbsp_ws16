@@ -13,7 +13,7 @@ public interface Service {
 
     void savePferd(Pferd pferd) throws ServiceException;
 
-    void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+    void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
     void saveJockey(Jockey jockey) throws ServiceException;
 
@@ -27,7 +27,7 @@ public interface Service {
 
     void updatePferd(Pferd pferd) throws ServiceException;
 
-    void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+    void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
     void updateJockey(Jockey jockey) throws ServiceException;
 
@@ -35,11 +35,11 @@ public interface Service {
 
     boolean validPferd(Pferd pferd) throws ServiceException;
 
-    boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+    boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
     String feedbackPferd(Pferd pferd) throws ServiceException;
 
-    String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) throws ServiceException;
+    String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
     boolean validJockey(Jockey jockey) throws ServiceException;
 
@@ -59,7 +59,7 @@ public interface Service {
 
     List<Rennergebnis> loadAllRennergebnis() throws ServiceException;
 
-    List<Pferd> searchPferd(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws ServiceException;
+    List<Pferd> searchPferd(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) throws ServiceException;
 
     List<Jockey> searchJockey(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException;
 

@@ -5,8 +5,8 @@ CREATE TABLE Pferd
     rasse varchar(255) NOT NULL,
     alter_jahre int NOT NULL,
     bild varchar(255) NOT NULL,
-    min_gesw int NOT NULL CHECK(40 <= min_gesw AND min_gesw <= 60),
-    max_gesw int NOT NULL CHECK(40 <= max_gesw AND max_gesw <= 60),
+    min_gesw double NOT NULL CHECK(40 <= min_gesw AND min_gesw <= 60),
+    max_gesw double NOT NULL CHECK(40 <= max_gesw AND max_gesw <= 60),
     PRIMARY KEY(chip_nr)
     );
 

@@ -49,8 +49,8 @@ public class DAOImlPferd implements DAOPferd {
             saveStmt.setString(3,p.getRasse());
             saveStmt.setInt(4,p.getAlter_jahre());
             saveStmt.setString(5,p.getBild());
-            saveStmt.setInt(6,p.getMin_gesw());
-            saveStmt.setInt(7,p.getMax_gesw());
+            saveStmt.setDouble(6,p.getMin_gesw());
+            saveStmt.setDouble(7,p.getMax_gesw());
             saveStmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + saveStmt.toString());
@@ -65,7 +65,7 @@ public class DAOImlPferd implements DAOPferd {
             loadStmt.setString(1,chip_nr);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return null;
-            return new Pferd(res.getString("chip_nr"),res.getString("name"),res.getString("rasse"),res.getInt("alter_jahre"),res.getString("bild"),res.getInt("min_gesw"),res.getInt("max_gesw"));
+            return new Pferd(res.getString("chip_nr"),res.getString("name"),res.getString("rasse"),res.getInt("alter_jahre"),res.getString("bild"),res.getDouble("min_gesw"),res.getDouble("max_gesw"));
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadStmt.toString());
             throw new PersistenceException(e.getMessage());
@@ -101,8 +101,8 @@ public class DAOImlPferd implements DAOPferd {
             updateStmt.setString(2,p.getRasse());
             updateStmt.setInt(3,p.getAlter_jahre());
             updateStmt.setString(4,p.getBild());
-            updateStmt.setInt(5,p.getMin_gesw());
-            updateStmt.setInt(6,p.getMax_gesw());
+            updateStmt.setDouble(5,p.getMin_gesw());
+            updateStmt.setDouble(6,p.getMax_gesw());
             updateStmt.setString(7,p.getChip_nr());
             updateStmt.executeUpdate();
         } catch (SQLException e) {
@@ -128,7 +128,7 @@ public class DAOImlPferd implements DAOPferd {
     }
 
     @Override
-    public List<Pferd> loadCondition(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws PersistenceException {
+    public List<Pferd> loadCondition(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) throws PersistenceException {
         logger.info("loadCondition("+name+","+min_alter+","+max_alter+","+min_min_gesw+","+max_min_gesw+","+min_max_gesw+","+max_max_gesw+")");
         List<Pferd> pferdList = new ArrayList<>();
         if(name == null && min_alter == -1 && max_alter == -1 && min_min_gesw == -1 && max_min_gesw == -1 && min_max_gesw == -1 && max_max_gesw == -1){

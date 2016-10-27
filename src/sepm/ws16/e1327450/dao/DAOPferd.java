@@ -17,7 +17,7 @@ public interface DAOPferd {
 
     List<Pferd> loadAll() throws PersistenceException;
 
-    List<Pferd> loadCondition(String name, int min_alter, int max_alter, int min_min_gesw, int max_min_gesw, int min_max_gesw, int max_max_gesw) throws PersistenceException;
+    List<Pferd> loadCondition(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) throws PersistenceException;
 
     String getFreeChip_Nr() throws PersistenceException;
 

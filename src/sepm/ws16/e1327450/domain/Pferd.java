@@ -7,10 +7,10 @@ public class Pferd {
     private String rasse;
     private int alter_jahre;
     private String bild;
-    private int min_gesw;
-    private int max_gesw;
+    private double min_gesw;
+    private double max_gesw;
 
-    public Pferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, int min_gesw, int max_gesw) {
+    public Pferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) {
         if(chip_nr.length() != 4 || min_gesw < 40 || max_gesw > 60 || min_gesw > max_gesw) {
             return;
         }
@@ -63,19 +63,19 @@ public class Pferd {
         this.bild = bild;
     }
 
-    public int getMin_gesw() {
+    public double getMin_gesw() {
         return min_gesw;
     }
 
-    public void setMin_gesw(int min_gesw) {
+    public void setMin_gesw(double min_gesw) {
         this.min_gesw = min_gesw;
     }
 
-    public int getMax_gesw() {
+    public double getMax_gesw() {
         return max_gesw;
     }
 
-    public void setMax_gesw(int max_gesw) {
+    public void setMax_gesw(double max_gesw) {
         this.max_gesw = max_gesw;
     }
 
@@ -87,23 +87,28 @@ public class Pferd {
         Pferd pferd = (Pferd) o;
 
         if (alter_jahre != pferd.alter_jahre) return false;
-        if (min_gesw != pferd.min_gesw) return false;
-        if (max_gesw != pferd.max_gesw) return false;
+        if (Double.compare(pferd.min_gesw, min_gesw) != 0) return false;
+        if (Double.compare(pferd.max_gesw, max_gesw) != 0) return false;
         if (chip_nr != null ? !chip_nr.equals(pferd.chip_nr) : pferd.chip_nr != null) return false;
         if (name != null ? !name.equals(pferd.name) : pferd.name != null) return false;
         if (rasse != null ? !rasse.equals(pferd.rasse) : pferd.rasse != null) return false;
         return bild != null ? bild.equals(pferd.bild) : pferd.bild == null;
+
     }
 
     @Override
     public int hashCode() {
-        int result = chip_nr != null ? chip_nr.hashCode() : 0;
+        int result;
+        long temp;
+        result = chip_nr != null ? chip_nr.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (rasse != null ? rasse.hashCode() : 0);
         result = 31 * result + alter_jahre;
         result = 31 * result + (bild != null ? bild.hashCode() : 0);
-        result = 31 * result + min_gesw;
-        result = 31 * result + max_gesw;
+        temp = Double.doubleToLongBits(min_gesw);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(max_gesw);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
