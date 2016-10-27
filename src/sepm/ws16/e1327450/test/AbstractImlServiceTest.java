@@ -22,7 +22,7 @@ public class AbstractImlServiceTest {
         this.service = service;
     }
 
-    /** save **/
+    /** save valid **/
     @Test
     public void saveTest() throws ServiceException {
         logger.info("saveTest()");
@@ -33,6 +33,8 @@ public class AbstractImlServiceTest {
         assertFalse(service.loadAllJockey().contains(jockey0));
         service.saveJockey(jockey0);
         assertTrue(service.loadAllJockey().contains(jockey0));
+        service.deleteJockey(jockey0);
+        assertFalse(service.loadAllJockey().contains(jockey0));
         assertFalse(service.loadAllJockey().contains(jockey1));
         service.saveJockey(jockey1);
         assertFalse(service.loadAllJockey().contains(jockey1));
@@ -48,6 +50,8 @@ public class AbstractImlServiceTest {
         assertFalse(service.loadAllPferd().contains(pferd0));
         service.savePferd(pferd0);
         assertTrue(service.loadAllPferd().contains(pferd0));
+        service.deletePferde(pferd0);
+        assertFalse(service.loadAllPferd().contains(pferd0));
         assertFalse(service.loadAllPferd().contains(pferd1));
         service.savePferd(pferd1);
         assertFalse(service.loadAllPferd().contains(pferd1));
