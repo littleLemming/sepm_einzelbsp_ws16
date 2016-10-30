@@ -17,11 +17,6 @@ public class ExecServiceTests {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            serviceTest.setUp();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

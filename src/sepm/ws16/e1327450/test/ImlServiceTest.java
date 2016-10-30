@@ -44,11 +44,15 @@ public class ImlServiceTest extends AbstractImlServiceTest {
         } catch (ServiceException e) {
             logger.error("saveTest() FAILED");
             e.printStackTrace();
-        }
-        try {
+        } try {
             valid_feedbackTest();
         } catch (ServiceException e) {
             logger.error("valid_feedbackTest() FAILED");
+            e.printStackTrace();
+        } try {
+            doStatistikTest();
+        } catch (ServiceException e) {
+            logger.error("doStatistikTest() FAILED");
             e.printStackTrace();
         }
     }

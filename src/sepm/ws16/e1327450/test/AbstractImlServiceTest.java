@@ -9,6 +9,9 @@ import sepm.ws16.e1327450.domain.Pferd;
 import sepm.ws16.e1327450.service.Service;
 import sepm.ws16.e1327450.service.ServiceException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -87,6 +90,55 @@ public class AbstractImlServiceTest {
         Pferd pferd4 = new Pferd("1000","Philidor","Trakhner",3,"0000_philidor_1.jpg",50,49);
         assertFalse(service.validPferd(null));
         assertTrue(service.feedbackPferd(null).equals("kein Pferd angegeben"));
+    }
+
+    @Test
+    public void doStatistikTest() throws ServiceException {
+        assertTrue(service.doStatistik(null,-1) == null);
+        assertTrue(service.doStatistik(null,18) == null);
+        assertTrue(service.doStatistik("0000",18) == null);
+        assertTrue(service.doStatistik("0020",18) == null);
+        Map<Integer,Integer> statistik = new HashMap<>();
+        statistik.put(1,0);
+        statistik.put(2,1);
+        statistik.put(3,0);
+        statistik.put(4,1);
+        Map<Integer,Integer> loadedStatistik = service.doStatistik("0001",-1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
+        loadedStatistik = service.doStatistik("0001",1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
+        statistik = new HashMap<>();
+        loadedStatistik = service.doStatistik("0002",-1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
+        statistik = new HashMap<>();
+        loadedStatistik = service.doStatistik("0003",5);
+        statistik.put(1,1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
+        statistik = new HashMap<>();
+        loadedStatistik = service.doStatistik(null,4);
+        statistik.put(1,0);
+        statistik.put(2,1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
     }
 
 }
