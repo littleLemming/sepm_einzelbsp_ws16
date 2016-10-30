@@ -10,6 +10,7 @@ import sepm.ws16.e1327450.domain.Rennergebnis;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -397,7 +398,33 @@ public class ImlService implements Service {
     @Override
     public Map<Integer,Integer> doStatistik(String chip_nr, int svnr) throws ServiceException {
         logger.info("doStatistik("+chip_nr+","+svnr+")");
-        return null;
+        Map<Integer,Integer> statistik = new HashMap<>();
+        if(chip_nr == null && svnr == -1) return null;
+        if(chip_nr != null && loadPferd(chip_nr) == null) return null;
+        if(svnr != -1 && loadJockey(svnr) == null) return null;
+        List<Rennergebnis> rennergebnisList = searchRennergebnis(-1,chip_nr,svnr,-1,-1,-1,-1);
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            logger.info(rennergebnis.toString());
+        }
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            if(statistik.containsKey(rennergebnis.getPlatz())) {
+                statistik.put(rennergebnis.getPlatz(),statistik.get(rennergebnis.getPlatz())+1);
+            } else {
+                statistik.put(rennergebnis.getPlatz(),1);
+            }
+        }
+        Map<Integer,Integer> filledStatistik = new HashMap<>();
+        int cnt = 0;
+        while(statistik.size() != 0) {
+            cnt++;
+            if(statistik.containsKey(cnt)) {
+                filledStatistik.put(cnt,statistik.get(cnt));
+                statistik.remove(cnt);
+            } else {
+                filledStatistik.put(cnt,0);
+            }
+        }
+        return filledStatistik;
     }
 
 }
