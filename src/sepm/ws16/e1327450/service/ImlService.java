@@ -99,7 +99,7 @@ public class ImlService implements Service {
         try {
             pferd = daoPferd.load(chip_nr);
         } catch (PersistenceException e) {
-            logger.error("could not load "+pferd.toString());
+            logger.error("could not load pferd with chip-number "+chip_nr);
             throw new ServiceException(e.getMessage());
         } return pferd;
     }
@@ -111,7 +111,7 @@ public class ImlService implements Service {
         try {
             jockey = daoJockey.load(svnr);
         } catch (PersistenceException e) {
-            logger.error("could not load "+jockey.toString());
+            logger.error("could not load jockey with svnr "+svnr);
             throw new ServiceException(e.getMessage());
         } return jockey;
     }
@@ -124,7 +124,7 @@ public class ImlService implements Service {
         try {
             rennergebnis = daoRennergebnis.load(renn_id,chip_nr,svnr);
         } catch (PersistenceException e) {
-            logger.error("could not load "+rennergebnis.toString());
+            logger.error("could not load rennergebnis with renn-id "+renn_id+", chip-number "+chip_nr+", svnr "+svnr);
             throw new ServiceException(e.getMessage());
         } return rennergebnis;
     }

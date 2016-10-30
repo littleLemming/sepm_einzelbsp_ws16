@@ -27,12 +27,12 @@ public class DAOImlPferdTest extends AbstractDAOImlPferdTest {
         logger.info("setUp(), connection: " + connection);
         DAOPferd daoPferd = null;
         try {
-            daoPferd = new DAOImlPferd(dbHandler.getConnection());
+            daoPferd = new DAOImlPferd(connection);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
         setDAOPferd(daoPferd);
-        dbHandler.getConnection().setAutoCommit(false);
+        if(connection != null) connection.setAutoCommit(false);
         try {
             loadWithValid();
             tearDown();
@@ -122,7 +122,7 @@ public class DAOImlPferdTest extends AbstractDAOImlPferdTest {
     @After
     public void tearDown() throws SQLException {
         logger.info("tearDown()");
-        dbHandler.getConnection().rollback();
+        if(dbHandler.getConnection() != null) dbHandler.getConnection().rollback();
     }
 
 }

@@ -33,7 +33,7 @@ public class DAOImlJockeyTest extends AbstractDAOImlJockeyTest {
             e.printStackTrace();
         }
         setDAOJockey(daoJockey);
-        dbHandler.getConnection().setAutoCommit(false);
+        if(connection != null) connection.setAutoCommit(false);
         try {
             loadWithValid();
             tearDown();
@@ -123,7 +123,7 @@ public class DAOImlJockeyTest extends AbstractDAOImlJockeyTest {
     @After
     public void tearDown() throws SQLException {
         logger.info("tearDown()");
-        dbHandler.getConnection().rollback();
+        if(dbHandler.getConnection() != null) dbHandler.getConnection().rollback();
     }
 
 }

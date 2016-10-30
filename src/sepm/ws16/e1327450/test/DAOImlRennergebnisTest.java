@@ -27,16 +27,16 @@ public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
         DAOPferd daoPferd = null;
         DAOJockey daoJockey = null;
         try {
-            daoPferd = new DAOImlPferd(dbHandler.getConnection());
-            daoJockey = new DAOImlJockey(dbHandler.getConnection());
-            daoRennergebnis = new DAOImlRennergebnis(dbHandler.getConnection(),daoPferd,daoJockey);
+            daoPferd = new DAOImlPferd(connection);
+            daoJockey = new DAOImlJockey(connection);
+            daoRennergebnis = new DAOImlRennergebnis(connection,daoPferd,daoJockey);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
         setDAORennergebnis(daoRennergebnis);
         setDaoPferd(daoPferd);
         setDaoJockey(daoJockey);
-        dbHandler.getConnection().setAutoCommit(false);
+        if(connection != null) connection.setAutoCommit(false);
         try {
             loadWithValid();
             tearDown();
@@ -126,7 +126,7 @@ public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
     @After
     public void tearDown() throws SQLException {
         logger.info("tearDown()");
-        dbHandler.getConnection().rollback();
+        if(dbHandler.getConnection() != null) dbHandler.getConnection().rollback();
     }
 
 }
