@@ -7,6 +7,7 @@ import sepm.ws16.e1327450.domain.Jockey;
 import sepm.ws16.e1327450.domain.Pferd;
 import sepm.ws16.e1327450.domain.Rennergebnis;
 import java.lang.*;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.*;
@@ -22,6 +23,19 @@ public class ImlService implements Service {
         this.daoPferd = daoPferd;
         this.daoRennergebnis = daoRennergebnis;
         this.daoJockey = daoJockey;
+    }
+
+    public ImlService() throws  ServiceException {
+        H2DBHandler dbHandler = new H2DBHandler();
+        Connection connection = dbHandler.getConnection();
+        try {
+            this.daoPferd = new DAOImlPferd(connection);
+            this.daoJockey = new DAOImlJockey(connection);
+            this.daoRennergebnis = new DAOImlRennergebnis(connection, this.daoPferd, this.daoJockey);
+        } catch (PersistenceException e) {
+            logger.error("could not set up DAOs");
+            throw new ServiceException("failed to set up the required service");
+        }
     }
 
     @Override
