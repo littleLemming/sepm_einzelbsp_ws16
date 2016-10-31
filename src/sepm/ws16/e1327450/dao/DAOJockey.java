@@ -1,6 +1,9 @@
 package sepm.ws16.e1327450.dao;
 
 import sepm.ws16.e1327450.domain.Jockey;
+import sepm.ws16.e1327450.domain.JockeyCondition;
+import sepm.ws16.e1327450.domain.JockeyID;
+
 import java.util.List;
 import java.sql.Date;
 
@@ -8,7 +11,7 @@ public interface DAOJockey {
 
     void save(Jockey j) throws PersistenceException;
 
-    Jockey load(int svnr) throws PersistenceException;
+    Jockey load(JockeyID jockeyID) throws PersistenceException;
 
     void delete(Jockey j) throws PersistenceException;
 
@@ -16,10 +19,10 @@ public interface DAOJockey {
 
     List<Jockey> loadAll() throws PersistenceException;
 
-    List<Jockey> loadCondition(double mindKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException;
+    List<Jockey> loadCondition(JockeyCondition jockeyCondition) throws PersistenceException;
 
     int getFreeSvnr() throws PersistenceException;
 
-    boolean isFreeSvnr(int svnr) throws PersistenceException;
+    boolean isFreeSvnr(JockeyID jockeyID) throws PersistenceException;
 
 }

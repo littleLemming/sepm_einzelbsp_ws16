@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.dao.DAOJockey;
 import sepm.ws16.e1327450.dao.PersistenceException;
 import sepm.ws16.e1327450.domain.Jockey;
+import sepm.ws16.e1327450.domain.JockeyCondition;
+import sepm.ws16.e1327450.domain.JockeyID;
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertFalse;
@@ -26,7 +29,7 @@ public abstract class AbstractDAOImlJockeyTest {
     public void loadWithValid() throws PersistenceException {
         logger.info("createWithValid()");
         Jockey jockey = new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
-        Jockey loadedJockey = daoJockey.load(0);
+        Jockey loadedJockey = daoJockey.load(new JockeyID(0));
         assertTrue(jockey.equals(loadedJockey));
     }
 
@@ -34,7 +37,7 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void loadWithNonExisting() throws PersistenceException {
         logger.info("loadWithNonExisting()");
-        Jockey loadedJockey = daoJockey.load(20);
+        Jockey loadedJockey = daoJockey.load(new JockeyID(20));
         assertTrue(loadedJockey == null);
     }
 
@@ -68,39 +71,40 @@ public abstract class AbstractDAOImlJockeyTest {
         Jockey jockey4 = new Jockey(4,48.0,"Rarity",java.sql.Date.valueOf("2003-10-11"),39);
         Jockey jockey5 = new Jockey(5,287.0,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61);
         Jockey jockey6 = new Jockey(6,201.0,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59);
-        List<Jockey> jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,-1,-1);
+        List<Jockey> jockeyListLoaded = daoJockey.loadCondition(new JockeyCondition(-1,-1,null,null,-1,-1));
         jockeyList = daoJockey.loadAll();
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(50.0,100.0,null,null,-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(new JockeyCondition(50.0,100.0,null,null,-1,-1));
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey0);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,"Princess Luna",null,-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(new JockeyCondition(-1,-1,"Princess Luna",null,-1,-1));
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey6);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,java.sql.Date.valueOf("2003-06-07"),-1,-1);
+        jockeyListLoaded = daoJockey.loadCondition(new JockeyCondition(-1,-1,null,java.sql.Date.valueOf("2003-06-07"),-1,-1));
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey1);
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
-        jockeyListLoaded = daoJockey.loadCondition(-1,-1,null,null,40,60);
+        jockeyListLoaded = daoJockey.loadCondition(new JockeyCondition(-1,-1,null,null,40,60));
         jockeyList = new ArrayList<>();
         jockeyList.add(jockey0);
         jockeyList.add(jockey1);
         jockeyList.add(jockey2);
         jockeyList.add(jockey6);
+        logger.info(jockeyList.size() + "     " + jockeyListLoaded.size());
         assertTrue(jockeyList.size() == jockeyListLoaded.size());
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
@@ -189,8 +193,8 @@ public abstract class AbstractDAOImlJockeyTest {
     @Test
     public void isFreeSvnrTest() throws PersistenceException {
         logger.info("isFreeChip_NrTest()");
-        assertTrue(daoJockey.isFreeSvnr(33));
-        assertFalse(daoJockey.isFreeSvnr(2));
+        assertTrue(daoJockey.isFreeSvnr(new JockeyID(33)));
+        assertFalse(daoJockey.isFreeSvnr(new JockeyID(2)));
     }
 
     /** test for free svnr **/

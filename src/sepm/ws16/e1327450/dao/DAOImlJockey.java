@@ -3,6 +3,8 @@ package sepm.ws16.e1327450.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Jockey;
+import sepm.ws16.e1327450.domain.JockeyCondition;
+import sepm.ws16.e1327450.domain.JockeyID;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,25 +15,20 @@ public class DAOImlJockey implements DAOJockey {
     final static Logger logger = LoggerFactory.getLogger(DAOImlJockey.class);
     private Connection connection;
 
-    private PreparedStatement saveStmt;
-    private PreparedStatement loadStmt;
-    private PreparedStatement loadAllStmt;
-    private PreparedStatement deleteStmt;
-    private PreparedStatement updateStmt;
+    private String saveStmtS;
+    private String loadStmtS;
+    private String loadAllStmtS;
+    private String deleteStmtS;
+    private String updateStmtS;
 
     public DAOImlJockey(Connection connection) throws PersistenceException {
         logger.info("DAOImlJockey("+connection+")");
         this.connection = connection;
-        try {
-            saveStmt = connection.prepareStatement("INSERT INTO \"PUBLIC\".\"JOCKEY\"(svnr,können,name,geburtsdatum,gewicht) VALUES (?,?,?,?,?)");
-            loadStmt = connection.prepareStatement("SELECT * FROM JOCKEY WHERE svnr=?");
-            loadAllStmt = connection.prepareStatement("SELECT * FROM JOCKEY");
-            deleteStmt = connection.prepareStatement("DELETE FROM JOCKEY WHERE svnr=?");
-            updateStmt = connection.prepareStatement("UPDATE JOCKEY SET können=?,name=?,geburtsdatum=?,gewicht=? WHERE svnr=?");
-        } catch (SQLException e) {
-            logger.error("could not prepare statements");
-            throw new PersistenceException(e.getMessage());
-        }
+        saveStmtS = "INSERT INTO \"PUBLIC\".\"JOCKEY\"(svnr,können,name,geburtsdatum,gewicht) VALUES (?,?,?,?,?)";
+        loadStmtS = "SELECT * FROM JOCKEY WHERE svnr=?";
+        loadAllStmtS = "SELECT * FROM JOCKEY";
+        deleteStmtS = "DELETE FROM JOCKEY WHERE svnr=?";
+        updateStmtS = "UPDATE JOCKEY SET können=?,name=?,geburtsdatum=?,gewicht=? WHERE svnr=?";
     }
 
     @Override
@@ -39,9 +36,11 @@ public class DAOImlJockey implements DAOJockey {
         if (j == null) return;
         logger.info("save("+j.toString()+")");
         try {
+            PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
             if (res.next()) return;
+            PreparedStatement saveStmt = connection.prepareStatement(saveStmtS);
             saveStmt.setInt(1,j.getSvnr());
             saveStmt.setDouble(2,j.getKönnen());
             saveStmt.setString(3,j.getName());
@@ -49,21 +48,24 @@ public class DAOImlJockey implements DAOJockey {
             saveStmt.setInt(5,j.getGewicht());
             saveStmt.executeUpdate();
         } catch (SQLException e) {
-            logger.error("could not execute db-request: " + saveStmt.toString());
+            logger.error("could not execute db-request: " + saveStmtS);
             throw new PersistenceException(e.getMessage());
         }
     }
 
     @Override
-    public Jockey load(int svnr) throws PersistenceException {
+    public Jockey load(JockeyID jockeyID) throws PersistenceException {
+        if(jockeyID == null) return null;
+        int svnr = jockeyID.getSvnr();
         logger.info("load("+svnr+")");
         try {
+            PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,svnr);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return null;
             return new Jockey(res.getInt("svnr"),res.getDouble("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht"));
         } catch (SQLException e) {
-            logger.error("could not execute db-request: " + loadStmt.toString());
+            logger.error("could not execute db-request: " + loadStmtS);
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -73,13 +75,15 @@ public class DAOImlJockey implements DAOJockey {
         if (j == null) return;
         logger.info("delete("+j.toString()+")");
         try {
+            PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
+            PreparedStatement deleteStmt = connection.prepareStatement(deleteStmtS);
             deleteStmt.setInt(1,j.getSvnr());
             deleteStmt.executeUpdate();
         } catch (SQLException e) {
-            logger.error("could not execute db-request: " + deleteStmt.toString());
+            logger.error("could not execute db-request: " + deleteStmtS);
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -89,9 +93,11 @@ public class DAOImlJockey implements DAOJockey {
         if (j == null) return;
         logger.info("update("+j.toString()+")");
         try {
+            PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,j.getSvnr());
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
+            PreparedStatement updateStmt = connection.prepareStatement(updateStmtS);
             updateStmt.setDouble(1, j.getKönnen());
             updateStmt.setString(2, j.getName());
             updateStmt.setDate(3, j.getGeburtsdatum());
@@ -99,7 +105,7 @@ public class DAOImlJockey implements DAOJockey {
             updateStmt.setInt(5, j.getSvnr());
             updateStmt.executeUpdate();
         } catch (SQLException e) {
-            logger.error("could not execute db-request: " + updateStmt.toString());
+            logger.error("could not execute db-request: " + updateStmtS);
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -109,19 +115,26 @@ public class DAOImlJockey implements DAOJockey {
         logger.info("loadAll()");
         List<Jockey> jockeyList = new ArrayList<>();
         try {
+            PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
             ResultSet res = loadAllStmt.executeQuery();
             while(res.next()) {
                 jockeyList.add(new Jockey(res.getInt("svnr"),res.getDouble("können"),res.getString("name"),res.getDate("geburtsdatum"),res.getInt("gewicht")));
             }
         } catch (SQLException e) {
-            logger.error("could not execute db-request: " + loadAllStmt.toString());
+            logger.error("could not execute db-request: " + loadAllStmtS);
             throw new PersistenceException(e.getMessage());
         }
         return jockeyList;
     }
 
     @Override
-    public List<Jockey> loadCondition(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws PersistenceException {
+    public List<Jockey> loadCondition(JockeyCondition jockeyCondition) throws PersistenceException {
+        double minKönnen = jockeyCondition.getMinKönnen();
+        double maxKönnen = jockeyCondition.getMaxKönnen();
+        String name = jockeyCondition.getName();
+        Date geburtsdatum = jockeyCondition.getGeburtsdatum();
+        int minGewicht = jockeyCondition.getMinGewicht();
+        int maxGewicht = jockeyCondition.getMaxGewicht();
         logger.info("loadCondition("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         List<Jockey> jockeyList = new ArrayList<>();
         if(minKönnen == -1 && maxKönnen == -1 && name == null && geburtsdatum == null && minGewicht == -1 && maxGewicht == -1){
@@ -171,13 +184,15 @@ public class DAOImlJockey implements DAOJockey {
     public int getFreeSvnr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int svnr = loadAll().size();
-        while (load(svnr) != null) svnr ++;
+        while (load(new JockeyID(svnr)) != null) svnr ++;
         return svnr;
     }
 
     @Override
-    public boolean isFreeSvnr(int svnr) throws PersistenceException {
+    public boolean isFreeSvnr(JockeyID jockeyID) throws PersistenceException {
+        if(jockeyID == null) return false;
+        int svnr = jockeyID.getSvnr();
         logger.info("isFreeSvnr("+svnr+")");
-        return load(svnr) == null;
+        return load(jockeyID) == null;
     }
 }

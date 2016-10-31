@@ -3,9 +3,8 @@ package sepm.ws16.e1327450.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.dao.*;
-import sepm.ws16.e1327450.domain.Jockey;
-import sepm.ws16.e1327450.domain.Pferd;
-import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.*;
+
 import java.lang.*;
 import java.sql.Connection;
 import java.sql.Date;
@@ -76,7 +75,7 @@ public class ImlService implements Service {
         logger.info("saveJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
-                if(!daoJockey.isFreeSvnr(jockey.getSvnr())){
+                if(!daoJockey.isFreeSvnr(new JockeyID(jockey.getSvnr()))){
                     logger.error("could not save "+jockey.toString());
                     throw new ServiceException("jockey with this svnr already exists");
                 }
@@ -119,7 +118,7 @@ public class ImlService implements Service {
         logger.info("loadJockey("+svnr+")");
         Jockey jockey = null;
         try {
-            jockey = daoJockey.load(svnr);
+            jockey = daoJockey.load(new JockeyID(svnr));
         } catch (PersistenceException e) {
             logger.error("could not load jockey with svnr "+svnr);
             throw new ServiceException(e.getMessage());
@@ -177,7 +176,7 @@ public class ImlService implements Service {
         logger.info("updateJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
-                if(daoJockey.load(jockey.getSvnr()) == null){
+                if(daoJockey.load(new JockeyID(jockey.getSvnr())) == null){
                     logger.error("could not update "+jockey.toString());
                     throw new ServiceException("jockey with this svnr does not exists");
                 }
@@ -312,7 +311,7 @@ public class ImlService implements Service {
         if(jockey == null) return;
         logger.info("deleteJockey("+jockey.toString()+")");
         try {
-            if(daoJockey.load(jockey.getSvnr()) == null){
+            if(daoJockey.load(new JockeyID(jockey.getSvnr())) == null){
                 logger.error("could not delete "+jockey.toString());
                 throw new ServiceException("jockey with this svnr does not exists");
             }
@@ -376,7 +375,7 @@ public class ImlService implements Service {
     public List<Jockey> searchJockey(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException {
         logger.info("searchJockey("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         try {
-            return daoJockey.loadCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht);
+            return daoJockey.loadCondition(new JockeyCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht));
         } catch(PersistenceException e) {
             logger.error("could not load all pferde");
             throw new ServiceException(e.getMessage());
@@ -427,7 +426,7 @@ public class ImlService implements Service {
                 throw new ServiceException("no pferd with chip-number " + pferd.getChip_nr());
             }
             try {
-                Jockey j = daoJockey.load(participants.get(pferd).getSvnr());
+                Jockey j = daoJockey.load(new JockeyID(participants.get(pferd).getSvnr()));
                 if(j == null) {
                     logger.error("jockey with this svnr not in database");
                     throw new ServiceException("no jockey with svnr " + participants.get(pferd).getSvnr());

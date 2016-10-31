@@ -3,6 +3,7 @@ package sepm.ws16.e1327450.dao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Jockey;
+import sepm.ws16.e1327450.domain.JockeyID;
 import sepm.ws16.e1327450.domain.Pferd;
 import sepm.ws16.e1327450.domain.Rennergebnis;
 
@@ -71,7 +72,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             loadStmt.setInt(3,svnr);
             ResultSet res = loadStmt.executeQuery();
             Pferd pferd = daoPferd.load(chip_nr);
-            Jockey jockey = daoJockey.load(svnr);
+            Jockey jockey = daoJockey.load(new JockeyID(svnr));
             if (!res.next()) { return null; }
             return new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz"));
         } catch (SQLException e) {
@@ -126,7 +127,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             ResultSet res = loadAllStmt.executeQuery();
             while(res.next()) {
                 Pferd pferd = daoPferd.load(res.getString("chip_nr"));
-                Jockey jockey = daoJockey.load(res.getInt("svnr"));
+                Jockey jockey = daoJockey.load(new JockeyID(res.getInt("svnr")));
                 rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
             }
         } catch (SQLException e) {
@@ -178,7 +179,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             ResultSet res = loadConditionStmt.executeQuery();
             while(res.next()) {
                 Pferd pferd = daoPferd.load(res.getString("chip_nr"));
-                Jockey jockey = daoJockey.load(res.getInt("svnr"));
+                Jockey jockey = daoJockey.load(new JockeyID(res.getInt("svnr")));
                 rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
             }
         }catch(SQLException e){
