@@ -1,6 +1,6 @@
 CREATE TABLE Pferd
     (
-    chip_nr varchar(4) NOT NULL UNIQUE,
+    chip_nr int NOT NULL UNIQUE,
     name varchar(255) NOT NULL,
     rasse varchar(255) NOT NULL,
     alter_jahre int NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE Jockey
 CREATE TABLE Rennergebnis
     (
     renn_id int NOT NULL,
-    chip_nr varchar(4) NOT NULL,
+    chip_nr int NOT NULL,
     svnr int NOT NULL,
     geschw double NOT NULL,
     platz int NOT NULL,

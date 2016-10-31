@@ -43,7 +43,7 @@ public class ImlService implements Service {
         logger.info("savePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
-                if(!daoPferd.isFreeChip_Nr(pferd.getChip_nr())) {
+                if(!daoPferd.isFreeChip_Nr(new PferdID(pferd.getChip_nr()))) {
                     logger.error("could not save "+pferd.toString());
                     throw new ServiceException("pferd with this chipnumber already exists");
                 }
@@ -61,12 +61,6 @@ public class ImlService implements Service {
             logger.error("could not save "+pferd.toString());
             return false;
         } return true;
-    }
-
-    @Override
-    public boolean savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        return savePferd(pferd);
     }
 
     @Override
@@ -96,17 +90,12 @@ public class ImlService implements Service {
     }
 
     @Override
-    public boolean saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        return saveJockey(jockey);
-    }
-
-    @Override
-    public Pferd loadPferd(String chip_nr) throws ServiceException {
+    public Pferd loadPferd(PferdID pferdID) throws ServiceException {
+        int chip_nr = pferdID.getChip_nr();
         logger.info("loadPferd("+chip_nr+")");
         Pferd pferd = null;
         try {
-            pferd = daoPferd.load(chip_nr);
+            pferd = daoPferd.load(pferdID);
         } catch (PersistenceException e) {
             logger.error("could not load pferd with chip-number "+chip_nr);
             throw new ServiceException(e.getMessage());
@@ -114,7 +103,8 @@ public class ImlService implements Service {
     }
 
     @Override
-    public Jockey loadJockey(int svnr) throws ServiceException {
+    public Jockey loadJockey(JockeyID jockeyID) throws ServiceException {
+        int svnr = jockeyID.getSvnr();
         logger.info("loadJockey("+svnr+")");
         Jockey jockey = null;
         try {
@@ -126,8 +116,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public Rennergebnis loadRennergebnis(int renn_id, String chip_nr, int svnr) throws ServiceException {
-        if(chip_nr == null) return null;
+    public Rennergebnis loadRennergebnis(int renn_id, int chip_nr, int svnr) throws ServiceException {
         logger.info("loadRennergebnis("+renn_id+","+chip_nr+","+svnr+")");
         Rennergebnis rennergebnis = null;
         try {
@@ -144,7 +133,7 @@ public class ImlService implements Service {
         logger.info("updatePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
-                if(daoPferd.load(pferd.getChip_nr()) == null) {
+                if(daoPferd.load(new PferdID(pferd.getChip_nr())) == null) {
                     logger.error("could not update "+pferd.toString());
                     throw new ServiceException("pferd with this chipnumber does not exists");
                 }
@@ -162,12 +151,6 @@ public class ImlService implements Service {
             logger.error("could not save "+pferd.toString());
             return false;
         } return true;
-    }
-
-    @Override
-    public boolean updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        return updatePferd(pferd);
     }
 
     @Override
@@ -197,24 +180,10 @@ public class ImlService implements Service {
     }
 
     @Override
-    public boolean updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        return updateJockey(jockey);
-    }
-
-    @Override
     public boolean validPferd(Pferd pferd) throws ServiceException {
         if(pferd == null) return false;
         logger.info("validPferd("+pferd.toString()+")");
         return pferd.isValidPferd();
-    }
-
-    @Override
-    public boolean validPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        if(name == null || rasse == null || bild == null) return false;
-        logger.info("validPferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
-        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        return validPferd(pferd);
     }
 
     @Override
@@ -223,10 +192,8 @@ public class ImlService implements Service {
         logger.info("feedbackPferd("+pferd.toString()+")");
         if(validPferd(pferd)) return "Pferd in Ordnung";
         String s = "";
-        if(pferd.getChip_nr() == null) {
+        if(pferd.getChip_nr() == -1) {
             s += "keine Chip-Nummer angegeben | ";
-        } else {
-            if(pferd.getChip_nr().length() != 4) s += "chip_nummer nicht der Länge 4 | ";
         }
         if(pferd.getAlter_jahre() < 4 || pferd.getAlter_jahre() > 30) s += "Pferd muss zwischen 4 und 30 sein um Rennen laufen zu können | ";
         if(pferd.getMin_gesw() > pferd.getMax_gesw()) s += "die minimale Geschwindigkeit muss kleiner als die maximale Geschdindigkeit sein | ";
@@ -243,24 +210,10 @@ public class ImlService implements Service {
     }
 
     @Override
-    public String feedbackPferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        return feedbackPferd(pferd);
-    }
-
-    @Override
     public boolean validJockey(Jockey jockey) throws ServiceException {
         if(jockey == null) return false;
         logger.info("validJockey("+jockey.toString()+")");
         return jockey.isValidJockey();
-    }
-
-    @Override
-    public boolean validJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        if(name == null || geburtsdatum == null) return false;
-        logger.info("validJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
-        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        return validJockey(jockey);
     }
 
     @Override
@@ -280,17 +233,11 @@ public class ImlService implements Service {
     }
 
     @Override
-    public String feedbackJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        return feedbackJockey(jockey);
-    }
-
-    @Override
     public void deletePferde(Pferd pferd) throws ServiceException {
         if(pferd == null) return;
         logger.info("deletePferd("+pferd.toString()+")");
         try {
-            if(daoPferd.load(pferd.getChip_nr()) == null){
+            if(daoPferd.load(new PferdID(pferd.getChip_nr())) == null){
                 logger.error("could not delete "+pferd.toString());
                 throw new ServiceException("pferd with this chip_nr does not exists");
             }
@@ -361,10 +308,10 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Pferd> searchPferd(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) throws ServiceException {
-        logger.info("searchPferd("+name+","+min_alter+","+max_alter+","+min_min_gesw+","+max_min_gesw+","+min_max_gesw+","+max_max_gesw+")");
+    public List<Pferd> searchPferd(PferdCondition pferdCondition) throws ServiceException {
+        logger.info("searchPferd()");
         try {
-            return daoPferd.loadCondition(name,min_alter,max_alter,min_min_gesw,max_min_gesw,min_max_gesw,max_max_gesw);
+            return daoPferd.loadCondition(pferdCondition);
         } catch(PersistenceException e) {
             logger.error("could not load pferde");
             throw new ServiceException(e.getMessage());
@@ -372,7 +319,13 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Jockey> searchJockey(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) throws ServiceException {
+    public List<Jockey> searchJockey(JockeyCondition jockeyCondition) throws ServiceException {
+        double minKönnen = jockeyCondition.getMinKönnen();
+        double maxKönnen = jockeyCondition.getMaxKönnen();
+        String name = jockeyCondition.getName();
+        Date geburtsdatum = jockeyCondition.getGeburtsdatum();
+        int minGewicht = jockeyCondition.getMinGewicht();
+        int maxGewicht = jockeyCondition.getMaxGewicht();
         logger.info("searchJockey("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         try {
             return daoJockey.loadCondition(new JockeyCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht));
@@ -383,7 +336,7 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Rennergebnis> searchRennergebnis(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws ServiceException {
+    public List<Rennergebnis> searchRennergebnis(int renn_id, int chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws ServiceException {
         logger.info("searchRennergebnis("+renn_id+","+chip_nr+","+svnr+","+min_gesw+","+max_gesw+","+min_platz+","+max_platz+")");
         try {
             return daoRennergebnis.loadCondition(renn_id,chip_nr,svnr,min_gesw,max_gesw,min_platz,max_platz);
@@ -412,7 +365,7 @@ public class ImlService implements Service {
         List<Rennergebnis> ergebnisse = new ArrayList<>();
         for(Pferd pferd : participants.keySet()) {
             try {
-                Pferd p = daoPferd.load(pferd.getChip_nr());
+                Pferd p = daoPferd.load(new PferdID(pferd.getChip_nr()));
                 if(p == null) {
                     logger.error("pferd with this chip-nr not in database");
                     throw new ServiceException("no pferd with chip-number " + pferd.getChip_nr());
@@ -473,12 +426,12 @@ public class ImlService implements Service {
     }
 
     @Override
-    public Map<Integer,Integer> doStatistik(String chip_nr, int svnr) throws ServiceException {
+    public Map<Integer,Integer> doStatistik(int chip_nr, int svnr) throws ServiceException {
         logger.info("doStatistik("+chip_nr+","+svnr+")");
         Map<Integer,Integer> statistik = new HashMap<>();
-        if(chip_nr == null && svnr == -1) return null;
-        if(chip_nr != null && loadPferd(chip_nr) == null) return null;
-        if(svnr != -1 && loadJockey(svnr) == null) return null;
+        if(chip_nr == -1 && svnr == -1) return null;
+        if(chip_nr != -1 && loadPferd(new PferdID(chip_nr)) == null) return null;
+        if(svnr != -1 && loadJockey(new JockeyID(svnr)) == null) return null;
         List<Rennergebnis> rennergebnisList = searchRennergebnis(-1,chip_nr,svnr,-1,-1,-1,-1);
         for(Rennergebnis rennergebnis : rennergebnisList) {
             logger.info(rennergebnis.toString());

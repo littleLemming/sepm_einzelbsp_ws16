@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.dao.PersistenceException;
-import sepm.ws16.e1327450.domain.Jockey;
-import sepm.ws16.e1327450.domain.Pferd;
-import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.*;
 import sepm.ws16.e1327450.service.Service;
 import sepm.ws16.e1327450.service.ServiceException;
 
@@ -47,11 +45,11 @@ public class AbstractImlServiceTest {
         service.saveJockey(jockey2);
         assertFalse(service.loadAllJockey().contains(jockey2));
         service.savePferd(null);
-        Pferd pferd0 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60);
-        Pferd pferd1 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",30,60);
-        Pferd pferd2 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",40,61);
-        Pferd pferd3 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",50,49);
-        Pferd pferd4 = new Pferd("1000","Philidor","Trakhner",3,"0000_philidor_1.jpg",50,49);
+        Pferd pferd0 = new Pferd(1000,"Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60);
+        Pferd pferd1 = new Pferd(1000,"Philidor","Trakhner",22,"0000_philidor_1.jpg",30,60);
+        Pferd pferd2 = new Pferd(1000,"Philidor","Trakhner",22,"0000_philidor_1.jpg",40,61);
+        Pferd pferd3 = new Pferd(1000,"Philidor","Trakhner",22,"0000_philidor_1.jpg",50,49);
+        Pferd pferd4 = new Pferd(1000,"Philidor","Trakhner",3,"0000_philidor_1.jpg",50,49);
         assertFalse(service.loadAllPferd().contains(pferd0));
         service.savePferd(pferd0);
         assertTrue(service.loadAllPferd().contains(pferd0));
@@ -79,53 +77,48 @@ public class AbstractImlServiceTest {
         Jockey jockey2 = new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),8);
         assertFalse(service.validJockey(null));
         assertTrue(service.feedbackJockey(null).equals("kein Jockey angegeben"));
-        assertFalse(service.validJockey(-1,20,null,null,30));
-        assertTrue(service.feedbackJockey(-1,20,null,null,30).equals("keine gültige Svnr angegeben | untergewichtige Jockey dürfen nicht reiten - min 40 | kein Name angegeben | kein Geburtsdatum angegeben"));
+        assertFalse(service.validJockey(new Jockey(-1,20,null,null,30)));
+        assertTrue(service.feedbackJockey(new Jockey(-1,20,null,null,30)).equals("keine gültige Svnr angegeben | untergewichtige Jockey dürfen nicht reiten - min 40 | kein Name angegeben | kein Geburtsdatum angegeben"));
         assertTrue(service.validJockey(jockey0));
         assertTrue(service.feedbackJockey(jockey0).equals("Jockey in Ordnung"));
         assertFalse(service.validJockey(jockey1));
         assertFalse(service.validJockey(jockey2));
-        Pferd pferd0 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",53,60);
-        Pferd pferd1 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",30,60);
-        Pferd pferd2 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",40,61);
-        Pferd pferd3 = new Pferd("1000","Philidor","Trakhner",22,"0000_philidor_1.jpg",50,49);
-        Pferd pferd4 = new Pferd("1000","Philidor","Trakhner",3,"0000_philidor_1.jpg",50,49);
         assertFalse(service.validPferd(null));
         assertTrue(service.feedbackPferd(null).equals("kein Pferd angegeben"));
     }
 
     @Test
     public void doStatistikTest() throws ServiceException {
-        assertTrue(service.doStatistik(null,-1) == null);
-        assertTrue(service.doStatistik(null,18) == null);
-        assertTrue(service.doStatistik("0000",18) == null);
-        assertTrue(service.doStatistik("0020",18) == null);
+        assertTrue(service.doStatistik(-1,-1) == null);
+        assertTrue(service.doStatistik(-1,18) == null);
+        assertTrue(service.doStatistik(0,18) == null);
+        assertTrue(service.doStatistik(20,18) == null);
         Map<Integer,Integer> statistik = new HashMap<>();
         statistik.put(1,0);
         statistik.put(2,1);
         statistik.put(3,0);
         statistik.put(4,1);
-        Map<Integer,Integer> loadedStatistik = service.doStatistik("0001",-1);
+        Map<Integer,Integer> loadedStatistik = service.doStatistik(1,-1);
         assertTrue(statistik.size()==loadedStatistik.size());
         for(Integer i : loadedStatistik.keySet()) {
             assertTrue(statistik.containsKey(i));
             assertTrue(statistik.get(i)==loadedStatistik.get(i));
         }
-        loadedStatistik = service.doStatistik("0001",1);
-        assertTrue(statistik.size()==loadedStatistik.size());
-        for(Integer i : loadedStatistik.keySet()) {
-            assertTrue(statistik.containsKey(i));
-            assertTrue(statistik.get(i)==loadedStatistik.get(i));
-        }
-        statistik = new HashMap<>();
-        loadedStatistik = service.doStatistik("0002",-1);
+        loadedStatistik = service.doStatistik(1,1);
         assertTrue(statistik.size()==loadedStatistik.size());
         for(Integer i : loadedStatistik.keySet()) {
             assertTrue(statistik.containsKey(i));
             assertTrue(statistik.get(i)==loadedStatistik.get(i));
         }
         statistik = new HashMap<>();
-        loadedStatistik = service.doStatistik("0003",5);
+        loadedStatistik = service.doStatistik(2,-1);
+        assertTrue(statistik.size()==loadedStatistik.size());
+        for(Integer i : loadedStatistik.keySet()) {
+            assertTrue(statistik.containsKey(i));
+            assertTrue(statistik.get(i)==loadedStatistik.get(i));
+        }
+        statistik = new HashMap<>();
+        loadedStatistik = service.doStatistik(3,5);
         statistik.put(1,1);
         assertTrue(statistik.size()==loadedStatistik.size());
         for(Integer i : loadedStatistik.keySet()) {
@@ -133,7 +126,7 @@ public class AbstractImlServiceTest {
             assertTrue(statistik.get(i)==loadedStatistik.get(i));
         }
         statistik = new HashMap<>();
-        loadedStatistik = service.doStatistik(null,4);
+        loadedStatistik = service.doStatistik(-1,4);
         statistik.put(1,0);
         statistik.put(2,1);
         assertTrue(statistik.size()==loadedStatistik.size());
@@ -148,10 +141,10 @@ public class AbstractImlServiceTest {
         assertTrue(service.doRennsimulation(0,null) == null);
         assertTrue(service.doRennsimulation(7,null) == null);
         Map<Pferd, Jockey> participants = new HashMap<>();
-        participants.put(service.loadPferd("0000"),service.loadJockey(0));
-        participants.put(service.loadPferd("0001"),service.loadJockey(1));
-        participants.put(service.loadPferd("0002"),service.loadJockey(2));
-        participants.put(service.loadPferd("0003"),service.loadJockey(3));
+        participants.put(service.loadPferd(new PferdID(0)),service.loadJockey(new JockeyID(0)));
+        participants.put(service.loadPferd(new PferdID(1)),service.loadJockey(new JockeyID(1)));
+        participants.put(service.loadPferd(new PferdID(2)),service.loadJockey(new JockeyID(2)));
+        participants.put(service.loadPferd(new PferdID(3)),service.loadJockey(new JockeyID(3)));
         List<Rennergebnis> rennergebnisList = service.doRennsimulation(8,participants);
         Rennergebnis rennergebnis1 = null;
         Rennergebnis rennergebnis2 = null;
@@ -176,8 +169,8 @@ public class AbstractImlServiceTest {
     @Test
     public void doRennen_jockey_twice_Test() throws ServiceException {
         Map<Pferd, Jockey> participants = new HashMap<>();
-        participants.put(service.loadPferd("0000"),service.loadJockey(0));
-        participants.put(service.loadPferd("0001"),service.loadJockey(0));
+        participants.put(service.loadPferd(new PferdID(0)),service.loadJockey(new JockeyID(0)));
+        participants.put(service.loadPferd(new PferdID(1)),service.loadJockey(new JockeyID(0)));
         boolean thrown = false;
         try {
             service.doRennsimulation(5, participants);
@@ -190,7 +183,7 @@ public class AbstractImlServiceTest {
     public void doRennen_invalid_jockeys_Test() throws ServiceException {
         Map<Pferd, Jockey> participants = new HashMap<>();
         Jockey jockey = new Jockey(3,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
-        participants.put(service.loadPferd("0001"),jockey);
+        participants.put(service.loadPferd(new PferdID(1)),jockey);
         boolean thrown = false;
         try {
             service.doRennsimulation(17, participants);
@@ -199,7 +192,7 @@ public class AbstractImlServiceTest {
         } assertTrue(thrown);
         participants = new HashMap<>();
         jockey = new Jockey(10,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
-        participants.put(service.loadPferd("0001"),jockey);
+        participants.put(service.loadPferd(new PferdID(1)),jockey);
         thrown = false;
         try {
             service.doRennsimulation(7, participants);
@@ -211,8 +204,8 @@ public class AbstractImlServiceTest {
     @Test
     public void doRennen_invalid_pferd_Test() throws ServiceException {
         Map<Pferd, Jockey> participants = new HashMap<>();
-        Pferd pferd = new Pferd("0002","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
-        participants.put(pferd,service.loadJockey(0));
+        Pferd pferd = new Pferd(2,"Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
+        participants.put(pferd,service.loadJockey(new JockeyID(0)));
         boolean thrown = false;
         try {
             service.doRennsimulation(7, participants);
@@ -220,8 +213,8 @@ public class AbstractImlServiceTest {
             thrown = true;
         } assertTrue(thrown);
         participants = new HashMap<>();
-        pferd = new Pferd("0022","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
-        participants.put(pferd,service.loadJockey(0));
+        pferd = new Pferd(22,"Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
+        participants.put(pferd,service.loadJockey(new JockeyID(0)));
         thrown = false;
         try {
             service.doRennsimulation(7, participants);

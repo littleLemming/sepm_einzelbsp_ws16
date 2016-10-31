@@ -7,10 +7,7 @@ import sepm.ws16.e1327450.dao.DAOJockey;
 import sepm.ws16.e1327450.dao.DAOPferd;
 import sepm.ws16.e1327450.dao.DAORennergebnis;
 import sepm.ws16.e1327450.dao.PersistenceException;
-import sepm.ws16.e1327450.domain.Jockey;
-import sepm.ws16.e1327450.domain.JockeyID;
-import sepm.ws16.e1327450.domain.Pferd;
-import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +38,8 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void loadWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Rennergebnis rennergebnis = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(new JockeyID(6)),56.955,1);
-        Rennergebnis loadedRennergebnis = daoRennergebnis.load(0,"0000",6);
+        Rennergebnis rennergebnis = new Rennergebnis(0,daoPferd.load(new PferdID(0)),daoJockey.load(new JockeyID(6)),56.955,1);
+        Rennergebnis loadedRennergebnis = daoRennergebnis.load(0,0,6);
         assertTrue(rennergebnis.equals(loadedRennergebnis));
     }
 
@@ -50,9 +47,9 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void loadWithNonExisting() throws PersistenceException {
         logger.info("loadWithNonExisting()");
-        Rennergebnis loadedRennergebnis = daoRennergebnis.load(20,"0000",1);
+        Rennergebnis loadedRennergebnis = daoRennergebnis.load(20,0,1);
         assertTrue(loadedRennergebnis == null);
-        loadedRennergebnis = daoRennergebnis.load(0,"0001",5);
+        loadedRennergebnis = daoRennergebnis.load(0,1,5);
         assertTrue(loadedRennergebnis == null);
     }
 
@@ -61,13 +58,13 @@ public abstract class AbstractDAOImlRennergebnisTest {
     public void loadAllTest() throws PersistenceException {
         logger.info("loadAllTest()");
         List<Rennergebnis> rennergebnisList = new ArrayList<>();
-        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0001"),daoJockey.load(new JockeyID(1)),48.968,2));
-        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0005"),daoJockey.load(new JockeyID(0)),46.969,3));
-        rennergebnisList.add(new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(new JockeyID(6)),56.955,1));
-        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0004"),daoJockey.load(new JockeyID(2)),59.167,3));
-        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0003"),daoJockey.load(new JockeyID(5)),62.457,1));
-        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0001"),daoJockey.load(new JockeyID(1)),48.968,4));
-        rennergebnisList.add(new Rennergebnis(1,daoPferd.load("0006"),daoJockey.load(new JockeyID(4)),61.120,2));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load(new PferdID(1)),daoJockey.load(new JockeyID(1)),48.968,2));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load(new PferdID(5)),daoJockey.load(new JockeyID(0)),46.969,3));
+        rennergebnisList.add(new Rennergebnis(0,daoPferd.load(new PferdID(0)),daoJockey.load(new JockeyID(6)),56.955,1));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load(new PferdID(4)),daoJockey.load(new JockeyID(2)),59.167,3));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load(new PferdID(3)),daoJockey.load(new JockeyID(5)),62.457,1));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load(new PferdID(1)),daoJockey.load(new JockeyID(1)),48.968,4));
+        rennergebnisList.add(new Rennergebnis(1,daoPferd.load(new PferdID(6)),daoJockey.load(new JockeyID(4)),61.120,2));
         List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadAll();
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
@@ -79,20 +76,20 @@ public abstract class AbstractDAOImlRennergebnisTest {
     public void loadConditionTest() throws PersistenceException {
         logger.info("loadConditionTest()");
         List<Rennergebnis> rennergebnisList = new ArrayList<>();
-        Rennergebnis rennergebnis0 = new Rennergebnis(0,daoPferd.load("0001"),daoJockey.load(new JockeyID(1)),48.968,2);
-        Rennergebnis rennergebnis1 = new Rennergebnis(0,daoPferd.load("0005"),daoJockey.load(new JockeyID(0)),46.969,3);
-        Rennergebnis rennergebnis2 = new Rennergebnis(0,daoPferd.load("0000"),daoJockey.load(new JockeyID(6)),56.955,1);
-        Rennergebnis rennergebnis3 = new Rennergebnis(1,daoPferd.load("0004"),daoJockey.load(new JockeyID(2)),59.167,3);
-        Rennergebnis rennergebnis4 = new Rennergebnis(1,daoPferd.load("0003"),daoJockey.load(new JockeyID(5)),62.457,1);
-        Rennergebnis rennergebnis5 = new Rennergebnis(1,daoPferd.load("0001"),daoJockey.load(new JockeyID(1)),48.968,4);
-        Rennergebnis rennergebnis6 = new Rennergebnis(1,daoPferd.load("0006"),daoJockey.load(new JockeyID(4)),61.120,2);
+        Rennergebnis rennergebnis0 = new Rennergebnis(0,daoPferd.load(new PferdID(1)),daoJockey.load(new JockeyID(1)),48.968,2);
+        Rennergebnis rennergebnis1 = new Rennergebnis(0,daoPferd.load(new PferdID(5)),daoJockey.load(new JockeyID(0)),46.969,3);
+        Rennergebnis rennergebnis2 = new Rennergebnis(0,daoPferd.load(new PferdID(0)),daoJockey.load(new JockeyID(6)),56.955,1);
+        Rennergebnis rennergebnis3 = new Rennergebnis(1,daoPferd.load(new PferdID(4)),daoJockey.load(new JockeyID(2)),59.167,3);
+        Rennergebnis rennergebnis4 = new Rennergebnis(1,daoPferd.load(new PferdID(3)),daoJockey.load(new JockeyID(5)),62.457,1);
+        Rennergebnis rennergebnis5 = new Rennergebnis(1,daoPferd.load(new PferdID(1)),daoJockey.load(new JockeyID(1)),48.968,4);
+        Rennergebnis rennergebnis6 = new Rennergebnis(1,daoPferd.load(new PferdID(6)),daoJockey.load(new JockeyID(4)),61.120,2);
         rennergebnisList = daoRennergebnis.loadAll();
-        List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,null,-1,-1,-1,-1,-1);
+        List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,-1,-1,-1,-1);
         assertTrue(rennergebnisList.size() == rennergebnisListLoaded.size());
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(0,null,-1,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(0,-1,-1,-1,-1,-1,-1);
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis1);
@@ -101,7 +98,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,"0001",-1,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,1,-1,-1,-1,-1,-1);
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis5);
@@ -109,14 +106,14 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,null,2,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,2,-1,-1,-1,-1);
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis3);
         assertTrue(rennergebnisList.size() == rennergebnisListLoaded.size());
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,null,-1,45.5,50,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,45.5,50,-1,-1);
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis1);
@@ -125,7 +122,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,null,-1,-1,-1,2,3);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,-1,-1,2,3);
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis1);
@@ -152,7 +149,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void createWithValid() throws PersistenceException {
         logger.info("createWithValid()");
-        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
+        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd(6,"Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
@@ -164,19 +161,19 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void createWithExistingId() throws PersistenceException {
         logger.info("createWithExistingId()");
-        Rennergebnis rennergebnis = new Rennergebnis(1,new Pferd("0004","Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61),59.167,3);
+        Rennergebnis rennergebnis = new Rennergebnis(1,new Pferd(4,"Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(5,287,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61),59.167,3);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
-        rennergebnis = new Rennergebnis(1,new Pferd("0004","Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
+        rennergebnis = new Rennergebnis(1,new Pferd(4,"Pia","Haflinger",17,"0004_pia_0.jpg",43,55),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
-        rennergebnis = new Rennergebnis(0,new Pferd("0003","Jaris","Fjordpony",9,"0003_jaris_2.jpg",56,59),new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59),56.955,1);
+        rennergebnis = new Rennergebnis(0,new Pferd(3,"Jaris","Fjordpony",9,"0003_jaris_2.jpg",56,59),new Jockey(6,201,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59),56.955,1);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
@@ -188,7 +185,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void deleteTest() throws PersistenceException {
         logger.info("deleteTest()");
-        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
+        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd(6,"Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
@@ -203,7 +200,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void deleteNonExisting() throws PersistenceException {
         logger.info("deleteNonExisting()");
-        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
+        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd(6,"Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),61.120,2);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.delete(rennergebnis);
@@ -215,13 +212,13 @@ public abstract class AbstractDAOImlRennergebnisTest {
     @Test
     public void updateTest() throws PersistenceException {
         logger.info("updateTest()");
-        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
+        Rennergebnis rennergebnis = new Rennergebnis(2,new Pferd(6,"Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.304,1);
         List<Rennergebnis> rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(rennergebnis));
         daoRennergebnis.save(rennergebnis);
         rennergebnisList = daoRennergebnis.loadAll();
         assertTrue(rennergebnisList.contains(rennergebnis));
-        Rennergebnis updatedRennergebnis = new Rennergebnis(2,new Pferd("0006","Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.334,1);
+        Rennergebnis updatedRennergebnis = new Rennergebnis(2,new Pferd(6,"Szilja","Araber",12,"0000_szilja_0.jpg",48,57),new Jockey(4,48,"Rarity",java.sql.Date.valueOf("2003-10-11"),39),59.334,1);
         rennergebnisList = daoRennergebnis.loadAll();
         assertFalse(rennergebnisList.contains(updatedRennergebnis));
         daoRennergebnis.update(updatedRennergebnis);

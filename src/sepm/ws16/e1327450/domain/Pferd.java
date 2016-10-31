@@ -2,7 +2,7 @@ package sepm.ws16.e1327450.domain;
 
 public class Pferd {
 
-    private String chip_nr;
+    private int chip_nr;
     private String name;
     private String rasse;
     private int alter_jahre;
@@ -10,8 +10,8 @@ public class Pferd {
     private double min_gesw;
     private double max_gesw;
 
-    public Pferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) {
-        if(chip_nr.length() != 4 || min_gesw < 40 || max_gesw > 60 || min_gesw > max_gesw) {
+    public Pferd(int chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) {
+        if(chip_nr < 0 || min_gesw < 40 || max_gesw > 60 || min_gesw > max_gesw) {
             return;
         }
         this.chip_nr = chip_nr;
@@ -23,11 +23,11 @@ public class Pferd {
         this.max_gesw = max_gesw;
     }
 
-    public String getChip_nr() {
+    public int getChip_nr() {
         return chip_nr;
     }
 
-    public void setChip_nr(String chip_nr) {
+    public void setChip_nr(int chip_nr) {
         this.chip_nr = chip_nr;
     }
 
@@ -86,10 +86,10 @@ public class Pferd {
 
         Pferd pferd = (Pferd) o;
 
+        if (chip_nr != pferd.chip_nr) return false;
         if (alter_jahre != pferd.alter_jahre) return false;
         if (Double.compare(pferd.min_gesw, min_gesw) != 0) return false;
         if (Double.compare(pferd.max_gesw, max_gesw) != 0) return false;
-        if (chip_nr != null ? !chip_nr.equals(pferd.chip_nr) : pferd.chip_nr != null) return false;
         if (name != null ? !name.equals(pferd.name) : pferd.name != null) return false;
         if (rasse != null ? !rasse.equals(pferd.rasse) : pferd.rasse != null) return false;
         return bild != null ? bild.equals(pferd.bild) : pferd.bild == null;
@@ -100,7 +100,7 @@ public class Pferd {
     public int hashCode() {
         int result;
         long temp;
-        result = chip_nr != null ? chip_nr.hashCode() : 0;
+        result = chip_nr;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (rasse != null ? rasse.hashCode() : 0);
         result = 31 * result + alter_jahre;
@@ -127,7 +127,7 @@ public class Pferd {
 
     public boolean isValidPferd() {
         //TODO bild gültig
-        if(chip_nr == null || chip_nr.length() != 4 || alter_jahre < 4 || alter_jahre > 30 || min_gesw > max_gesw || min_gesw < 40 || max_gesw > 60 || name == null || rasse == null || bild == null) {
+        if(chip_nr < 0 || alter_jahre < 4 || alter_jahre > 30 || min_gesw > max_gesw || min_gesw < 40 || max_gesw > 60 || name == null || rasse == null || bild == null) {
             return false;
         } return true;
     }

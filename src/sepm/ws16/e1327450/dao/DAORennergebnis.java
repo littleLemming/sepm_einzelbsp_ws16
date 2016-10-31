@@ -7,7 +7,7 @@ public interface DAORennergebnis {
 
     void save(Rennergebnis r) throws PersistenceException;
 
-    Rennergebnis load(int renn_id, String chip_nr, int svnr) throws PersistenceException;
+    Rennergebnis load(int renn_id, int chip_nr, int svnr) throws PersistenceException;
 
     void delete(Rennergebnis r) throws PersistenceException;
 
@@ -15,7 +15,7 @@ public interface DAORennergebnis {
 
     List<Rennergebnis> loadAll() throws PersistenceException;
 
-    List<Rennergebnis> loadCondition(int renn_id, String chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws PersistenceException;
+    List<Rennergebnis> loadCondition(int renn_id, int chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws PersistenceException;
 
     int getFreeRenn_id() throws PersistenceException;
 
