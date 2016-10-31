@@ -161,9 +161,9 @@ public class AbstractImlServiceTest {
                 rennergebnis4 = rennergebnis;
             }
         }
-        assertTrue(rennergebnis1.getGeschw() >= rennergebnis2.getGeschw());
-        assertTrue(rennergebnis2.getGeschw() >= rennergebnis3.getGeschw());
-        assertTrue(rennergebnis3.getGeschw() >= rennergebnis4.getGeschw());
+        assertTrue(rennergebnis1.getDgeschw() >= rennergebnis2.getDgeschw());
+        assertTrue(rennergebnis2.getDgeschw() >= rennergebnis3.getDgeschw());
+        assertTrue(rennergebnis3.getDgeschw() >= rennergebnis4.getDgeschw());
     }
 
     @Test

@@ -10,16 +10,26 @@ public class Rennergebnis {
     private int renn_id;
     private Pferd pferd;
     private Jockey jockey;
-    private double geschw;
+    private double dgeschw;
+    private double pgeschw;
+    private double glueck;
+    private double koennen_b;
     private int platz;
 
-    public Rennergebnis(int renn_id, Pferd pferd, Jockey jockey, double geschw, int platz) {
-        logger.info("Rennergebnis("+renn_id+","+pferd.toString()+","+jockey.toString()+","+geschw+","+platz+")");
+    public Rennergebnis(int renn_id, Pferd pferd, Jockey jockey, double dgeschw, double pgeschw, double glueck, double koennen_b, int platz) {
+        logger.info("Rennergebnis("+renn_id+","+pferd.toString()+","+jockey.toString()+","+dgeschw+","+pgeschw+","+glueck+","+koennen_b+","+platz+")");
         this.renn_id = renn_id;
         this.pferd = pferd;
+        this.dgeschw = dgeschw;
         this.jockey = jockey;
-        this.geschw = geschw;
+        this.pgeschw = pgeschw;
+        this.glueck = glueck;
+        this.koennen_b = koennen_b;
         this.platz = platz;
+    }
+
+    public static Logger getLogger() {
+        return logger;
     }
 
     public int getRenn_id() {
@@ -46,12 +56,36 @@ public class Rennergebnis {
         this.jockey = jockey;
     }
 
-    public double getGeschw() {
-        return geschw;
+    public double getDgeschw() {
+        return dgeschw;
     }
 
-    public void setGeschw(double geschw) {
-        this.geschw = geschw;
+    public void setDgeschw(double dgeschw) {
+        this.dgeschw = dgeschw;
+    }
+
+    public double getPgeschw() {
+        return pgeschw;
+    }
+
+    public void setPgeschw(double pgeschw) {
+        this.pgeschw = pgeschw;
+    }
+
+    public double getGlueck() {
+        return glueck;
+    }
+
+    public void setGlueck(double glueck) {
+        this.glueck = glueck;
+    }
+
+    public double getKoennen_b() {
+        return koennen_b;
+    }
+
+    public void setKoennen_b(double koennen_b) {
+        this.koennen_b = koennen_b;
     }
 
     public int getPlatz() {
@@ -70,20 +104,14 @@ public class Rennergebnis {
         Rennergebnis that = (Rennergebnis) o;
 
         if (renn_id != that.renn_id) return false;
-        if (Double.compare(that.geschw, geschw) != 0) return false;
+        if (Double.compare(that.dgeschw, dgeschw) != 0) return false;
+        if (Double.compare(that.pgeschw, pgeschw) != 0) return false;
+        if (Double.compare(that.glueck, glueck) != 0) return false;
+        if (Double.compare(that.koennen_b, koennen_b) != 0) return false;
         if (platz != that.platz) return false;
-        if (pferd.getClass() != that.pferd.getClass()) return false;
-        if (jockey.getClass() != that.jockey.getClass()) return false;
+        if (pferd != null ? !pferd.equals(that.pferd) : that.pferd != null) return false;
+        return jockey != null ? jockey.equals(that.jockey) : that.jockey == null;
 
-        Pferd p0 = (Pferd) pferd;
-        Pferd p1 = (Pferd) that.pferd;
-        Jockey j0 = (Jockey) jockey;
-        Jockey j1 = (Jockey) that.jockey;
-
-        if (!p0.equals(p1)) return false;
-        if (!j0.equals(j1)) return false;
-
-        return true;
     }
 
     @Override
@@ -93,7 +121,13 @@ public class Rennergebnis {
         result = renn_id;
         result = 31 * result + (pferd != null ? pferd.hashCode() : 0);
         result = 31 * result + (jockey != null ? jockey.hashCode() : 0);
-        temp = Double.doubleToLongBits(geschw);
+        temp = Double.doubleToLongBits(dgeschw);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(pgeschw);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(glueck);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(koennen_b);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + platz;
         return result;
@@ -103,10 +137,14 @@ public class Rennergebnis {
     public String toString() {
         return "Rennergebnis{" +
                 "renn_id=" + renn_id +
-                ", pferd=" + pferd.toString() +
-                ", jockey=" + jockey.toString() +
-                ", geschw=" + geschw +
+                ", pferd=" + pferd +
+                ", jockey=" + jockey +
+                ", dgeschw=" + dgeschw +
+                ", pgeschw=" + pgeschw +
+                ", glueck=" + glueck +
+                ", koennen_b=" + koennen_b +
                 ", platz=" + platz +
                 '}';
     }
+
 }

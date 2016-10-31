@@ -20,8 +20,6 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     private PreparedStatement saveStmt;
     private PreparedStatement loadStmt;
     private PreparedStatement loadAllStmt;
-    private PreparedStatement deleteStmt;
-    private PreparedStatement updateStmt;
 
     public DAOImlRennergebnis(Connection connection, DAOPferd daoPferd, DAOJockey daoJockey) throws PersistenceException {
         logger.info("DAOImlRennergebnis("+connection+")");
@@ -29,11 +27,9 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
         this.daoPferd = daoPferd;
         this.daoJockey = daoJockey;
         try {
-            saveStmt = connection.prepareStatement("INSERT INTO \"PUBLIC\".\"RENNERGEBNIS\"(renn_id,chip_nr,svnr,geschw,platz) VALUES (?,?,?,?,?)");
+            saveStmt = connection.prepareStatement("INSERT INTO \"PUBLIC\".\"RENNERGEBNIS\"(renn_id,chip_nr,svnr,dgeschw,pgeschw,glueck,koennen_b,platz) VALUES (?,?,?,?,?,?,?,?)");
             loadStmt = connection.prepareStatement("SELECT * FROM RENNERGEBNIS WHERE renn_id=? AND chip_nr=? AND svnr=?");
             loadAllStmt = connection.prepareStatement("SELECT * FROM RENNERGEBNIS");
-            deleteStmt = connection.prepareStatement("DELETE FROM RENNERGEBNIS WHERE renn_id=? AND chip_nr=? AND svnr=?");
-            updateStmt = connection.prepareStatement("UPDATE RENNERGEBNIS SET geschw=?, platz=? WHERE renn_id=? AND chip_nr=? AND svnr=?");
         } catch (SQLException e) {
             logger.error("could not prepare statements");
             throw new PersistenceException(e.getMessage());
@@ -45,14 +41,17 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
         if (r == null) return;
         logger.info("save("+r.toString()+")");
         try {
-            if(load(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr()) != null) return;
+            if(load(new RennergebnisID(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr())) != null) return;
             if(loadCondition(r.getRenn_id(),r.getPferd().getChip_nr(),-1,-1,-1,-1,-1).size() != 0) return;
             if(loadCondition(r.getRenn_id(),-1,r.getJockey().getSvnr(),-1,-1,-1,-1).size() != 0) return;
             saveStmt.setInt(1,r.getRenn_id());
             saveStmt.setInt(2,r.getPferd().getChip_nr());
             saveStmt.setInt(3,r.getJockey().getSvnr());
-            saveStmt.setDouble(4,r.getGeschw());
-            saveStmt.setInt(5,r.getPlatz());
+            saveStmt.setDouble(4,r.getDgeschw());
+            saveStmt.setDouble(5,r.getPgeschw());
+            saveStmt.setDouble(6,r.getGlueck());
+            saveStmt.setDouble(7,r.getKoennen_b());
+            saveStmt.setInt(8,r.getPlatz());
             saveStmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + saveStmt.toString());
@@ -61,7 +60,10 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public Rennergebnis load(int renn_id, int chip_nr, int svnr) throws PersistenceException {
+    public Rennergebnis load(RennergebnisID rennergebnisID) throws PersistenceException {
+        int renn_id = rennergebnisID.getRenn_id();
+        int chip_nr = rennergebnisID.getChip_nr();
+        int svnr = rennergebnisID.getSvnr();
         logger.info("load("+renn_id+","+chip_nr+","+svnr+")");
         try {
             loadStmt.setInt(1,renn_id);
@@ -71,47 +73,9 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             Pferd pferd = daoPferd.load(new PferdID(chip_nr));
             Jockey jockey = daoJockey.load(new JockeyID(svnr));
             if (!res.next()) { return null; }
-            return new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz"));
+            return new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("dgeschw"),res.getDouble("pgeschw"),res.getDouble("glueck"),res.getDouble("koennen_b"),res.getInt("platz"));
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadStmt.toString());
-            throw new PersistenceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void delete(Rennergebnis r) throws PersistenceException {
-        if (r == null) return;
-        logger.info("delete("+r.toString()+")");
-        try {
-            loadStmt.setInt(1,r.getRenn_id());
-            loadStmt.setInt(2,r.getPferd().getChip_nr());
-            loadStmt.setInt(3,r.getJockey().getSvnr());
-            ResultSet res = loadStmt.executeQuery();
-            if (!res.next()) return;
-            deleteStmt.setInt(1,r.getRenn_id());
-            deleteStmt.setInt(2,r.getPferd().getChip_nr());
-            deleteStmt.setInt(3,r.getJockey().getSvnr());
-            deleteStmt.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("could not execute db-request: " + deleteStmt.toString());
-            throw new PersistenceException(e.getMessage());
-        }
-    }
-
-    @Override
-    public void update(Rennergebnis r) throws PersistenceException {
-        if (r == null) return;
-        logger.info("update("+r.toString()+")");
-        try {
-            if(load(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr()) == null) return;
-            updateStmt.setDouble(1, r.getGeschw());
-            updateStmt.setInt(2, r.getPlatz());
-            updateStmt.setInt(3, r.getRenn_id());
-            updateStmt.setInt(4, r.getPferd().getChip_nr());
-            updateStmt.setInt(5, r.getJockey().getSvnr());
-            updateStmt.executeUpdate();
-        } catch (SQLException e) {
-            logger.error("could not execute db-request: " + updateStmt.toString());
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -125,7 +89,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             while(res.next()) {
                 Pferd pferd = daoPferd.load(new PferdID(res.getInt("chip_nr")));
                 Jockey jockey = daoJockey.load(new JockeyID(res.getInt("svnr")));
-                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
+                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("dgeschw"),res.getDouble("pgeschw"),res.getDouble("glueck"),res.getDouble("koennen_b"),res.getInt("platz")));
             }
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadAllStmt.toString());
@@ -158,11 +122,11 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             addedFirst = true;
         } if(min_gesw != -1 ){
             if(addedFirst) sqlQuery += " AND";
-            sqlQuery += " geschw>=" + min_gesw;
+            sqlQuery += " dgeschw>=" + min_gesw;
             addedFirst = true;
         } if(max_gesw != -1){
             if(addedFirst) sqlQuery += " AND";
-            sqlQuery += " geschw<=" + max_gesw;
+            sqlQuery += " dgeschw<=" + max_gesw;
         } if(min_platz != -1 ){
             if(addedFirst) sqlQuery += " AND";
             sqlQuery += " platz>=" + min_platz;
@@ -177,7 +141,7 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
             while(res.next()) {
                 Pferd pferd = daoPferd.load(new PferdID(res.getInt("chip_nr")));
                 Jockey jockey = daoJockey.load(new JockeyID(res.getInt("svnr")));
-                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("geschw"),res.getInt("platz")));
+                rennergebnisList.add(new Rennergebnis(res.getInt("renn_id"),pferd,jockey,res.getDouble("dgeschw"),res.getDouble("pgeschw"),res.getDouble("glueck"),res.getDouble("koennen_b"),res.getInt("platz")));
             }
         }catch(SQLException e){
             logger.error("could not execute db-request: " + sqlQuery);
@@ -198,7 +162,8 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public boolean isFreeRenn_id(int renn_id) throws PersistenceException {
+    public boolean isFreeRenn_id(RennID rennID) throws PersistenceException {
+        int renn_id = rennID.getRenn_id();
         logger.info("isFreeRenn_id("+renn_id+")");
         List<Rennergebnis> rennergebnisList = loadAll();
         for(Rennergebnis rennergebnis : rennergebnisList) {

@@ -87,27 +87,6 @@ public class DAOImlRennergebnisTest extends AbstractDAOImlRennergebnisTest {
             e.printStackTrace();
         }
         try {
-            deleteTest();
-            tearDown();
-        } catch (PersistenceException e) {
-            logger.error("deleteTest() FAILED");
-            e.printStackTrace();
-        }
-        try {
-            deleteNonExisting();
-            tearDown();
-        } catch (PersistenceException e) {
-            logger.error("deleteNonExisting() FAILED");
-            e.printStackTrace();
-        }
-        try {
-            updateTest();
-            tearDown();
-        } catch (PersistenceException e) {
-            logger.error("updateTest() FAILED");
-            e.printStackTrace();
-        }
-        try {
             isFreeRenn_idTest();
             tearDown();
         } catch (PersistenceException e) {

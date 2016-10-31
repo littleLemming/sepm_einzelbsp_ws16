@@ -120,7 +120,7 @@ public class ImlService implements Service {
         logger.info("loadRennergebnis("+renn_id+","+chip_nr+","+svnr+")");
         Rennergebnis rennergebnis = null;
         try {
-            rennergebnis = daoRennergebnis.load(renn_id,chip_nr,svnr);
+            rennergebnis = daoRennergebnis.load(new RennergebnisID(renn_id,chip_nr,svnr));
         } catch (PersistenceException e) {
             logger.error("could not load rennergebnis with renn-id "+renn_id+", chip-number "+chip_nr+", svnr "+svnr);
             throw new ServiceException(e.getMessage());
@@ -352,7 +352,7 @@ public class ImlService implements Service {
         logger.info("doRennsimulation("+renn_id+","+participants.toString()+")");
         int final_renn_id = renn_id;
         try {
-            if(renn_id != -1 && !daoRennergebnis.isFreeRenn_id(renn_id)) return null;
+            if(renn_id != -1 && !daoRennergebnis.isFreeRenn_id(new RennID(renn_id))) return null;
             if(renn_id != -1) {
                 final_renn_id = renn_id;
             } else {
@@ -406,19 +406,19 @@ public class ImlService implements Service {
             double pferdGesch = pferd.getMin_gesw() + (pferd.getMax_gesw() - pferd.getMin_gesw()) * r.nextDouble();
             double glueck = 0.95 + (1.05 - 0.95) * r.nextDouble();
             double geschw = pferdGesch*kb*glueck;
-            ergebnisse.add(new Rennergebnis(final_renn_id,pferd,participants.get(pferd),geschw,-1));
+            ergebnisse.add(new Rennergebnis(final_renn_id,pferd,participants.get(pferd),geschw,pferdGesch,glueck,kb,-1));
         }
         Collections.sort(ergebnisse, new Comparator<Rennergebnis>() {
             @Override
             public int compare(Rennergebnis r1, Rennergebnis r2) {
-                return Double.compare(r1.getGeschw(), r2.getGeschw());
+                return Double.compare(r1.getDgeschw(), r2.getDgeschw());
             }
         });
         if(ergebnisse == null || ergebnisse.size() < 1) return ergebnisse;
-        double last = ergebnisse.get(ergebnisse.size()-1).getGeschw();
+        double last = ergebnisse.get(ergebnisse.size()-1).getDgeschw();
         int platz = 1;
         for(int i = ergebnisse.size()-1; i >= 0 ; i--) {
-            if(ergebnisse.get(i).getGeschw() != last) {
+            if(ergebnisse.get(i).getDgeschw() != last) {
                 platz += 1;
             } ergebnisse.get(i).setPlatz(platz);
         }

@@ -3,10 +3,10 @@ package sepm.ws16.e1327450.domain;
 public class RennergebnisID {
 
     int renn_id;
-    String chip_nr;
+    int chip_nr;
     int svnr;
 
-    public RennergebnisID(int renn_id, String chip_nr, int svnr) {
+    public RennergebnisID(int renn_id, int chip_nr, int svnr) {
         this.renn_id = renn_id;
         this.chip_nr = chip_nr;
         this.svnr = svnr;
@@ -20,11 +20,11 @@ public class RennergebnisID {
         this.renn_id = renn_id;
     }
 
-    public String getChip_nr() {
+    public int getChip_nr() {
         return chip_nr;
     }
 
-    public void setChip_nr(String chip_nr) {
+    public void setChip_nr(int chip_nr) {
         this.chip_nr = chip_nr;
     }
 

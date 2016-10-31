@@ -1,17 +1,16 @@
 package sepm.ws16.e1327450.dao;
 
+import sepm.ws16.e1327450.domain.RennID;
 import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.RennergebnisID;
+
 import java.util.List;
 
 public interface DAORennergebnis {
 
     void save(Rennergebnis r) throws PersistenceException;
 
-    Rennergebnis load(int renn_id, int chip_nr, int svnr) throws PersistenceException;
-
-    void delete(Rennergebnis r) throws PersistenceException;
-
-    void update(Rennergebnis r) throws PersistenceException;
+    Rennergebnis load(RennergebnisID rennergebnisID) throws PersistenceException;
 
     List<Rennergebnis> loadAll() throws PersistenceException;
 
@@ -19,5 +18,5 @@ public interface DAORennergebnis {
 
     int getFreeRenn_id() throws PersistenceException;
 
-    boolean isFreeRenn_id(int renn_id) throws PersistenceException;
+    boolean isFreeRenn_id(RennID rennID) throws PersistenceException;
 }
