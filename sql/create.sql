@@ -28,7 +28,10 @@ CREATE TABLE Rennergebnis
     renn_id int NOT NULL,
     chip_nr int NOT NULL,
     svnr int NOT NULL,
-    geschw double NOT NULL,
+    dgeschw double NOT NULL,
+    pgeschw double NOT NULL,
+    glueck double NOT NULL,
+    koennen_b double NOT NULL,
     platz int NOT NULL,
     PRIMARY KEY(renn_id, chip_nr, svnr)
     );
