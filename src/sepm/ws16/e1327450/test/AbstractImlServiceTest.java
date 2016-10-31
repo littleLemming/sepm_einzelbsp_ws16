@@ -6,10 +6,12 @@ import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.dao.PersistenceException;
 import sepm.ws16.e1327450.domain.Jockey;
 import sepm.ws16.e1327450.domain.Pferd;
+import sepm.ws16.e1327450.domain.Rennergebnis;
 import sepm.ws16.e1327450.service.Service;
 import sepm.ws16.e1327450.service.ServiceException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertFalse;
@@ -139,6 +141,93 @@ public class AbstractImlServiceTest {
             assertTrue(statistik.containsKey(i));
             assertTrue(statistik.get(i)==loadedStatistik.get(i));
         }
+    }
+
+    @Test
+    public void doRennenTest() throws ServiceException {
+        assertTrue(service.doRennsimulation(0,null) == null);
+        assertTrue(service.doRennsimulation(7,null) == null);
+        Map<Pferd, Jockey> participants = new HashMap<>();
+        participants.put(service.loadPferd("0000"),service.loadJockey(0));
+        participants.put(service.loadPferd("0001"),service.loadJockey(1));
+        participants.put(service.loadPferd("0002"),service.loadJockey(2));
+        participants.put(service.loadPferd("0003"),service.loadJockey(3));
+        List<Rennergebnis> rennergebnisList = service.doRennsimulation(8,participants);
+        Rennergebnis rennergebnis1 = null;
+        Rennergebnis rennergebnis2 = null;
+        Rennergebnis rennergebnis3 = null;
+        Rennergebnis rennergebnis4 = null;
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            if(rennergebnis.getPlatz() == 1) {
+                rennergebnis1 = rennergebnis;
+            } else if(rennergebnis.getPlatz() == 2) {
+                rennergebnis2 = rennergebnis;
+            } else if(rennergebnis.getPlatz() == 3) {
+                rennergebnis3 = rennergebnis;
+            } else if(rennergebnis.getPlatz() == 4) {
+                rennergebnis4 = rennergebnis;
+            }
+        }
+        assertTrue(rennergebnis1.getGeschw() >= rennergebnis2.getGeschw());
+        assertTrue(rennergebnis2.getGeschw() >= rennergebnis3.getGeschw());
+        assertTrue(rennergebnis3.getGeschw() >= rennergebnis4.getGeschw());
+    }
+
+    @Test
+    public void doRennen_jockey_twice_Test() throws ServiceException {
+        Map<Pferd, Jockey> participants = new HashMap<>();
+        participants.put(service.loadPferd("0000"),service.loadJockey(0));
+        participants.put(service.loadPferd("0001"),service.loadJockey(0));
+        boolean thrown = false;
+        try {
+            service.doRennsimulation(5, participants);
+        } catch(ServiceException e) {
+            thrown = true;
+        } assertTrue(thrown);
+    }
+
+    @Test
+    public void doRennen_invalid_jockeys_Test() throws ServiceException {
+        Map<Pferd, Jockey> participants = new HashMap<>();
+        Jockey jockey = new Jockey(3,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
+        participants.put(service.loadPferd("0001"),jockey);
+        boolean thrown = false;
+        try {
+            service.doRennsimulation(17, participants);
+        } catch(ServiceException e) {
+            thrown = true;
+        } assertTrue(thrown);
+        participants = new HashMap<>();
+        jockey = new Jockey(10,301.0,"Rainbow Dash",java.sql.Date.valueOf("2003-05-07"),40);
+        participants.put(service.loadPferd("0001"),jockey);
+        thrown = false;
+        try {
+            service.doRennsimulation(7, participants);
+        } catch(ServiceException e) {
+            thrown = true;
+        } assertTrue(thrown);
+    }
+
+    @Test
+    public void doRennen_invalid_pferd_Test() throws ServiceException {
+        Map<Pferd, Jockey> participants = new HashMap<>();
+        Pferd pferd = new Pferd("0002","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
+        participants.put(pferd,service.loadJockey(0));
+        boolean thrown = false;
+        try {
+            service.doRennsimulation(7, participants);
+        } catch(ServiceException e) {
+            thrown = true;
+        } assertTrue(thrown);
+        participants = new HashMap<>();
+        pferd = new Pferd("0022","Rusty","Shetland Pony",16,"0001_rusty_0.jpg",40,46);
+        participants.put(pferd,service.loadJockey(0));
+        thrown = false;
+        try {
+            service.doRennsimulation(7, participants);
+        } catch(ServiceException e) {
+            thrown = true;
+        } assertTrue(thrown);
     }
 
 }

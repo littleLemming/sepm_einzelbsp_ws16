@@ -54,6 +54,26 @@ public class ImlServiceTest extends AbstractImlServiceTest {
         } catch (ServiceException e) {
             logger.error("doStatistikTest() FAILED");
             e.printStackTrace();
+        } try {
+            doRennen_jockey_twice_Test();
+        } catch (ServiceException e) {
+            logger.error("doRennen_jockey_twice_Test() FAILED");
+            e.printStackTrace();
+        } try {
+            doRennen_invalid_jockeys_Test();
+        } catch (ServiceException e) {
+            logger.error("doRennen_invalid_jockeys_Test() FAILED");
+            e.printStackTrace();
+        } try {
+            doRennen_invalid_pferd_Test();
+        } catch (ServiceException e) {
+            logger.error("doRennen_invalid_pferd_Test() FAILED");
+            e.printStackTrace();
+        } try {
+            doRennenTest();
+        } catch (ServiceException e) {
+            logger.error("doRennenTest() FAILED");
+            e.printStackTrace();
         }
     }
 

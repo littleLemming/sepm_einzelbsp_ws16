@@ -11,13 +11,13 @@ import java.util.Map;
 
 public interface Service {
 
-    void savePferd(Pferd pferd) throws ServiceException;
+    boolean savePferd(Pferd pferd) throws ServiceException;
 
-    void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
+    boolean savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
-    void saveJockey(Jockey jockey) throws ServiceException;
+    boolean saveJockey(Jockey jockey) throws ServiceException;
 
-    void saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
+    boolean saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
 
     Pferd loadPferd(String chip_nr) throws ServiceException;
 
@@ -25,13 +25,13 @@ public interface Service {
 
     Rennergebnis loadRennergebnis(int renn_id, String chip_nr, int svnr) throws ServiceException;
 
-    void updatePferd(Pferd pferd) throws ServiceException;
+    boolean updatePferd(Pferd pferd) throws ServiceException;
 
-    void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
+    boolean updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException;
 
-    void updateJockey(Jockey jockey) throws ServiceException;
+    boolean updateJockey(Jockey jockey) throws ServiceException;
 
-    void updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
+    boolean updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException;
 
     boolean validPferd(Pferd pferd) throws ServiceException;
 

@@ -6,13 +6,10 @@ import sepm.ws16.e1327450.dao.*;
 import sepm.ws16.e1327450.domain.Jockey;
 import sepm.ws16.e1327450.domain.Pferd;
 import sepm.ws16.e1327450.domain.Rennergebnis;
-
+import java.lang.*;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ImlService implements Service {
 
@@ -28,8 +25,8 @@ public class ImlService implements Service {
     }
 
     @Override
-    public void savePferd(Pferd pferd) throws ServiceException {
-        if(pferd == null) return;
+    public boolean savePferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return false;
         logger.info("savePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
@@ -49,20 +46,19 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+pferd.toString());
-        }
+            return false;
+        } return true;
     }
 
     @Override
-    public void savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        if(name == null || rasse == null || bild == null) return;
-        logger.info("savePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
+    public boolean savePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        savePferd(pferd);
+        return savePferd(pferd);
     }
 
     @Override
-    public void saveJockey(Jockey jockey) throws ServiceException {
-        if(jockey == null) return;
+    public boolean saveJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return false;
         logger.info("saveJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
@@ -82,15 +78,14 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+jockey.toString());
-        }
+            return false;
+        } return true;
     }
 
     @Override
-    public void saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        if(name == null || geburtsdatum == null) return;
-        logger.info("saveJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
+    public boolean saveJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        saveJockey(jockey);
+        return saveJockey(jockey);
     }
 
     @Override
@@ -131,8 +126,8 @@ public class ImlService implements Service {
     }
 
     @Override
-    public void updatePferd(Pferd pferd) throws ServiceException {
-        if(pferd == null) return;
+    public boolean updatePferd(Pferd pferd) throws ServiceException {
+        if(pferd == null) return false;
         logger.info("updatePferd("+pferd.toString()+")");
         if(pferd.isValidPferd()) {
             try {
@@ -152,21 +147,19 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+pferd.toString());
-            throw new ServiceException("invalid pferd");
-        }
+            return false;
+        } return true;
     }
 
     @Override
-    public void updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
-        if(name == null || rasse == null || bild == null) return;
-        logger.info("updatePferd("+chip_nr+","+name+","+rasse+","+alter_jahre+","+bild+","+min_gesw+","+max_gesw+")");
+    public boolean updatePferd(String chip_nr, String name, String rasse, int alter_jahre, String bild, double min_gesw, double max_gesw) throws ServiceException {
         Pferd pferd = new Pferd(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw);
-        updatePferd(pferd);
+        return updatePferd(pferd);
     }
 
     @Override
-    public void updateJockey(Jockey jockey) throws ServiceException {
-        if(jockey == null) return;
+    public boolean updateJockey(Jockey jockey) throws ServiceException {
+        if(jockey == null) return false;
         logger.info("updateJockey("+jockey.toString()+")");
         if(jockey.isValidJockey()) {
             try {
@@ -186,16 +179,14 @@ public class ImlService implements Service {
             }
         } else {
             logger.error("could not save "+jockey.toString());
-            throw new ServiceException("invalid jockey");
-        }
+            return false;
+        } return true;
     }
 
     @Override
-    public void updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
-        if(name == null || geburtsdatum == null) return;
-        logger.info("updateJockey("+svnr+","+können+","+name+","+geburtsdatum.toString()+","+gewicht+")");
+    public boolean updateJockey(int svnr, double können, String name, Date geburtsdatum, int gewicht) throws ServiceException {
         Jockey jockey = new Jockey(svnr,können,name,geburtsdatum,gewicht);
-        updateJockey(jockey);
+        return updateJockey(jockey);
     }
 
     @Override
@@ -391,8 +382,81 @@ public class ImlService implements Service {
 
     @Override
     public List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants) throws ServiceException {
+        if(participants == null) return null;
         logger.info("doRennsimulation("+renn_id+","+participants.toString()+")");
-        return null;
+        int final_renn_id = renn_id;
+        try {
+            if(renn_id != -1 && !daoRennergebnis.isFreeRenn_id(renn_id)) return null;
+            if(renn_id != -1) {
+                final_renn_id = renn_id;
+            } else {
+                final_renn_id = daoRennergebnis.getFreeRenn_id();
+            }
+        } catch (PersistenceException e) {
+            logger.error("could sort out renn-id");
+            throw new ServiceException(e.getMessage());
+        }
+        List<Rennergebnis> ergebnisse = new ArrayList<>();
+        for(Pferd pferd : participants.keySet()) {
+            try {
+                Pferd p = daoPferd.load(pferd.getChip_nr());
+                if(p == null) {
+                    logger.error("pferd with this chip-nr not in database");
+                    throw new ServiceException("no pferd with chip-number " + pferd.getChip_nr());
+                }
+                if(!p.equals(pferd)) {
+                    logger.error("different pferd in database");
+                    throw new ServiceException(pferd.toString() + " not in database");
+                }
+            } catch (PersistenceException e) {
+                logger.error("pferd with this chip-nr not in database");
+                throw new ServiceException("no pferd with chip-number " + pferd.getChip_nr());
+            }
+            try {
+                Jockey j = daoJockey.load(participants.get(pferd).getSvnr());
+                if(j == null) {
+                    logger.error("jockey with this svnr not in database");
+                    throw new ServiceException("no jockey with svnr " + participants.get(pferd).getSvnr());
+                }
+                if(!j.equals(participants.get(pferd))) {
+                    logger.error("different jockey in database");
+                    throw new ServiceException(participants.get(pferd).toString() + " not in database");
+                }
+            } catch (PersistenceException e) {
+                logger.error("jockey with this svnr not in database");
+                throw new ServiceException("no jockey with svnr " + participants.get(pferd).getSvnr());
+            }
+            for(Rennergebnis rennergebnis : ergebnisse) {
+                if(rennergebnis.getPferd().equals(pferd)) {
+                    logger.error("pferd can't run twice in one race");
+                    throw new ServiceException("pferd " + pferd.toString() + " can't run twice in race");
+                } else if(rennergebnis.getJockey().equals(participants.get(pferd))) {
+                    logger.error("jockey can't ride twice in one race");
+                    throw new ServiceException("jockey " + participants.get(pferd).toString() + " can't ride twice in race");
+                }
+            }
+            double kb = 1+(0.15*1/Math.PI*Math.atan(1/5*participants.get(pferd).getKönnen()));
+            Random r = new Random();
+            double pferdGesch = pferd.getMin_gesw() + (pferd.getMax_gesw() - pferd.getMin_gesw()) * r.nextDouble();
+            double glueck = 0.95 + (1.05 - 0.95) * r.nextDouble();
+            double geschw = pferdGesch*kb*glueck;
+            ergebnisse.add(new Rennergebnis(final_renn_id,pferd,participants.get(pferd),geschw,-1));
+        }
+        Collections.sort(ergebnisse, new Comparator<Rennergebnis>() {
+            @Override
+            public int compare(Rennergebnis r1, Rennergebnis r2) {
+                return Double.compare(r1.getGeschw(), r2.getGeschw());
+            }
+        });
+        if(ergebnisse == null || ergebnisse.size() < 1) return ergebnisse;
+        double last = ergebnisse.get(ergebnisse.size()-1).getGeschw();
+        int platz = 1;
+        for(int i = ergebnisse.size()-1; i >= 0 ; i--) {
+            if(ergebnisse.get(i).getGeschw() != last) {
+                platz += 1;
+            } ergebnisse.get(i).setPlatz(platz);
+        }
+        return ergebnisse;
     }
 
     @Override
