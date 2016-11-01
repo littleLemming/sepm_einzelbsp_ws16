@@ -18,14 +18,14 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                        <children>
-                                          <TableView layoutX="44.0" layoutY="29.0" prefHeight="288.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <TableView fx:id="pferdViewTable" layoutX="44.0" layoutY="29.0" prefHeight="288.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columns>
-                                              <TableColumn prefWidth="75.0" text="Chip-Nr" />
-                                              <TableColumn prefWidth="213.0" text="Name" />
-                                                <TableColumn minWidth="0.0" prefWidth="223.0" text="Rasse" />
-                                                <TableColumn prefWidth="86.0" text="Alter" />
-                                                <TableColumn prefWidth="155.0" text="Min-Geschw" />
-                                                <TableColumn prefWidth="145.0" text="Max-Geschw" />
+                                              <TableColumn fx:id="pferdViewChipNrColumn" prefWidth="75.0" text="Chip-Nr" />
+                                              <TableColumn fx:id="pferdViewNameColumn" prefWidth="213.0" text="Name" />
+                                                <TableColumn fx:id="pferdViewRasseColumn" minWidth="0.0" prefWidth="223.0" text="Rasse" />
+                                                <TableColumn fx:id="pferdViewAlterColumn" prefWidth="86.0" text="Alter" />
+                                                <TableColumn fx:id="pferdViewMinGeschwColumn" prefWidth="155.0" text="Min-Geschw" />
+                                                <TableColumn fx:id="pferdViewMaxGeschwColumn" prefWidth="145.0" text="Max-Geschw" />
                                             </columns>
                                           </TableView>
                                        </children>
@@ -40,9 +40,9 @@
                                                       <ToolBar layoutX="27.0" layoutY="22.0" prefHeight="84.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <items>
                                                             <Label text="Name:" />
-                                                            <TextField prefHeight="25.0" prefWidth="382.0" />
-                                                          <Button mnemonicParsing="false" text="Search by Name" />
-                                                            <Button mnemonicParsing="false" text="Show All" />
+                                                            <TextField fx:id="pferdSearchNameTextField" prefHeight="25.0" prefWidth="382.0" />
+                                                          <Button mnemonicParsing="false" onAction="#handlePferdSearchByName" text="Search by Name" />
+                                                            <Button mnemonicParsing="false" onAction="#handlePferdShowAll" text="Show All" />
                                                         </items>
                                                       </ToolBar>
                                                    </children>
@@ -51,10 +51,10 @@
                                                    <children>
                                                       <ToolBar layoutY="22.0" prefHeight="84.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                         <items>
-                                                          <Button mnemonicParsing="false" text="View Bild.." />
-                                                            <Button mnemonicParsing="false" text="Edit.." />
-                                                            <Button mnemonicParsing="false" text="Delete" />
-                                                            <Button mnemonicParsing="false" text="New.." />
+                                                          <Button mnemonicParsing="false" onAction="#handlePferdViewBild" text="View Bild.." />
+                                                            <Button mnemonicParsing="false" onAction="#handlePferdEdit" text="Edit.." />
+                                                            <Button mnemonicParsing="false" onAction="#handlePferdDelete" text="Delete" />
+                                                            <Button mnemonicParsing="false" onAction="#handlePferdNew" text="New.." />
                                                         </items>
                                                       </ToolBar>
                                                    </children>
@@ -79,13 +79,13 @@
                           <items>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                  <children>
-                                    <TableView layoutX="36.0" layoutY="44.0" prefHeight="288.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="jockeyViewTable" layoutX="36.0" layoutY="44.0" prefHeight="288.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <columns>
-                                        <TableColumn prefWidth="87.0" text="SVNR" />
-                                        <TableColumn prefWidth="395.0" text="Name" />
-                                          <TableColumn prefWidth="220.0" text="Geburtsdatum" />
-                                          <TableColumn prefWidth="95.0" text="Gewicht" />
-                                          <TableColumn prefWidth="100.0" text="Können" />
+                                        <TableColumn fx:id="jockeyViewSvnrColumn" prefWidth="87.0" text="SVNR" />
+                                        <TableColumn fx:id="jockeyViewNameColumn" prefWidth="395.0" text="Name" />
+                                          <TableColumn fx:id="jockeyViewGeburtsdatum" prefWidth="220.0" text="Geburtsdatum" />
+                                          <TableColumn fx:id="jockeyViewGewichtColumn" prefWidth="95.0" text="Gewicht" />
+                                          <TableColumn fx:id="jockeyViewKoennenColumn" prefWidth="100.0" text="Können" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -99,9 +99,9 @@
                                                 <ToolBar layoutX="-21.0" layoutY="30.0" prefHeight="84.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <items>
                                                       <Label text="Name:" />
-                                                      <TextField prefHeight="25.0" prefWidth="382.0" />
-                                                    <Button mnemonicParsing="false" text="Search by Name" />
-                                                      <Button mnemonicParsing="false" text="Show All" />
+                                                      <TextField fx:id="jockeySearchNameTextField" prefHeight="25.0" prefWidth="382.0" />
+                                                    <Button mnemonicParsing="false" onAction="#handleJockeySearchByName" text="Search by Name" />
+                                                      <Button mnemonicParsing="false" onAction="#handleJockeyShowAll" text="Show All" />
                                                   </items>
                                                 </ToolBar>
                                              </children>
@@ -110,9 +110,9 @@
                                              <children>
                                                 <ToolBar layoutX="-37.0" layoutY="22.0" prefHeight="84.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <items>
-                                                    <Button mnemonicParsing="false" text="Edit.." />
-                                                      <Button mnemonicParsing="false" text="Delete" />
-                                                      <Button mnemonicParsing="false" text="New.." />
+                                                    <Button mnemonicParsing="false" onAction="#handleJockeyEdit" text="Edit.." />
+                                                      <Button mnemonicParsing="false" onAction="#handleJockeyDelete" text="Delete" />
+                                                      <Button mnemonicParsing="false" onAction="#handleJockeyNew" text="New.." />
                                                   </items>
                                                 </ToolBar>
                                              </children>
@@ -139,16 +139,16 @@
                                       <items>
                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                              <children>
-                                                <TableView layoutX="144.0" layoutY="46.0" prefHeight="319.0" prefWidth="561.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                <TableView fx:id="rennergebnisseViewTable" layoutX="144.0" layoutY="46.0" prefHeight="319.0" prefWidth="561.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <columns>
-                                                    <TableColumn prefWidth="65.0" text="Renn-ID" />
-                                                    <TableColumn prefWidth="48.0" text="SVNR" />
-                                                      <TableColumn prefWidth="63.0" text="Chip-Nr" />
-                                                      <TableColumn prefWidth="138.0" text="Durchnitt Geschw" />
-                                                      <TableColumn prefWidth="56.0" text="Platz" />
-                                                      <TableColumn prefWidth="110.0" text="Pferd Geschw" />
-                                                      <TableColumn prefWidth="49.0" text="Glück" />
-                                                      <TableColumn prefWidth="97.0" text="Können ber." />
+                                                    <TableColumn fx:id="rennergebnisseViewRennIdColumn" prefWidth="65.0" text="Renn-ID" />
+                                                    <TableColumn fx:id="rennergebnisseViewSvnrColumn" prefWidth="48.0" text="SVNR" />
+                                                      <TableColumn fx:id="rennergebnisseViewChipNrColumn" prefWidth="63.0" text="Chip-Nr" />
+                                                      <TableColumn fx:id="rennergebnisseViewDurchnittGeschwColumn" prefWidth="138.0" text="Durchnitt Geschw" />
+                                                      <TableColumn fx:id="rennergebnisseViewPlatzColumn" prefWidth="56.0" text="Platz" />
+                                                      <TableColumn fx:id="rennergebnisseViewPferdGeschwColumn" prefWidth="110.0" text="Pferd Geschw" />
+                                                      <TableColumn fx:id="rennergebnisseViewGluesColumn" prefWidth="49.0" text="Glück" />
+                                                      <TableColumn fx:id="rennergebnisseViewKoennenBerechnetColumn" prefWidth="97.0" text="Können ber." />
                                                   </columns>
                                                 </TableView>
                                              </children>
@@ -159,19 +159,19 @@
                                                   <items>
                                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                          <children>
-                                                            <TableView layoutX="43.0" layoutY="44.0" prefHeight="275.0" prefWidth="93.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="0.0">
+                                                            <TableView fx:id="rennergebnisFilterRennergebnisTable" layoutX="43.0" layoutY="44.0" prefHeight="275.0" prefWidth="93.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
-                                                                <TableColumn prefWidth="92.0" text="Renn-ID" />
+                                                                <TableColumn fx:id="rennergebnisFilterRennergebnisRennIdTable" prefWidth="92.0" text="Renn-ID" />
                                                               </columns>
                                                             </TableView>
-                                                            <TableView layoutX="92.0" layoutY="61.0" prefHeight="275.0" prefWidth="89.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="0.0">
+                                                            <TableView fx:id="pferdFilterRennergebnisTable" layoutX="92.0" layoutY="61.0" prefHeight="275.0" prefWidth="89.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
-                                                                <TableColumn prefWidth="87.0" text="Chip-Nr" />
+                                                                <TableColumn fx:id="pferdFilterRennergebnisChipNrColumn" prefWidth="87.0" text="Chip-Nr" />
                                                               </columns>
                                                             </TableView>
-                                                            <TableView layoutX="180.0" layoutY="24.0" prefHeight="275.0" prefWidth="77.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                                                            <TableView fx:id="jockeyFilterRennergebnisTable" layoutX="180.0" layoutY="24.0" prefHeight="275.0" prefWidth="77.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
-                                                                <TableColumn prefWidth="78.0" text="SVNR" />
+                                                                <TableColumn fx:id="jockeyFilterRennergebnisSvnrColumn" prefWidth="78.0" text="SVNR" />
                                                               </columns>
                                                             </TableView>
                                                          </children>
@@ -180,7 +180,7 @@
                                                          <children>
                                                             <ToolBar layoutX="70.0" layoutY="-3.0" prefHeight="34.0" prefWidth="325.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                               <items>
-                                                                <Button mnemonicParsing="false" text="Filter by Pferd, Jockey &amp; Renn-ID" />
+                                                                <Button mnemonicParsing="false" onAction="#handleRennergebnisFilterBy" text="Filter by Pferd, Jockey &amp; Renn-ID" />
                                                               </items>
                                                             </ToolBar>
                                                          </children>
@@ -198,8 +198,9 @@
                                     <ToolBar prefHeight="84.0" prefWidth="896.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                       <items>
                                           <Label text="Platz:" />
-                                          <TextField prefHeight="25.0" prefWidth="382.0" />
-                                        <Button mnemonicParsing="false" text="Search by Platz" />
+                                          <TextField fx:id="rennergebnisSearchPlatzTextField" prefHeight="25.0" prefWidth="382.0" />
+                                        <Button mnemonicParsing="false" onAction="#handleRennergebnisSearchByPlatz" text="Search by Platz" />
+                                          <Button mnemonicParsing="false" onAction="#handleRennergebnisShowAll" text="Show All" />
                                       </items>
                                     </ToolBar>
                                  </children>
@@ -232,20 +233,20 @@
                                                                     <items>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                                            <children>
-                                                                              <TableView layoutX="-31.0" layoutY="59.0" prefHeight="276.0" prefWidth="156.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                              <TableView fx:id="jockeyAddToRennsimulationTable" layoutX="-31.0" layoutY="59.0" prefHeight="276.0" prefWidth="156.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                                 <columns>
-                                                                                  <TableColumn prefWidth="54.0" text="SVNR" />
-                                                                                  <TableColumn prefWidth="101.0" text="Name" />
+                                                                                  <TableColumn fx:id="jockeyAddToRennsimulationSvnrColumn" prefWidth="54.0" text="SVNR" />
+                                                                                  <TableColumn fx:id="jockeyAddToRennsimulationNameColumn" prefWidth="101.0" text="Name" />
                                                                                 </columns>
                                                                               </TableView>
                                                                            </children>
                                                                         </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                                                            <children>
-                                                                              <TableView layoutX="-28.0" layoutY="8.0" prefHeight="273.0" prefWidth="156.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                              <TableView fx:id="pferdAddToRennsimulationTable" layoutX="-28.0" layoutY="8.0" prefHeight="273.0" prefWidth="156.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                                 <columns>
-                                                                                  <TableColumn prefWidth="66.0" text="Chip-Nr" />
-                                                                                  <TableColumn prefWidth="89.0" text="Name" />
+                                                                                  <TableColumn fx:id="pferdAddToRennsimulationChipNrColumn" prefWidth="66.0" text="Chip-Nr" />
+                                                                                  <TableColumn fx:id="pferdAddToRennsimulationNameColumn" prefWidth="89.0" text="Name" />
                                                                                 </columns>
                                                                               </TableView>
                                                                            </children>
@@ -258,7 +259,7 @@
                                                                <children>
                                                                   <ToolBar layoutX="-22.0" layoutY="-8.0" prefHeight="32.0" prefWidth="322.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                      <items>
-                                                                        <Button mnemonicParsing="false" text="Add Pair to Rennsimulation" />
+                                                                        <Button mnemonicParsing="false" onAction="#handleRennersimulationAddPair" text="Add Pair to Rennsimulation" />
                                                                      </items>
                                                                   </ToolBar>
                                                                </children>
@@ -283,10 +284,10 @@
                                                                         </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                            <children>
-                                                                              <TableView layoutX="38.0" layoutY="20.0" prefHeight="282.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                              <TableView fx:id="pferdJockeyPaarRennsimulationTable" layoutX="38.0" layoutY="20.0" prefHeight="282.0" prefWidth="275.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                                 <columns>
-                                                                                  <TableColumn prefWidth="63.0" text="Chip-Nr" />
-                                                                                    <TableColumn prefWidth="75.0" text="SVNR" />
+                                                                                  <TableColumn fx:id="pferdJockeyPaarRennsimulationChipNrColumn" prefWidth="63.0" text="Chip-Nr" />
+                                                                                    <TableColumn fx:id="pferdJockeyPaarRennsimulationSvnrColumn" prefWidth="75.0" text="SVNR" />
                                                                                 </columns>
                                                                               </TableView>
                                                                            </children>
@@ -310,13 +311,13 @@
                                                                         </AnchorPane>
                                                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                                                                            <children>
-                                                                              <TableView layoutX="39.0" layoutY="26.0" prefHeight="282.0" prefWidth="410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                              <TableView fx:id="rennergebnisRennsimulationTable" layoutX="39.0" layoutY="26.0" prefHeight="282.0" prefWidth="410.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                                 <columns>
-                                                                                  <TableColumn prefWidth="75.0" text="Renn-ID" />
-                                                                                  <TableColumn prefWidth="67.0" text="Chip-Nr" />
-                                                                                    <TableColumn prefWidth="59.0" text="SVNR" />
-                                                                                    <TableColumn prefWidth="142.0" text="Durch. Geschw" />
-                                                                                    <TableColumn prefWidth="66.0" text="Platz" />
+                                                                                  <TableColumn fx:id="rennergebnisRennsimulationRennIdColumn" prefWidth="75.0" text="Renn-ID" />
+                                                                                  <TableColumn fx:id="rennergebnisRennsimulationChipNrColumn" prefWidth="67.0" text="Chip-Nr" />
+                                                                                    <TableColumn fx:id="rennergebnisRennsimulationSvnrColumn" prefWidth="59.0" text="SVNR" />
+                                                                                    <TableColumn fx:id="rennergebnisRennsimulationDurchnittlicheGeschwindigkeitColumn" prefWidth="142.0" text="Durch. Geschw" />
+                                                                                    <TableColumn fx:id="rennergebnisRennsimulationPlatzColumn" prefWidth="66.0" text="Platz" />
                                                                                 </columns>
                                                                               </TableView>
                                                                            </children>
@@ -337,8 +338,8 @@
                                        <children>
                                           <ToolBar layoutY="-6.0" prefHeight="32.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <items>
-                                              <Button mnemonicParsing="false" text="Reset" />
-                                                <Button mnemonicParsing="false" text="Rennsimulation Durchführen" />
+                                              <Button mnemonicParsing="false" onAction="#handleRennsimulationRest" text="Reset" />
+                                                <Button mnemonicParsing="false" onAction="#handleRennsimulationDurchfuehren" text="Rennsimulation Durchführen" />
                                             </items>
                                           </ToolBar>
                                        </children>
