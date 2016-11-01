@@ -18,7 +18,6 @@ import sepm.ws16.e1327450.service.Service;
 import sepm.ws16.e1327450.service.ServiceException;
 
 import java.io.IOException;
-import java.util.List;
 
 public class MainApp extends Application {
 
