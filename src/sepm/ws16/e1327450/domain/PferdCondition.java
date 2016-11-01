@@ -2,13 +2,13 @@ package sepm.ws16.e1327450.domain;
 
 public class PferdCondition {
 
-    String name;
-    int min_alter;
-    int max_alter;
-    double min_min_gesw;
-    double max_min_gesw;
-    double min_max_gesw;
-    double max_max_gesw;
+    private String name;
+    private int min_alter;
+    private int max_alter;
+    private double min_min_gesw;
+    private double max_min_gesw;
+    private double min_max_gesw;
+    private double max_max_gesw;
 
     public PferdCondition(String name, int min_alter, int max_alter, double min_min_gesw, double max_min_gesw, double min_max_gesw, double max_max_gesw) {
         this.name = name;

@@ -116,11 +116,14 @@ public class ImlService implements Service {
     }
 
     @Override
-    public Rennergebnis loadRennergebnis(int renn_id, int chip_nr, int svnr) throws ServiceException {
+    public Rennergebnis loadRennergebnis(RennergebnisID rennergebnisID) throws ServiceException {
+        int renn_id = rennergebnisID.getRenn_id();
+        int chip_nr = rennergebnisID.getChip_nr();
+        int svnr = rennergebnisID.getSvnr();
         logger.info("loadRennergebnis("+renn_id+","+chip_nr+","+svnr+")");
         Rennergebnis rennergebnis = null;
         try {
-            rennergebnis = daoRennergebnis.load(new RennergebnisID(renn_id,chip_nr,svnr));
+            rennergebnis = daoRennergebnis.load(rennergebnisID);
         } catch (PersistenceException e) {
             logger.error("could not load rennergebnis with renn-id "+renn_id+", chip-number "+chip_nr+", svnr "+svnr);
             throw new ServiceException(e.getMessage());
@@ -328,7 +331,7 @@ public class ImlService implements Service {
         int maxGewicht = jockeyCondition.getMaxGewicht();
         logger.info("searchJockey("+minKönnen+","+maxKönnen+","+name+","+geburtsdatum+","+minGewicht+","+maxGewicht+")");
         try {
-            return daoJockey.loadCondition(new JockeyCondition(minKönnen,maxKönnen,name,geburtsdatum,minGewicht,maxGewicht));
+            return daoJockey.loadCondition(jockeyCondition);
         } catch(PersistenceException e) {
             logger.error("could not load all pferde");
             throw new ServiceException(e.getMessage());
@@ -336,10 +339,18 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Rennergebnis> searchRennergebnis(int renn_id, int chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws ServiceException {
+    public List<Rennergebnis> searchRennergebnis(RennergebnisCondition rennergebnisCondition) throws ServiceException {
+        if (rennergebnisCondition == null) return null;
+        int renn_id = rennergebnisCondition.getRenn_id();
+        int chip_nr = rennergebnisCondition.getChip_nr();
+        int svnr = rennergebnisCondition.getSvnr();
+        double min_gesw = rennergebnisCondition.getMin_gesw();
+        double max_gesw = rennergebnisCondition.getMax_gesw();
+        int min_platz = rennergebnisCondition.getMin_platz();
+        int max_platz = rennergebnisCondition.getMax_platz();
         logger.info("searchRennergebnis("+renn_id+","+chip_nr+","+svnr+","+min_gesw+","+max_gesw+","+min_platz+","+max_platz+")");
         try {
-            return daoRennergebnis.loadCondition(renn_id,chip_nr,svnr,min_gesw,max_gesw,min_platz,max_platz);
+            return daoRennergebnis.loadCondition(rennergebnisCondition);
         } catch(PersistenceException e) {
             logger.error("could not load all rennergebnise");
             throw new ServiceException(e.getMessage());
@@ -347,7 +358,9 @@ public class ImlService implements Service {
     }
 
     @Override
-    public List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants) throws ServiceException {
+    public List<Rennergebnis> doRennsimulation(RennsimulationData rennsimulationData) throws ServiceException {
+        int renn_id = rennsimulationData.getRenn_id();
+        Map<Pferd, Jockey> participants = rennsimulationData.getParticipants();
         if(participants == null) return null;
         logger.info("doRennsimulation("+renn_id+","+participants.toString()+")");
         int final_renn_id = renn_id;
@@ -426,13 +439,15 @@ public class ImlService implements Service {
     }
 
     @Override
-    public Map<Integer,Integer> doStatistik(int chip_nr, int svnr) throws ServiceException {
+    public Statistik doStatistik(StatistikData statistikData) throws ServiceException {
+        int chip_nr = statistikData.getChip_nr();
+        int svnr = statistikData.getSvnr();
         logger.info("doStatistik("+chip_nr+","+svnr+")");
         Map<Integer,Integer> statistik = new HashMap<>();
-        if(chip_nr == -1 && svnr == -1) return null;
-        if(chip_nr != -1 && loadPferd(new PferdID(chip_nr)) == null) return null;
-        if(svnr != -1 && loadJockey(new JockeyID(svnr)) == null) return null;
-        List<Rennergebnis> rennergebnisList = searchRennergebnis(-1,chip_nr,svnr,-1,-1,-1,-1);
+        if(chip_nr == -1 && svnr == -1) return new Statistik(null);
+        if(chip_nr != -1 && loadPferd(new PferdID(chip_nr)) == null) return new Statistik(null);
+        if(svnr != -1 && loadJockey(new JockeyID(svnr)) == null) return new Statistik(null);
+        List<Rennergebnis> rennergebnisList = searchRennergebnis(new RennergebnisCondition(-1,chip_nr,svnr,-1,-1,-1,-1));
         for(Rennergebnis rennergebnis : rennergebnisList) {
             logger.info(rennergebnis.toString());
         }
@@ -454,7 +469,7 @@ public class ImlService implements Service {
                 filledStatistik.put(cnt,0);
             }
         }
-        return filledStatistik;
+        return new Statistik(filledStatistik);
     }
 
 }

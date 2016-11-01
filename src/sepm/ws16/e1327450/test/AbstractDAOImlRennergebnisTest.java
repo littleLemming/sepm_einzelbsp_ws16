@@ -84,12 +84,12 @@ public abstract class AbstractDAOImlRennergebnisTest {
         Rennergebnis rennergebnis5 = new Rennergebnis(1,daoPferd.load(new PferdID(1)),daoJockey.load(new JockeyID(1)),49.075,46.0,1.0,1.066,4);
         Rennergebnis rennergebnis6 = new Rennergebnis(1,daoPferd.load(new PferdID(6)),daoJockey.load(new JockeyID(4)),64.042,57.0,1.05,1.07,2);
         rennergebnisList = daoRennergebnis.loadAll();
-        List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,-1,-1,-1,-1);
+        List<Rennergebnis> rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(-1,-1,-1,-1,-1,-1,-1));
         assertTrue(rennergebnisList.size() == rennergebnisListLoaded.size());
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(0,-1,-1,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(0,-1,-1,-1,-1,-1,-1));
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis1);
@@ -98,7 +98,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,1,-1,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(-1,1,-1,-1,-1,-1,-1));
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis5);
@@ -106,14 +106,14 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,2,-1,-1,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(-1,-1,2,-1,-1,-1,-1));
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis3);
         assertTrue(rennergebnisList.size() == rennergebnisListLoaded.size());
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,45.5,50,-1,-1);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(-1,-1,-1,45.5,50,-1,-1));
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis5);
@@ -121,7 +121,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : rennergebnisList) {
             assertTrue(rennergebnisListLoaded.contains(rennergebnis));
         }
-        rennergebnisListLoaded = daoRennergebnis.loadCondition(-1,-1,-1,-1,-1,2,3);
+        rennergebnisListLoaded = daoRennergebnis.loadCondition(new RennergebnisCondition(-1,-1,-1,-1,-1,2,3));
         rennergebnisList = new ArrayList<>();
         rennergebnisList.add(rennergebnis0);
         rennergebnisList.add(rennergebnis1);

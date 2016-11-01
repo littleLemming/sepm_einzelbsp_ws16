@@ -3,7 +3,7 @@ package sepm.ws16.e1327450.domain;
 
 public class PferdID {
 
-    int chip_nr;
+    private int chip_nr;
 
     public PferdID(int chip_nr) {
         this.chip_nr = chip_nr;

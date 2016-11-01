@@ -42,8 +42,8 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
         logger.info("save("+r.toString()+")");
         try {
             if(load(new RennergebnisID(r.getRenn_id(),r.getPferd().getChip_nr(),r.getJockey().getSvnr())) != null) return;
-            if(loadCondition(r.getRenn_id(),r.getPferd().getChip_nr(),-1,-1,-1,-1,-1).size() != 0) return;
-            if(loadCondition(r.getRenn_id(),-1,r.getJockey().getSvnr(),-1,-1,-1,-1).size() != 0) return;
+            if(loadCondition(new RennergebnisCondition(r.getRenn_id(),r.getPferd().getChip_nr(),-1,-1,-1,-1,-1)).size() != 0) return;
+            if(loadCondition(new RennergebnisCondition(r.getRenn_id(),-1,r.getJockey().getSvnr(),-1,-1,-1,-1)).size() != 0) return;
             saveStmt.setInt(1,r.getRenn_id());
             saveStmt.setInt(2,r.getPferd().getChip_nr());
             saveStmt.setInt(3,r.getJockey().getSvnr());
@@ -99,7 +99,14 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public List<Rennergebnis> loadCondition(int renn_id, int chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws PersistenceException {
+    public List<Rennergebnis> loadCondition(RennergebnisCondition rennergebnisCondition) throws PersistenceException {
+        int renn_id = rennergebnisCondition.getRenn_id();
+        int chip_nr = rennergebnisCondition.getChip_nr();
+        int svnr = rennergebnisCondition.getSvnr();
+        double min_gesw = rennergebnisCondition.getMin_gesw();
+        double max_gesw = rennergebnisCondition.getMax_gesw();
+        int min_platz = rennergebnisCondition.getMin_platz();
+        int max_platz = rennergebnisCondition.getMax_platz();
         logger.info("loadCondition("+renn_id+","+chip_nr+","+svnr+","+min_gesw+","+max_gesw+","+min_platz+","+max_platz+")");
         List<Rennergebnis> rennergebnisList = new ArrayList<>();
         if(renn_id == -1 && chip_nr == -1 && svnr == -1 && min_gesw == -1 && max_gesw == -1 && min_platz == -1 && max_platz == -1){

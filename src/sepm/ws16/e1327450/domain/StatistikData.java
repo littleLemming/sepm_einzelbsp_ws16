@@ -1,23 +1,13 @@
 package sepm.ws16.e1327450.domain;
 
-public class RennergebnisID {
+public class StatistikData {
 
-    private int renn_id;
     private int chip_nr;
     private int svnr;
 
-    public RennergebnisID(int renn_id, int chip_nr, int svnr) {
-        this.renn_id = renn_id;
+    public StatistikData(int chip_nr, int svnr) {
         this.chip_nr = chip_nr;
         this.svnr = svnr;
-    }
-
-    public int getRenn_id() {
-        return renn_id;
-    }
-
-    public void setRenn_id(int renn_id) {
-        this.renn_id = renn_id;
     }
 
     public int getChip_nr() {
@@ -35,4 +25,5 @@ public class RennergebnisID {
     public void setSvnr(int svnr) {
         this.svnr = svnr;
     }
+
 }

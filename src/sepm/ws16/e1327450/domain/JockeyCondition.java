@@ -4,12 +4,12 @@ import java.sql.Date;
 
 public class JockeyCondition {
 
-    double minKönnen;
-    double maxKönnen;
-    String name;
-    Date geburtsdatum;
-    int minGewicht;
-    int maxGewicht;
+    private double minKönnen;
+    private double maxKönnen;
+    private String name;
+    private Date geburtsdatum;
+    private int minGewicht;
+    private int maxGewicht;
 
     public JockeyCondition(double minKönnen, double maxKönnen, String name, Date geburtsdatum, int minGewicht, int maxGewicht) {
         this.minKönnen = minKönnen;

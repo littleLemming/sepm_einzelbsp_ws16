@@ -17,7 +17,7 @@ public interface Service {
 
     Jockey loadJockey(JockeyID jockeyID) throws ServiceException;
 
-    Rennergebnis loadRennergebnis(int renn_id, int chip_nr, int svnr) throws ServiceException;
+    Rennergebnis loadRennergebnis(RennergebnisID rennergebnisID) throws ServiceException;
 
     boolean updatePferd(Pferd pferd) throws ServiceException;
 
@@ -45,10 +45,10 @@ public interface Service {
 
     List<Jockey> searchJockey(JockeyCondition jockeyCondition) throws ServiceException;
 
-    List<Rennergebnis> searchRennergebnis(int renn_id, int chip_nr, int svnr, double min_gesw, double max_gesw, int min_platz, int max_platz) throws ServiceException;
+    List<Rennergebnis> searchRennergebnis(RennergebnisCondition rennergebnisCondition) throws ServiceException;
 
-    List<Rennergebnis> doRennsimulation(int renn_id, Map<Pferd, Jockey> participants) throws ServiceException;
+    List<Rennergebnis> doRennsimulation(RennsimulationData rennsimulationData) throws ServiceException;
 
-    Map<Integer,Integer> doStatistik(int chip_nr, int svnr) throws ServiceException;
+    Statistik doStatistik(StatistikData statistikData) throws ServiceException;
 
 }
