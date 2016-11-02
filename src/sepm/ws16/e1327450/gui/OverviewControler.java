@@ -9,10 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sepm.ws16.e1327450.domain.Jockey;
-import sepm.ws16.e1327450.domain.Pferd;
-import sepm.ws16.e1327450.domain.PferdJockeyPair;
-import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.*;
 import sepm.ws16.e1327450.service.ServiceException;
 
 import java.sql.Date;
@@ -50,7 +47,7 @@ public class OverviewControler {
     @FXML
     private TableColumn<Pferd, Double> pferdViewMinGeschwColumn;
     @FXML
-    private TableColumn<Rennergebnis, Integer> rennergebnisFilterRennergebnisRennIdTable;
+    private TableColumn<RennID, Integer> rennergebnisFilterRennergebnisRennIdTable;
     @FXML
     private TableColumn<Rennergebnis, Double> rennergebnisRennsimulationDurchnittlicheGeschwindigkeitColumn;
     @FXML
@@ -90,7 +87,7 @@ public class OverviewControler {
     @FXML
     private TableColumn<Pferd, Integer> pferdViewAlterColumn;
     @FXML
-    private TableColumn<Rennergebnis, Double> rennergebnisseViewGluesColumn;
+    private TableColumn<Rennergebnis, Double> rennergebnisseViewGlueckColumn;
     @FXML
     private TextField jockeySearchNameTextField;
     @FXML
@@ -106,7 +103,7 @@ public class OverviewControler {
     @FXML
     private TableColumn<Pferd, Integer> pferdViewChipNrColumn;
     @FXML
-    private TableView<Rennergebnis> rennergebnisFilterRennergebnisTable;
+    private TableView<RennID> rennergebnisFilterRennergebnisTable;
     @FXML
     private TextField rennergebnisSearchPlatzTextField;
     @FXML
@@ -119,6 +116,9 @@ public class OverviewControler {
     private ObservableList<Pferd> pferdViewList = FXCollections.observableArrayList();
     private ObservableList<Jockey> jockeyViewList = FXCollections.observableArrayList();
     private ObservableList<Rennergebnis> rennergebnisViewList = FXCollections.observableArrayList();
+    private ObservableList<Pferd> pferdRennergebnisFilterList = FXCollections.observableArrayList();
+    private ObservableList<Jockey> jockeyRennergebnisFilterList = FXCollections.observableArrayList();
+    private ObservableList<RennID> rennergebnisRennergebnisFilterList = FXCollections.observableArrayList();
 
 
     public void setMainApp(MainApp mainApp) {
@@ -127,6 +127,9 @@ public class OverviewControler {
             pferdViewList.addAll(mainApp.getService().loadAllPferd());
             jockeyViewList.addAll(mainApp.getService().loadAllJockey());
             rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+            pferdRennergebnisFilterList.addAll(mainApp.getService().loadAllPferd());
+            jockeyRennergebnisFilterList.addAll(mainApp.getService().loadAllJockey());
+            rennergebnisRennergebnisFilterList.addAll(mainApp.getService().getAllRennIDs());
         } catch (ServiceException e) {
             logger.error("SETUP OF OVERVIEWCONTROLER FAILED");
             e.printStackTrace();
@@ -134,6 +137,9 @@ public class OverviewControler {
         pferdViewTable.setItems(pferdViewList);
         jockeyViewTable.setItems(jockeyViewList);
         rennergebnisseViewTable.setItems(rennergebnisViewList);
+        pferdFilterRennergebnisTable.setItems(pferdRennergebnisFilterList);
+        jockeyFilterRennergebnisTable.setItems(jockeyRennergebnisFilterList);
+        rennergebnisFilterRennergebnisTable.setItems(rennergebnisRennergebnisFilterList);
     }
 
     @FXML
@@ -149,6 +155,17 @@ public class OverviewControler {
         jockeyViewGeburtsdatum.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGeburtsdatum()));
         jockeyViewKoennenColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getKoennen()));
         jockeyViewGewichtColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGewicht()));
+        rennergebnisseViewRennIdColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getRenn_id()));
+        rennergebnisseViewChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPferd().getChip_nr()));
+        rennergebnisseViewSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
+        rennergebnisseViewDurchnittGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getDgeschw()));
+        rennergebnisseViewPlatzColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPlatz()));
+        rennergebnisseViewPferdGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPgeschw()));
+        rennergebnisseViewGlueckColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGlueck()));
+        rennergebnisseViewKoennenBerechnetColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getKoennen_b()));
+        pferdFilterRennergebnisChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getChip_nr()));
+        jockeyFilterRennergebnisSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getSvnr()));
+        rennergebnisFilterRennergebnisRennIdTable.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getRenn_id()));
     }
 
     @FXML

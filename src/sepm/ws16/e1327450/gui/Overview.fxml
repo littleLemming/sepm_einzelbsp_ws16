@@ -147,7 +147,7 @@
                                                       <TableColumn fx:id="rennergebnisseViewDurchnittGeschwColumn" prefWidth="138.0" text="Durchnitt Geschw" />
                                                       <TableColumn fx:id="rennergebnisseViewPlatzColumn" prefWidth="56.0" text="Platz" />
                                                       <TableColumn fx:id="rennergebnisseViewPferdGeschwColumn" prefWidth="110.0" text="Pferd Geschw" />
-                                                      <TableColumn fx:id="rennergebnisseViewGluesColumn" prefWidth="49.0" text="Glück" />
+                                                      <TableColumn fx:id="rennergebnisseViewGlueckColumn" prefWidth="49.0" text="Glück" />
                                                       <TableColumn fx:id="rennergebnisseViewKoennenBerechnetColumn" prefWidth="97.0" text="Können ber." />
                                                   </columns>
                                                 </TableView>
