@@ -204,6 +204,28 @@ public class DAOImlPferd implements DAOPferd {
     public PferdID getFreeChip_Nr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int chip_nr = 0;
+        try {
+            PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
+            loadAllStmt.setBoolean(1, false);
+            ResultSet res = loadAllStmt.executeQuery();
+            while(res.next()) {
+                chip_nr++;
+            }
+        } catch(SQLException e) {
+            logger.error("could not execute db-request: " + loadAllStmtS);
+            throw new PersistenceException(e.getMessage());
+        }
+        try {
+            PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
+            loadAllStmt.setBoolean(1, true);
+            ResultSet res = loadAllStmt.executeQuery();
+            while(res.next()) {
+                chip_nr++;
+            }
+        } catch(SQLException e) {
+            logger.error("could not execute db-request: " + loadAllStmtS);
+            throw new PersistenceException(e.getMessage());
+        }
         while (true) {
             try {
                 PreparedStatement loadStmt = connection.prepareStatement(loadStmtAS);

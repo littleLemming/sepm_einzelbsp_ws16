@@ -193,6 +193,28 @@ public class DAOImlJockey implements DAOJockey {
     public JockeyID getFreeSvnr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int svnr = 0;
+        try {
+            PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
+            loadAllStmt.setBoolean(1, false);
+            ResultSet res = loadAllStmt.executeQuery();
+            while(res.next()) {
+                svnr++;
+            }
+        } catch(SQLException e) {
+            logger.error("could not execute db-request: " + loadAllStmtS);
+            throw new PersistenceException(e.getMessage());
+        }
+        try {
+            PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
+            loadAllStmt.setBoolean(1, true);
+            ResultSet res = loadAllStmt.executeQuery();
+            while(res.next()) {
+                svnr++;
+            }
+        } catch(SQLException e) {
+            logger.error("could not execute db-request: " + loadAllStmtS);
+            throw new PersistenceException(e.getMessage());
+        }
         while (true) {
             try {
                 PreparedStatement loadStmt = connection.prepareStatement(loadStmtAS);
