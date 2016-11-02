@@ -438,6 +438,19 @@ public class ImlService implements Service {
     }
 
     @Override
+    public List<RennID> getAllRennIDs() throws ServiceException {
+        List<Rennergebnis> rennergebnisList = loadAllRennergebnis();
+        List<RennID> rennIDList = new ArrayList<>();
+        for(Rennergebnis rennergebnis : rennergebnisList) {
+            RennID rennID = new RennID(rennergebnis.getRenn_id());
+            if(!rennIDList.contains(rennID)) {
+                rennIDList.add(rennID);
+            }
+        }
+        return rennIDList;
+    }
+
+    @Override
     public Statistik doStatistik(StatistikData statistikData) throws ServiceException {
         int chip_nr = statistikData.getChip_nr();
         int svnr = statistikData.getSvnr();

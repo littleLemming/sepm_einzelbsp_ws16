@@ -49,6 +49,8 @@ public interface Service {
 
     List<Rennergebnis> doRennsimulation(RennsimulationData rennsimulationData) throws ServiceException;
 
+    List<RennID> getAllRennIDs() throws ServiceException;
+
     Statistik doStatistik(StatistikData statistikData) throws ServiceException;
 
 }
