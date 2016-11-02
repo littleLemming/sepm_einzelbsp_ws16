@@ -53,4 +53,10 @@ public interface Service {
 
     Statistik doStatistik(StatistikData statistikData) throws ServiceException;
 
+    RennID getFreeRennID() throws ServiceException;
+
+    PferdID getFreePferdID() throws ServiceException;
+
+    JockeyID getFreeJockeyID() throws ServiceException;
+
 }

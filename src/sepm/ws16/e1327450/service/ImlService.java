@@ -358,6 +358,7 @@ public class ImlService implements Service {
 
     @Override
     public List<Rennergebnis> doRennsimulation(RennsimulationData rennsimulationData) throws ServiceException {
+        logger.info("doRennsimulation");
         int renn_id = rennsimulationData.getRenn_id();
         Map<Pferd, Jockey> participants = rennsimulationData.getParticipants();
         if(participants == null) return null;
@@ -368,7 +369,7 @@ public class ImlService implements Service {
             if(renn_id != -1) {
                 final_renn_id = renn_id;
             } else {
-                final_renn_id = daoRennergebnis.getFreeRenn_id();
+                final_renn_id = daoRennergebnis.getFreeRenn_id().getRenn_id();
             }
         } catch (PersistenceException e) {
             logger.error("could sort out renn-id");
@@ -439,6 +440,7 @@ public class ImlService implements Service {
 
     @Override
     public List<RennID> getAllRennIDs() throws ServiceException {
+        logger.info("getAllRennIDs");
         List<Rennergebnis> rennergebnisList = loadAllRennergebnis();
         List<RennID> rennIDList = new ArrayList<>();
         for(Rennergebnis rennergebnis : rennergebnisList) {
@@ -452,6 +454,7 @@ public class ImlService implements Service {
 
     @Override
     public Statistik doStatistik(StatistikData statistikData) throws ServiceException {
+        logger.info("doStatistik");
         int chip_nr = statistikData.getChip_nr();
         int svnr = statistikData.getSvnr();
         logger.info("doStatistik("+chip_nr+","+svnr+")");
@@ -482,6 +485,39 @@ public class ImlService implements Service {
             }
         }
         return new Statistik(filledStatistik);
+    }
+
+    @Override
+    public RennID getFreeRennID() throws ServiceException {
+        logger.info("getFreeRennID");
+        try {
+            return daoRennergebnis.getFreeRenn_id();
+        } catch (PersistenceException e) {
+            logger.error("could not get free rennID");
+            throw new ServiceException("could not get free rennID");
+        }
+    }
+
+    @Override
+    public PferdID getFreePferdID() throws ServiceException {
+        logger.info("getFreePferdID");
+        try {
+            return daoPferd.getFreeChip_Nr();
+        } catch (PersistenceException e) {
+            logger.error("could not get free chip-nr");
+            throw new ServiceException("could not get free chip-nr");
+        }
+    }
+
+    @Override
+    public JockeyID getFreeJockeyID() throws ServiceException {
+        logger.info("getFreeJockeyID");
+        try {
+            return daoJockey.getFreeSvnr();
+        } catch (PersistenceException e) {
+            logger.error("could not get free svnr");
+            throw new ServiceException("could not get svnr");
+        }
     }
 
 }
