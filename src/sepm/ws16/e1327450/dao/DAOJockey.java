@@ -21,7 +21,7 @@ public interface DAOJockey {
 
     List<Jockey> loadCondition(JockeyCondition jockeyCondition) throws PersistenceException;
 
-    int getFreeSvnr() throws PersistenceException;
+    JockeyID getFreeSvnr() throws PersistenceException;
 
     boolean isFreeSvnr(JockeyID jockeyID) throws PersistenceException;
 

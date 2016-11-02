@@ -158,14 +158,14 @@ public class DAOImlRennergebnis implements  DAORennergebnis {
     }
 
     @Override
-    public int getFreeRenn_id() throws PersistenceException {
+    public RennID getFreeRenn_id() throws PersistenceException {
         logger.info("getFreeRenn_id()");
         int renn_id = loadAll().size();
         List<Rennergebnis> rennergebnisList = loadAll();
         for(Rennergebnis rennergebnis : rennergebnisList) {
             if(renn_id == rennergebnis.getRenn_id()) renn_id++;
         }
-        return renn_id;
+        return new RennID(renn_id);
     }
 
     @Override

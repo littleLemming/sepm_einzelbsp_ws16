@@ -21,7 +21,7 @@ public interface DAOPferd {
 
     List<Pferd> loadCondition(PferdCondition pferdCondition) throws PersistenceException;
 
-    int getFreeChip_Nr() throws PersistenceException;
+    PferdID getFreeChip_Nr() throws PersistenceException;
 
     boolean isFreeChip_Nr(PferdID pferdID) throws PersistenceException;
 

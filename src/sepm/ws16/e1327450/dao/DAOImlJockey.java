@@ -42,7 +42,7 @@ public class DAOImlJockey implements DAOJockey {
             if (res.next()) return;
             PreparedStatement saveStmt = connection.prepareStatement(saveStmtS);
             saveStmt.setInt(1,j.getSvnr());
-            saveStmt.setDouble(2,j.getKönnen());
+            saveStmt.setDouble(2,j.getKoennen());
             saveStmt.setString(3,j.getName());
             saveStmt.setDate(4,j.getGeburtsdatum());
             saveStmt.setInt(5,j.getGewicht());
@@ -98,7 +98,7 @@ public class DAOImlJockey implements DAOJockey {
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
             PreparedStatement updateStmt = connection.prepareStatement(updateStmtS);
-            updateStmt.setDouble(1, j.getKönnen());
+            updateStmt.setDouble(1, j.getKoennen());
             updateStmt.setString(2, j.getName());
             updateStmt.setDate(3, j.getGeburtsdatum());
             updateStmt.setInt(4, j.getGewicht());
@@ -181,11 +181,11 @@ public class DAOImlJockey implements DAOJockey {
     }
 
     @Override
-    public int getFreeSvnr() throws PersistenceException {
+    public JockeyID getFreeSvnr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int svnr = loadAll().size();
         while (load(new JockeyID(svnr)) != null) svnr ++;
-        return svnr;
+        return new JockeyID(svnr);
     }
 
     @Override

@@ -192,11 +192,11 @@ public class DAOImlPferd implements DAOPferd {
     }
 
     @Override
-    public int getFreeChip_Nr() throws PersistenceException {
+    public PferdID getFreeChip_Nr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int chip_nr = loadAll().size();
         while (load(new PferdID(chip_nr)) != null) chip_nr ++;
-        return chip_nr;
+        return new PferdID(chip_nr);
     }
 
     @Override

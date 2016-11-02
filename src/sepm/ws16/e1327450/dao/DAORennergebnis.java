@@ -17,7 +17,7 @@ public interface DAORennergebnis {
 
     List<Rennergebnis> loadCondition(RennergebnisCondition rennergebnisCondition) throws PersistenceException;
 
-    int getFreeRenn_id() throws PersistenceException;
+    RennID getFreeRenn_id() throws PersistenceException;
 
     boolean isFreeRenn_id(RennID rennID) throws PersistenceException;
 }
