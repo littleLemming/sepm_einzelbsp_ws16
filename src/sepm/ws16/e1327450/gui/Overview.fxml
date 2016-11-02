@@ -161,7 +161,7 @@
                                                          <children>
                                                             <TableView fx:id="rennergebnisFilterRennergebnisTable" layoutX="43.0" layoutY="44.0" prefHeight="275.0" prefWidth="93.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="166.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
-                                                                <TableColumn fx:id="rennergebnisFilterRennergebnisRennIdTable" prefWidth="92.0" text="Renn-ID" />
+                                                                <TableColumn fx:id="rennergebnisFilterRennergebnisRennIdTable" prefWidth="91.0" text="Renn-ID" />
                                                               </columns>
                                                             </TableView>
                                                             <TableView fx:id="pferdFilterRennergebnisTable" layoutX="92.0" layoutY="61.0" prefHeight="275.0" prefWidth="89.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="78.0" AnchorPane.topAnchor="0.0">
@@ -171,7 +171,7 @@
                                                             </TableView>
                                                             <TableView fx:id="jockeyFilterRennergebnisTable" layoutX="180.0" layoutY="24.0" prefHeight="275.0" prefWidth="77.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
                                                               <columns>
-                                                                <TableColumn fx:id="jockeyFilterRennergebnisSvnrColumn" prefWidth="78.0" text="SVNR" />
+                                                                <TableColumn fx:id="jockeyFilterRennergebnisSvnrColumn" prefWidth="75.0" text="SVNR" />
                                                               </columns>
                                                             </TableView>
                                                          </children>

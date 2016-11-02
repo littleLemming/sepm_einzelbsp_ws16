@@ -42,6 +42,10 @@ public class MainApp extends Application {
         return service;
     }
 
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     @Override
     public void start(Stage primaryStage) {
         logger.info("start()");
