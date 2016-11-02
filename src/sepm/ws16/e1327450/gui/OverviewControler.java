@@ -15,7 +15,9 @@ import sepm.ws16.e1327450.service.ServiceException;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OverviewControler {
 
@@ -185,7 +187,7 @@ public class OverviewControler {
         pferdAddToRennsimulationChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getChip_nr()));
         pferdAddToRennsimulationNameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
         pferdJockeyPaarRennsimulationChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPferd().getChip_nr()));
-        pferdJockeyPaarRennsimulationSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getName()));
+        pferdJockeyPaarRennsimulationSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
         rennergebnisRennsimulationRennIdColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getRenn_id()));
         rennergebnisRennsimulationChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPferd().getChip_nr()));
         rennergebnisRennsimulationSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
@@ -203,20 +205,20 @@ public class OverviewControler {
             alert.setTitle("Kein Name angegeben!");
             alert.setHeaderText("Bitte geben Sie einen Namen an nach dem gesucht werden soll!");
             alert.showAndWait();
-        } else {
-            try {
-                List<Pferd> removeList = new ArrayList<>();
-                for(Pferd p : pferdViewList) {
-                    removeList.add(p);
-                }
-                pferdViewList.removeAll(removeList);
-                pferdViewList.addAll(mainApp.getService().searchPferd(new PferdCondition(name,-1,-1,-1,-1,-1,-1)));
-            } catch (ServiceException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle("Es konnte nicht nach dem Namen gesucht werden!");
-                alert.showAndWait();
+            return;
+        }
+        try {
+            List<Pferd> removeList = new ArrayList<>();
+            for(Pferd p : pferdViewList) {
+                removeList.add(p);
             }
+            pferdViewList.removeAll(removeList);
+            pferdViewList.addAll(mainApp.getService().searchPferd(new PferdCondition(name,-1,-1,-1,-1,-1,-1)));
+        } catch (ServiceException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Es konnte nicht nach dem Namen gesucht werden!");
+            alert.showAndWait();
         }
     }
 
@@ -268,20 +270,20 @@ public class OverviewControler {
             alert.setTitle("Kein Name angegeben!");
             alert.setHeaderText("Bitte geben Sie einen Namen an nach dem gesucht werden soll!");
             alert.showAndWait();
-        } else {
-            try {
-                List<Jockey> removeList = new ArrayList<>();
-                for(Jockey j : jockeyViewList) {
-                    removeList.add(j);
-                }
-                jockeyViewList.removeAll(removeList);
-                jockeyViewList.addAll(mainApp.getService().searchJockey(new JockeyCondition(-1,-1,name,null,-1,-1)));
-            } catch (ServiceException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.initOwner(mainApp.getPrimaryStage());
-                alert.setTitle("Es konnte nicht nach dem Namen gesucht werden!");
-                alert.showAndWait();
+            return;
+        }
+        try {
+            List<Jockey> removeList = new ArrayList<>();
+            for(Jockey j : jockeyViewList) {
+                removeList.add(j);
             }
+            jockeyViewList.removeAll(removeList);
+            jockeyViewList.addAll(mainApp.getService().searchJockey(new JockeyCondition(-1,-1,name,null,-1,-1)));
+        } catch (ServiceException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Es konnte nicht nach dem Namen gesucht werden!");
+            alert.showAndWait();
         }
     }
 
@@ -330,6 +332,7 @@ public class OverviewControler {
             alert.setTitle("Nichts ausgewählt!");
             alert.setHeaderText("Bitte wählen sie zumindest eine Renn-ID oder ein Pferd oder einen Jockey oder eine beliebige Kombination dieser!");
             alert.showAndWait();
+            return;
         }
         int renn_id = -1;
         if(selectedRennID != null) {
@@ -351,10 +354,14 @@ public class OverviewControler {
             rennergebnisViewList.removeAll(removeList);
             rennergebnisViewList.addAll(mainApp.getService().searchRennergebnis(new RennergebnisCondition(renn_id,chip_nr,svnr,-1,-1,-1,-1)));
         } catch (ServiceException e) {
+            rennergebnisFilterRennergebnisTable.getSelectionModel().select(null);
+            pferdFilterRennergebnisTable.getSelectionModel().select(null);
+            jockeyFilterRennergebnisTable.getSelectionModel().select(null);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.initOwner(mainApp.getPrimaryStage());
             alert.setTitle("Es konnte nicht nach der angegebnen Kombination an Parametern gesucht werden!");
             alert.showAndWait();
+            return;
         }
         rennergebnisFilterRennergebnisTable.getSelectionModel().select(null);
         pferdFilterRennergebnisTable.getSelectionModel().select(null);
@@ -417,18 +424,104 @@ public class OverviewControler {
 
     @FXML
     void handleRennersimulationAddPair() {
-
+        logger.info("handleRennersimulationAddPair");
+        Pferd selectedPferd = pferdAddToRennsimulationTable.getSelectionModel().getSelectedItem();
+        Jockey selectedJockey = jockeyAddToRennsimulationTable.getSelectionModel().getSelectedItem();
+        if(selectedPferd == null || selectedJockey == null) {
+            pferdAddToRennsimulationTable.getSelectionModel().select(null);
+            jockeyAddToRennsimulationTable.getSelectionModel().select(null);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Kein Pferd & Jockey ausgewählt!");
+            alert.setHeaderText("Bitte wählen Sie sowhol ein Pferd als auch einen Jockey!");
+            alert.showAndWait();
+            return;
+        }
+        for(PferdJockeyPair pair : pferdJockeyPaarRennsimulationList) {
+            if(pair.getJockey().equals(selectedJockey) || pair.getPferd().equals(selectedPferd)) {
+                pferdAddToRennsimulationTable.getSelectionModel().select(null);
+                jockeyAddToRennsimulationTable.getSelectionModel().select(null);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initOwner(mainApp.getPrimaryStage());
+                alert.setTitle("Keine doppelten Antritte!");
+                alert.setHeaderText("Bitte wählen Sie so aus, dass jeder Jockey und jedes Pferd maximal einmal in einer Rennsimulation teilnehmen!");
+                alert.showAndWait();
+                return;
+            }
+        }
+        pferdJockeyPaarRennsimulationList.add(new PferdJockeyPair(selectedPferd,selectedJockey));
+        pferdAddToRennsimulationTable.getSelectionModel().select(null);
+        jockeyAddToRennsimulationTable.getSelectionModel().select(null);
     }
 
     @FXML
-    void handleRennsimulationRest() {
-
+    void handleRennsimulationReset() {
+        List<PferdJockeyPair> removeList1 = new ArrayList<>();
+        List<Rennergebnis> removeList2 = new ArrayList<>();
+        for(PferdJockeyPair pair : pferdJockeyPaarRennsimulationList) {
+            removeList1.add(pair);
+        }
+        for(Rennergebnis rennergebnis : rennergebnisRennsimulationList) {
+            removeList2.add(rennergebnis);
+        }
+        pferdJockeyPaarRennsimulationList.removeAll(removeList1);
+        rennergebnisRennsimulationList.removeAll(removeList2);
     }
 
     @FXML
     void handleRennsimulationDurchfuehren() {
-
+        if(pferdJockeyPaarRennsimulationList == null || pferdJockeyPaarRennsimulationList.size()==0) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Keine Paare gewählt!");
+            alert.setHeaderText("Bitte wählen Sie aus welche Pferd-Jockey-Paare an der Rennsimulation teilnehmen sollen!");
+            alert.showAndWait();
+            return;
+        }
+        int renn_id = -1;
+        try {
+            renn_id = mainApp.getService().getFreeRennID().getRenn_id();
+        } catch (ServiceException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Konnte nicht eine freie Renn-ID finden!");
+            alert.setHeaderText("Ein Fehler ist aufgetreten beim suchen einer freien Renn-ID!");
+            alert.showAndWait();
+            return;
+        }
+        Map<Pferd, Jockey> participants = new HashMap<>();
+        for(PferdJockeyPair pair : pferdJockeyPaarRennsimulationList) {
+            participants.put(pair.getPferd(),pair.getJockey());
+        }
+        RennsimulationData data = new RennsimulationData(renn_id,participants);
+        List<Rennergebnis> ergebnisse = null;
+        try {
+            ergebnisse = mainApp.getService().doRennsimulation(data);
+        } catch (ServiceException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Konnte nicht durchführen!");
+            alert.setHeaderText("Ein Fehler ist aufgetreten beim Durchführen der Rennsimulation!");
+            alert.showAndWait();
+        }
+        rennergebnisRennsimulationList.addAll(ergebnisse);
+        try {
+            List<Rennergebnis> removelist1 = new ArrayList<>();
+            List<RennID> removelist2 = new ArrayList<>();
+            for(Rennergebnis r : rennergebnisViewList) {
+                removelist1.add(r);
+            }
+            for(RennID r : rennergebnisRennergebnisFilterList) {
+                removelist2.add(r);
+            }
+            rennergebnisViewList.removeAll(removelist1);
+            rennergebnisRennergebnisFilterList.removeAll(removelist2);
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+            rennergebnisRennergebnisFilterList.addAll(mainApp.getService().getAllRennIDs());
+        } catch (ServiceException e) {
+            logger.error("reload of rennergebnis-tables failse");
+            e.printStackTrace();
+        }
     }
-
 
 }

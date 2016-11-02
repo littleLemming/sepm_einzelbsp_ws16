@@ -338,7 +338,7 @@
                                        <children>
                                           <ToolBar layoutY="-6.0" prefHeight="32.0" prefWidth="898.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <items>
-                                              <Button mnemonicParsing="false" onAction="#handleRennsimulationRest" text="Reset" />
+                                              <Button mnemonicParsing="false" onAction="#handleRennsimulationReset" text="Reset" />
                                                 <Button mnemonicParsing="false" onAction="#handleRennsimulationDurchfuehren" text="Rennsimulation Durchführen" />
                                             </items>
                                           </ToolBar>
