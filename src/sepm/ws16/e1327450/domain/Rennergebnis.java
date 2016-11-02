@@ -17,7 +17,7 @@ public class Rennergebnis {
     private int platz;
 
     public Rennergebnis(int renn_id, Pferd pferd, Jockey jockey, double dgeschw, double pgeschw, double glueck, double koennen_b, int platz) {
-        logger.info("Rennergebnis("+renn_id+","+pferd.toString()+","+jockey.toString()+","+dgeschw+","+pgeschw+","+glueck+","+koennen_b+","+platz+")");
+        if(pferd != null && jockey != null) logger.info("Rennergebnis("+renn_id+","+pferd.toString()+","+jockey.toString()+","+dgeschw+","+pgeschw+","+glueck+","+koennen_b+","+platz+")");
         this.renn_id = renn_id;
         this.pferd = pferd;
         this.dgeschw = dgeschw;
