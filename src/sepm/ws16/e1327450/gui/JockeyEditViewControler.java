@@ -64,7 +64,6 @@ public class JockeyEditViewControler {
     public void handleOk() {
         if (isInputValid()) {
             if(jockey==null) {
-                logger.info("HERE");
                 Jockey newJockey = new Jockey(Integer.parseInt(svnrFeld.getText()),Double.parseDouble(koennenFeld.getText()),nameFeld.getText(),java.sql.Date.valueOf(geburtsdatumFeld.getValue()),Integer.parseInt(gewichtFeld.getText()));
                 try {
                     service.saveJockey(newJockey);
@@ -121,6 +120,24 @@ public class JockeyEditViewControler {
             return false;
         }
         try {
+            int svnr = Integer.parseInt(svnrFeld.getText());
+            if(svnr<0) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initOwner(dialogStage);
+                alert.setTitle("Svnr muss größer 0 sein!");
+                alert.setContentText("Bitte geben Sie eine positive svnr an!");
+                alert.showAndWait();
+                return false;
+            }
+        } catch(NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(dialogStage);
+            alert.setTitle("Svnr muss Integer sein!");
+            alert.setContentText("Bitte geben Sie einen Integer als svnr an an!");
+            alert.showAndWait();
+            return false;
+        }
+        try {
             if (jockey == null && !service.isFreeJockeyID(new JockeyID(Integer.parseInt(svnrFeld.getText())))) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.initOwner(dialogStage);
@@ -161,6 +178,24 @@ public class JockeyEditViewControler {
             return false;
         }
         if(!gewichtFeld.getText().matches("[0-9]+")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(dialogStage);
+            alert.setTitle("Gewicht muss Integer sein!");
+            alert.setContentText("Bitte geben Sie einen Integer als Gewicht an!");
+            alert.showAndWait();
+            return false;
+        }
+        try {
+            int gewicht = Integer.parseInt(gewichtFeld.getText());
+            if(gewicht<40) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.initOwner(dialogStage);
+                alert.setTitle("Zu niedrieges Gewicht!");
+                alert.setContentText("Untergewichtige Jockeys dürfen nicht reiten - mindestens 40kg!");
+                alert.showAndWait();
+                return false;
+            }
+        } catch(NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(dialogStage);
             alert.setTitle("Gewicht muss Integer sein!");

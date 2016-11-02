@@ -242,7 +242,48 @@ public class OverviewControler {
 
     @FXML
     void handlePferdEdit() {
-
+        Pferd selectedPferd = pferdViewTable.getSelectionModel().getSelectedItem();
+        if (selectedPferd != null) {
+            boolean okClicked = mainApp.showPferdEdit(selectedPferd);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Kein Pferd gewählt!");
+            alert.setHeaderText("Wählen Sie ein Pferd das Sie bearbeiten wollen!");
+            alert.showAndWait();
+        }
+        try {
+            List<Pferd> removelist1 = new ArrayList<>();
+            List<Pferd> removelist2 = new ArrayList<>();
+            List<Pferd> removelist3 = new ArrayList<>();
+            List<Rennergebnis> removelist4 = new ArrayList<>();
+            for(Pferd p : pferdViewList) {
+                removelist1.add(p);
+            }
+            for(Pferd p : pferdRennergebnisFilterList) {
+                removelist2.add(p);
+            }
+            for(Pferd p : pferdAddToRennsimulationList) {
+                removelist3.add(p);
+            }
+            for(Rennergebnis r : rennergebnisViewList) {
+                removelist4.add(r);
+            }
+            pferdViewList.removeAll(removelist1);
+            pferdRennergebnisFilterList.removeAll(removelist2);
+            pferdAddToRennsimulationList.removeAll(removelist3);
+            rennergebnisViewList.removeAll(removelist4);
+            pferdViewList.addAll(mainApp.getService().loadAllPferd());
+            pferdRennergebnisFilterList.addAll(mainApp.getService().loadAllPferd());
+            pferdAddToRennsimulationList.addAll(mainApp.getService().loadAllPferd());
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+        } catch (ServiceException e) {
+            Alert eAlert = new Alert(Alert.AlertType.ERROR);
+            eAlert.initOwner(mainApp.getPrimaryStage());
+            eAlert.setTitle("Fehler beim updaten der Pferde-Listen!");
+            eAlert.showAndWait();
+            return;
+        }
     }
 
     @FXML
@@ -303,7 +344,39 @@ public class OverviewControler {
 
     @FXML
     void handlePferdNew() {
-
+        boolean okClicked = mainApp.showPferdEdit(null);
+        try {
+            List<Pferd> removelist1 = new ArrayList<>();
+            List<Pferd> removelist2 = new ArrayList<>();
+            List<Pferd> removelist3 = new ArrayList<>();
+            List<Rennergebnis> removelist4 = new ArrayList<>();
+            for(Pferd p : pferdViewList) {
+                removelist1.add(p);
+            }
+            for(Pferd p : pferdRennergebnisFilterList) {
+                removelist2.add(p);
+            }
+            for(Pferd p : pferdAddToRennsimulationList) {
+                removelist3.add(p);
+            }
+            for(Rennergebnis r : rennergebnisViewList) {
+                removelist4.add(r);
+            }
+            pferdViewList.removeAll(removelist1);
+            pferdRennergebnisFilterList.removeAll(removelist2);
+            pferdAddToRennsimulationList.removeAll(removelist3);
+            rennergebnisViewList.removeAll(removelist4);
+            pferdViewList.addAll(mainApp.getService().loadAllPferd());
+            pferdRennergebnisFilterList.addAll(mainApp.getService().loadAllPferd());
+            pferdAddToRennsimulationList.addAll(mainApp.getService().loadAllPferd());
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+        } catch (ServiceException e) {
+            Alert eAlert = new Alert(Alert.AlertType.ERROR);
+            eAlert.initOwner(mainApp.getPrimaryStage());
+            eAlert.setTitle("Fehler beim updaten der Pferde-Listen!");
+            eAlert.showAndWait();
+            return;
+        }
     }
 
     @FXML

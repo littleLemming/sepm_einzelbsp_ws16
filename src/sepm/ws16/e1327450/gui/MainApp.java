@@ -117,6 +117,33 @@ public class MainApp extends Application {
         }
     }
 
+    boolean showPferdEdit(Pferd pferd) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("PferdEditView.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            if(pferd != null) {
+                dialogStage.setTitle("Pferd bearbeiten");
+            } else {
+                dialogStage.setTitle("Pferd erstellen");
+            }
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            PferdEditViewControler controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setService(service);
+            controller.setPferd(pferd);
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
