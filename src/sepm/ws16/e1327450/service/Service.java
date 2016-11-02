@@ -55,8 +55,8 @@ public interface Service {
 
     RennID getFreeRennID() throws ServiceException;
 
-    PferdID getFreePferdID() throws ServiceException;
+    boolean isFreePferdID(PferdID pferdID) throws ServiceException;
 
-    JockeyID getFreeJockeyID() throws ServiceException;
+    boolean isFreeJockeyID(JockeyID jockeyID) throws ServiceException;
 
 }

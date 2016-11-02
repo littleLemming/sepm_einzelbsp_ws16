@@ -507,10 +507,10 @@ public class ImlService implements Service {
     }
 
     @Override
-    public PferdID getFreePferdID() throws ServiceException {
-        logger.info("getFreePferdID");
+    public boolean isFreePferdID(PferdID pferdID) throws ServiceException {
+        logger.info("isFreePferdID");
         try {
-            return daoPferd.getFreeChip_Nr();
+            return daoPferd.isFreeChip_Nr(pferdID);
         } catch (PersistenceException e) {
             logger.error("could not get free chip-nr");
             throw new ServiceException("could not get free chip-nr");
@@ -518,10 +518,10 @@ public class ImlService implements Service {
     }
 
     @Override
-    public JockeyID getFreeJockeyID() throws ServiceException {
-        logger.info("getFreeJockeyID");
+    public boolean isFreeJockeyID(JockeyID jockeyID) throws ServiceException {
+        logger.info("isFreeJockeyID");
         try {
-            return daoJockey.getFreeSvnr();
+            return daoJockey.isFreeSvnr(jockeyID);
         } catch (PersistenceException e) {
             logger.error("could not get free svnr");
             throw new ServiceException("could not get svnr");

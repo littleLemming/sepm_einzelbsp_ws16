@@ -50,7 +50,7 @@
                                           <ToolBar layoutX="22.0" layoutY="11.0" prefHeight="61.0" prefWidth="894.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <items>
                                                 <Label text="Geburtsdatum des Jockey:" />
-                                                <DatePicker prefHeight="25.0" prefWidth="698.0" />
+                                                <DatePicker fx:id="geburtsdatumFeld" prefHeight="25.0" prefWidth="698.0" />
                                              </items>
                                           </ToolBar>
                                        </children>
@@ -64,7 +64,7 @@
                                                       <ToolBar layoutX="51.0" layoutY="26.0" prefHeight="60.0" prefWidth="892.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <items>
                                                             <Label text="Gewicht des Jockey (in ganzen kg):" />
-                                                            <TextField prefHeight="25.0" prefWidth="639.0" />
+                                                            <TextField fx:id="gewichtFeld" prefHeight="25.0" prefWidth="639.0" />
                                                          </items>
                                                       </ToolBar>
                                                    </children>
@@ -74,7 +74,7 @@
                                                       <ToolBar layoutX="8.0" layoutY="9.0" prefHeight="57.0" prefWidth="892.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <items>
                                                             <Label text="Können des Jockey (ein Double zwischen - und + unendlich):" />
-                                                            <TextField prefHeight="25.0" prefWidth="467.0" />
+                                                            <TextField fx:id="koennenFeld" prefHeight="25.0" prefWidth="467.0" />
                                                          </items>
                                                       </ToolBar>
                                                    </children>

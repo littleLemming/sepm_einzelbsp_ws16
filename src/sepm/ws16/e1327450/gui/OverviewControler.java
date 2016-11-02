@@ -363,6 +363,38 @@ public class OverviewControler {
             alert.setHeaderText("Wählen Sie einen Jockey den Sie bearbeiten wollen!");
             alert.showAndWait();
         }
+        try {
+            List<Jockey> removelist1 = new ArrayList<>();
+            List<Jockey> removelist2 = new ArrayList<>();
+            List<Jockey> removelist3 = new ArrayList<>();
+            List<Rennergebnis> removelist4 = new ArrayList<>();
+            for(Jockey j : jockeyViewList) {
+                removelist1.add(j);
+            }
+            for(Jockey j : jockeyRennergebnisFilterList) {
+                removelist2.add(j);
+            }
+            for(Jockey j : jockeyAddToRennsimulationList) {
+                removelist3.add(j);
+            }
+            for(Rennergebnis r : rennergebnisViewList) {
+                removelist4.add(r);
+            }
+            jockeyViewList.removeAll(removelist1);
+            jockeyRennergebnisFilterList.removeAll(removelist2);
+            jockeyAddToRennsimulationList.removeAll(removelist3);
+            rennergebnisViewList.removeAll(removelist4);
+            jockeyViewList.addAll(mainApp.getService().loadAllJockey());
+            jockeyRennergebnisFilterList.addAll(mainApp.getService().loadAllJockey());
+            jockeyAddToRennsimulationList.addAll(mainApp.getService().loadAllJockey());
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+        } catch (ServiceException e) {
+            Alert eAlert = new Alert(Alert.AlertType.ERROR);
+            eAlert.initOwner(mainApp.getPrimaryStage());
+            eAlert.setTitle("Fehler beim updaten der Jockey-Listen!");
+            eAlert.showAndWait();
+            return;
+        }
     }
 
     @FXML
@@ -423,6 +455,38 @@ public class OverviewControler {
     @FXML
     void handleJockeyNew() {
         boolean okClicked = mainApp.showJockeyEdit(null);
+        try {
+            List<Jockey> removelist1 = new ArrayList<>();
+            List<Jockey> removelist2 = new ArrayList<>();
+            List<Jockey> removelist3 = new ArrayList<>();
+            List<Rennergebnis> removelist4 = new ArrayList<>();
+            for(Jockey j : jockeyViewList) {
+                removelist1.add(j);
+            }
+            for(Jockey j : jockeyRennergebnisFilterList) {
+                removelist2.add(j);
+            }
+            for(Jockey j : jockeyAddToRennsimulationList) {
+                removelist3.add(j);
+            }
+            for(Rennergebnis r : rennergebnisViewList) {
+                removelist4.add(r);
+            }
+            jockeyViewList.removeAll(removelist1);
+            jockeyRennergebnisFilterList.removeAll(removelist2);
+            jockeyAddToRennsimulationList.removeAll(removelist3);
+            rennergebnisViewList.removeAll(removelist4);
+            jockeyViewList.addAll(mainApp.getService().loadAllJockey());
+            jockeyRennergebnisFilterList.addAll(mainApp.getService().loadAllJockey());
+            jockeyAddToRennsimulationList.addAll(mainApp.getService().loadAllJockey());
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+        } catch (ServiceException e) {
+            Alert eAlert = new Alert(Alert.AlertType.ERROR);
+            eAlert.initOwner(mainApp.getPrimaryStage());
+            eAlert.setTitle("Fehler beim updaten der Jockey-Listen!");
+            eAlert.showAndWait();
+            return;
+        }
     }
 
     @FXML
