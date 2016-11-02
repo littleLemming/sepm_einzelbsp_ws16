@@ -207,7 +207,7 @@ public abstract class AbstractDAOImlPferdTest {
         for(Pferd pferd : daoPferd.loadAll()) {
             chip_nrList.add(pferd.getChip_nr());
         }
-        int chip_nrLoaded = daoPferd.getFreeChip_Nr();
+        int chip_nrLoaded = daoPferd.getFreeChip_Nr().getChip_nr();
         assertFalse(chip_nrList.contains(chip_nrLoaded));
     }
 

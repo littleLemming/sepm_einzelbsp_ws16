@@ -205,7 +205,7 @@ public abstract class AbstractDAOImlJockeyTest {
         for(Jockey jockey : daoJockey.loadAll()) {
             svnrList.add(jockey.getSvnr());
         }
-        Integer svnrLoaded = daoJockey.getFreeSvnr();
+        Integer svnrLoaded = daoJockey.getFreeSvnr().getSvnr();
         assertFalse(svnrList.contains(svnrLoaded));
     }
     

@@ -196,7 +196,7 @@ public abstract class AbstractDAOImlRennergebnisTest {
         for(Rennergebnis rennergebnis : daoRennergebnis.loadAll()) {
             renn_idList.add(rennergebnis.getRenn_id());
         }
-        Integer renn_idLoaded = daoRennergebnis.getFreeRenn_id();
+        Integer renn_idLoaded = daoRennergebnis.getFreeRenn_id().getRenn_id();
         assertFalse(renn_idList.contains(renn_idLoaded));
     }
     
