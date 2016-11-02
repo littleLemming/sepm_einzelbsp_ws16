@@ -258,13 +258,31 @@ public class OverviewControler {
         }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Zustimmung zum Löschen");
-        alert.setHeaderText("Wenn Sie das Pferd löschen, wird in Rennergebnissen nicht mehr die Chip-Nr des Pferdes angezeigt werden und die Daten des Pferdes sind nicht mehr abrufabr!");
+        alert.setHeaderText("Wenn Sie das Pferd löschen, werden die Daten des Pferdes nicht mehr abrufbar sein und es kann an keinen Rennsimulationen mehr teilnehmen!");
         alert.setContentText("Wollen Sie das Pferd wirklich löschen?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
             try {
                 mainApp.getService().deletePferde(selectedPferd);
+                List<Pferd> removelist1 = new ArrayList<>();
+                List<Pferd> removelist2 = new ArrayList<>();
+                List<Pferd> removelist3 = new ArrayList<>();
+                for(Pferd p : pferdViewList) {
+                    removelist1.add(p);
+                }
+                for(Pferd p : pferdRennergebnisFilterList) {
+                    removelist2.add(p);
+                }
+                for(Pferd p : pferdAddToRennsimulationList) {
+                    removelist3.add(p);
+                }
+                pferdViewList.removeAll(removelist1);
+                pferdRennergebnisFilterList.removeAll(removelist2);
+                pferdAddToRennsimulationList.removeAll(removelist3);
+                pferdViewList.addAll(mainApp.getService().loadAllPferd());
+                pferdRennergebnisFilterList.addAll(mainApp.getService().loadAllPferd());
+                pferdAddToRennsimulationList.addAll(mainApp.getService().loadAllPferd());
             } catch (ServiceException e) {
                 Alert eAlert = new Alert(Alert.AlertType.ERROR);
                 eAlert.initOwner(mainApp.getPrimaryStage());
@@ -498,6 +516,22 @@ public class OverviewControler {
             alert.setHeaderText("Bitte wählen Sie aus welche Pferd-Jockey-Paare an der Rennsimulation teilnehmen sollen!");
             alert.showAndWait();
             return;
+        }
+        for(PferdJockeyPair pair : pferdJockeyPaarRennsimulationList) {
+            try {
+                Jockey jockey = mainApp.getService().loadJockey(new JockeyID(pair.getJockey().getSvnr()));
+                Pferd pferd = mainApp.getService().loadPferd(new PferdID(pair.getPferd().getChip_nr()));
+                if(jockey == null || pferd == null) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.initOwner(mainApp.getPrimaryStage());
+                    alert.setTitle("Pferd oder Jockey gelöscht!");
+                    alert.setHeaderText("Ein Pferd oder Jockey die an der Rennsimulation hätten teilnehmen sollen wurde gelöscht! Bitte führen Sie einen Reset durch und beginnen Sie von vorne!");
+                    alert.showAndWait();
+                    return;
+                }
+            } catch (ServiceException e) {
+                e.printStackTrace();
+            }
         }
         int renn_id = -1;
         try {
