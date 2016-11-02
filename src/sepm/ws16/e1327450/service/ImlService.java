@@ -435,6 +435,14 @@ public class ImlService implements Service {
                 platz += 1;
             } ergebnisse.get(i).setPlatz(platz);
         }
+        for(Rennergebnis r : ergebnisse) {
+            try {
+                daoRennergebnis.save(r);
+            } catch (PersistenceException e) {
+                logger.error("could not save Rennergebnis "+ r.toString());
+                throw new ServiceException("could not save Rennergebnis "+ r.toString());
+            }
+        }
         return ergebnisse;
     }
 
