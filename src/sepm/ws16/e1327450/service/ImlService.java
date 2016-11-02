@@ -8,7 +8,6 @@ import sepm.ws16.e1327450.domain.*;
 import java.lang.*;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.*;
 
 public class ImlService implements Service {
@@ -414,7 +413,7 @@ public class ImlService implements Service {
                     throw new ServiceException("jockey " + participants.get(pferd).toString() + " can't ride twice in race");
                 }
             }
-            double kb = 1+(0.15*1/Math.PI*Math.atan(1/5*participants.get(pferd).getKönnen()));
+            double kb = 1+(0.15*1/Math.PI*Math.atan(1/5*participants.get(pferd).getKoennen()));
             Random r = new Random();
             double pferdGesch = pferd.getMin_gesw() + (pferd.getMax_gesw() - pferd.getMin_gesw()) * r.nextDouble();
             double glueck = 0.95 + (1.05 - 0.95) * r.nextDouble();
