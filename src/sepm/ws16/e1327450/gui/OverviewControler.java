@@ -4,20 +4,14 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.*;
 import sepm.ws16.e1327450.service.ServiceException;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OverviewControler {
 
@@ -252,7 +246,34 @@ public class OverviewControler {
 
     @FXML
     void handlePferdDelete() {
+        logger.info("handlePferdDelete");
+        Pferd selectedPferd = pferdViewTable.getSelectionModel().getSelectedItem();
+        if(selectedPferd == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Kein Pferd gewählt!");
+            alert.setHeaderText("Bitte wählen Sie ein Pferd das Sie löschen wollen!");
+            alert.showAndWait();
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Zustimmung zum Löschen");
+        alert.setHeaderText("Wenn Sie das Pferd löschen, wird in Rennergebnissen nicht mehr die Chip-Nr des Pferdes angezeigt werden und die Daten des Pferdes sind nicht mehr abrufabr!");
+        alert.setContentText("Wollen Sie das Pferd wirklich löschen?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                mainApp.getService().deletePferde(selectedPferd);
+            } catch (ServiceException e) {
+                Alert eAlert = new Alert(Alert.AlertType.ERROR);
+                eAlert.initOwner(mainApp.getPrimaryStage());
+                eAlert.setTitle("Pferd konnte nicht gelöscht werden!");
+                eAlert.setHeaderText("Während dem Löschen ist ein Fehler aufgetreten!");
+                eAlert.showAndWait();
+                return;
+            }
+        }
     }
 
     @FXML
