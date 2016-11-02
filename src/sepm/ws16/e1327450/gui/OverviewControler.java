@@ -1,6 +1,7 @@
 package sepm.ws16.e1327450.gui;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -166,8 +167,8 @@ public class OverviewControler {
         jockeyViewKoennenColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getKoennen()));
         jockeyViewGewichtColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGewicht()));
         rennergebnisseViewRennIdColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getRenn_id()));
-        rennergebnisseViewChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPferd().getChip_nr()));
-        rennergebnisseViewSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
+        rennergebnisseViewChipNrColumn.setCellValueFactory(cellData -> (cellData.getValue().getPferd() == null) ? new ReadOnlyObjectWrapper("unknown") : new ReadOnlyObjectWrapper(cellData.getValue().getPferd().getChip_nr()));
+        rennergebnisseViewSvnrColumn.setCellValueFactory(cellData -> (cellData.getValue().getJockey() == null) ? new ReadOnlyObjectWrapper("unknown") : new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
         rennergebnisseViewDurchnittGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getDgeschw()));
         rennergebnisseViewPlatzColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPlatz()));
         rennergebnisseViewPferdGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPgeschw()));
@@ -268,6 +269,7 @@ public class OverviewControler {
                 List<Pferd> removelist1 = new ArrayList<>();
                 List<Pferd> removelist2 = new ArrayList<>();
                 List<Pferd> removelist3 = new ArrayList<>();
+                List<Rennergebnis> removelist4 = new ArrayList<>();
                 for(Pferd p : pferdViewList) {
                     removelist1.add(p);
                 }
@@ -277,12 +279,17 @@ public class OverviewControler {
                 for(Pferd p : pferdAddToRennsimulationList) {
                     removelist3.add(p);
                 }
+                for(Rennergebnis r : rennergebnisViewList) {
+                    removelist4.add(r);
+                }
                 pferdViewList.removeAll(removelist1);
                 pferdRennergebnisFilterList.removeAll(removelist2);
                 pferdAddToRennsimulationList.removeAll(removelist3);
+                rennergebnisViewList.removeAll(removelist4);
                 pferdViewList.addAll(mainApp.getService().loadAllPferd());
                 pferdRennergebnisFilterList.addAll(mainApp.getService().loadAllPferd());
                 pferdAddToRennsimulationList.addAll(mainApp.getService().loadAllPferd());
+                rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
             } catch (ServiceException e) {
                 Alert eAlert = new Alert(Alert.AlertType.ERROR);
                 eAlert.initOwner(mainApp.getPrimaryStage());
@@ -346,17 +353,76 @@ public class OverviewControler {
 
     @FXML
     void handleJockeyEdit() {
-
+        Jockey selectedJockey = jockeyViewTable.getSelectionModel().getSelectedItem();
+        if (selectedJockey != null) {
+            boolean okClicked = mainApp.showJockeyEdit(selectedJockey);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Kein Jockey gewählt!");
+            alert.setHeaderText("Wählen Sie einen Jockey den Sie bearbeiten wollen!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
     void handleJockeyDelete() {
+        Jockey selectedJockey = jockeyViewTable.getSelectionModel().getSelectedItem();
+        if(selectedJockey == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("Kein Jockey gewählt!");
+            alert.setHeaderText("Bitte wählen Sie einen Jockey den Sie löschen wollen!");
+            alert.showAndWait();
+            return;
+        }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Zustimmung zum Löschen");
+        alert.setHeaderText("Wenn Sie den Jockey löschen, werden die Daten des Jockey nicht mehr abrufbar sein und er kann an keinen Rennsimulationen mehr teilnehmen!");
+        alert.setContentText("Wollen Sie den Jockey wirklich löschen?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            try {
+                mainApp.getService().deleteJockey(selectedJockey);
+                List<Jockey> removelist1 = new ArrayList<>();
+                List<Jockey> removelist2 = new ArrayList<>();
+                List<Jockey> removelist3 = new ArrayList<>();
+                List<Rennergebnis> removelist4 = new ArrayList<>();
+                for(Jockey j : jockeyViewList) {
+                    removelist1.add(j);
+                }
+                for(Jockey j : jockeyRennergebnisFilterList) {
+                    removelist2.add(j);
+                }
+                for(Jockey j : jockeyAddToRennsimulationList) {
+                    removelist3.add(j);
+                }
+                for(Rennergebnis r : rennergebnisViewList) {
+                    removelist4.add(r);
+                }
+                jockeyViewList.removeAll(removelist1);
+                jockeyRennergebnisFilterList.removeAll(removelist2);
+                jockeyAddToRennsimulationList.removeAll(removelist3);
+                rennergebnisViewList.removeAll(removelist4);
+                jockeyViewList.addAll(mainApp.getService().loadAllJockey());
+                jockeyRennergebnisFilterList.addAll(mainApp.getService().loadAllJockey());
+                jockeyAddToRennsimulationList.addAll(mainApp.getService().loadAllJockey());
+                rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+            } catch (ServiceException e) {
+                Alert eAlert = new Alert(Alert.AlertType.ERROR);
+                eAlert.initOwner(mainApp.getPrimaryStage());
+                eAlert.setTitle("Jockey konnte nicht gelöscht werden!");
+                eAlert.setHeaderText("Während dem Löschen ist ein Fehler aufgetreten!");
+                eAlert.showAndWait();
+                return;
+            }
+        }
     }
 
     @FXML
     void handleJockeyNew() {
-
+        boolean okClicked = mainApp.showJockeyEdit(null);
     }
 
     @FXML
