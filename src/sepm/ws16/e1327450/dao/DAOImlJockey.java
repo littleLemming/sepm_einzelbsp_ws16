@@ -183,7 +183,7 @@ public class DAOImlJockey implements DAOJockey {
     @Override
     public JockeyID getFreeSvnr() throws PersistenceException {
         logger.info("getFreeSvnr()");
-        int svnr = loadAll().size();
+        int svnr = 0;
         while (load(new JockeyID(svnr)) != null) svnr ++;
         return new JockeyID(svnr);
     }
