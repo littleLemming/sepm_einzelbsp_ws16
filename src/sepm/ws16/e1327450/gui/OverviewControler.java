@@ -1,17 +1,25 @@
 package sepm.ws16.e1327450.gui;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.Jockey;
 import sepm.ws16.e1327450.domain.Pferd;
 import sepm.ws16.e1327450.domain.PferdJockeyPair;
 import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.service.ServiceException;
 
 import java.sql.Date;
 
 public class OverviewControler {
+
+    final static Logger logger = LoggerFactory.getLogger(OverviewControler.class);
 
     private MainApp mainApp;
 
@@ -108,14 +116,39 @@ public class OverviewControler {
     @FXML
     private TableColumn<Rennergebnis, Integer> rennergebnisRennsimulationSvnrColumn;
 
+    private ObservableList<Pferd> pferdViewList = FXCollections.observableArrayList();
+    private ObservableList<Jockey> jockeyViewList = FXCollections.observableArrayList();
+    private ObservableList<Rennergebnis> rennergebnisViewList = FXCollections.observableArrayList();
+
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        try {
+            pferdViewList.addAll(mainApp.getService().loadAllPferd());
+            jockeyViewList.addAll(mainApp.getService().loadAllJockey());
+            rennergebnisViewList.addAll(mainApp.getService().loadAllRennergebnis());
+        } catch (ServiceException e) {
+            logger.error("SETUP OF OVERVIEWCONTROLER FAILED");
+            e.printStackTrace();
+        }
+        pferdViewTable.setItems(pferdViewList);
+        jockeyViewTable.setItems(jockeyViewList);
+        rennergebnisseViewTable.setItems(rennergebnisViewList);
     }
 
     @FXML
     private void initialize() {
-
+        pferdViewChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getChip_nr()));
+        pferdViewNameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
+        pferdViewRasseColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getRasse()));
+        pferdViewAlterColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getAlter_jahre()));
+        pferdViewMinGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getMin_gesw()));
+        pferdViewMaxGeschwColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getMax_gesw()));
+        jockeyViewSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getSvnr()));
+        jockeyViewNameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
+        jockeyViewGeburtsdatum.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGeburtsdatum()));
+        jockeyViewKoennenColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getKoennen()));
+        jockeyViewGewichtColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getGewicht()));
     }
 
     @FXML

@@ -27,17 +27,10 @@ public class MainApp extends Application {
     private BorderPane rootLayout;
     private Service service;
 
-    private ObservableList<Pferd> pferdList = FXCollections.observableArrayList();
-    private ObservableList<Jockey> jockeyList = FXCollections.observableArrayList();
-    private ObservableList<Rennergebnis> rennergebnisList = FXCollections.observableArrayList();
-
     public MainApp() {
         logger.info("MainApp()");
         try {
             service = new ImlService();
-            pferdList.addAll(service.loadAllPferd());
-            jockeyList.addAll(service.loadAllJockey());
-            rennergebnisList.addAll(service.loadAllRennergebnis());
         } catch (ServiceException e) {
             logger.error("SETUP OF MAINAPP FAILED");
             e.printStackTrace();
@@ -47,18 +40,6 @@ public class MainApp extends Application {
 
     public Service getService() {
         return service;
-    }
-
-    public ObservableList<Pferd> getPferdList() {
-        return pferdList;
-    }
-
-    public ObservableList<Jockey> getJockeyList() {
-        return jockeyList;
-    }
-
-    public ObservableList<Rennergebnis> getRennergebnisList() {
-        return rennergebnisList;
     }
 
     @Override
