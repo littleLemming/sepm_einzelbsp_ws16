@@ -238,7 +238,9 @@ public class DAOImlJockey implements DAOJockey {
             PreparedStatement loadStmt = connection.prepareStatement(loadStmtAS);
             loadStmt.setInt(1,svnr);
             ResultSet res = loadStmt.executeQuery();
-            if (!res.next()) return true;
+            if (!res.next()) {
+                return true;
+            }
             return false;
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + loadStmtAS);
