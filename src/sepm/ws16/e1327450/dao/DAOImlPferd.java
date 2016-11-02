@@ -20,6 +20,7 @@ public class DAOImlPferd implements DAOPferd {
 
     private String saveStmtS;
     private String loadStmtS;
+    private String loadStmtAS;
     private String loadAllStmtS;
     private String deleteStmtS;
     private String updateStmtS;
@@ -27,10 +28,11 @@ public class DAOImlPferd implements DAOPferd {
     public DAOImlPferd(Connection connection) throws PersistenceException {
         logger.info("DAOImlPferd("+connection+")");
         this.connection = connection;
-        saveStmtS = "INSERT INTO \"PUBLIC\".\"PFERD\"(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw) VALUES (?,?,?,?,?,?,?)";
-        loadStmtS = "SELECT * FROM PFERD WHERE chip_nr=?";
-        loadAllStmtS = "SELECT * FROM PFERD";
-        deleteStmtS = "DELETE FROM PFERD WHERE chip_nr=?";
+        saveStmtS = "INSERT INTO \"PUBLIC\".\"PFERD\"(chip_nr,name,rasse,alter_jahre,bild,min_gesw,max_gesw,deleted) VALUES (?,?,?,?,?,?,?,?)";
+        loadStmtS = "SELECT * FROM PFERD WHERE chip_nr=? AND DELETED=?";
+        loadStmtAS = "SELECT * FROM PFERD WHERE chip_nr=?";
+        loadAllStmtS = "SELECT * FROM PFERD WHERE DELETED=?";
+        deleteStmtS = "UPDATE PFERD SET DELETED=true WHERE chip_nr=?";
         updateStmtS = "UPDATE PFERD SET name=?,rasse=?,alter_jahre=?,bild=?,min_gesw=?,max_gesw=? WHERE chip_nr=?";
 }
 
@@ -41,6 +43,7 @@ public class DAOImlPferd implements DAOPferd {
         try {
             PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,p.getChip_nr());
+            loadStmt.setBoolean(2,false);
             ResultSet res = loadStmt.executeQuery();
             if (res.next()) return;
             PreparedStatement saveStmt = connection.prepareStatement(saveStmtS);
@@ -51,6 +54,7 @@ public class DAOImlPferd implements DAOPferd {
             saveStmt.setString(5,p.getBild());
             saveStmt.setDouble(6,p.getMin_gesw());
             saveStmt.setDouble(7,p.getMax_gesw());
+            saveStmt.setBoolean(8,false);
             saveStmt.executeUpdate();
         } catch (SQLException e) {
             logger.error("could not execute db-request: " + saveStmtS);
@@ -66,6 +70,7 @@ public class DAOImlPferd implements DAOPferd {
         try {
             PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,chip_nr);
+            loadStmt.setBoolean(2,false);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return null;
             return new Pferd(res.getInt("chip_nr"),res.getString("name"),res.getString("rasse"),res.getInt("alter_jahre"),res.getString("bild"),res.getDouble("min_gesw"),res.getDouble("max_gesw"));
@@ -82,6 +87,7 @@ public class DAOImlPferd implements DAOPferd {
         try {
             PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,p.getChip_nr());
+            loadStmt.setBoolean(2,false);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
             PreparedStatement deleteStmt = connection.prepareStatement(deleteStmtS);
@@ -100,6 +106,7 @@ public class DAOImlPferd implements DAOPferd {
         try {
             PreparedStatement loadStmt = connection.prepareStatement(loadStmtS);
             loadStmt.setInt(1,p.getChip_nr());
+            loadStmt.setBoolean(2,false);
             ResultSet res = loadStmt.executeQuery();
             if (!res.next()) return;
             PreparedStatement updateStmt = connection.prepareStatement(updateStmtS);
@@ -123,6 +130,7 @@ public class DAOImlPferd implements DAOPferd {
         List<Pferd> pferdList = new ArrayList<>();
         try {
             PreparedStatement loadAllStmt = connection.prepareStatement(loadAllStmtS);
+            loadAllStmt.setBoolean(1,false);
             ResultSet res = loadAllStmt.executeQuery();
             while(res.next()) {
                 if(res.getString("name") != null) pferdList.add(new Pferd(res.getInt("chip_nr"),res.getString("name"),res.getString("rasse"),res.getInt("alter_jahre"),res.getString("bild"),res.getInt("min_gesw"),res.getInt("max_gesw")));
@@ -178,6 +186,7 @@ public class DAOImlPferd implements DAOPferd {
             if(addedFirst) sqlQuery += " AND";
             sqlQuery += " max_gesw<=" + max_max_gesw;
         }
+        sqlQuery += " AND deleted=false";
         try{
             loadConditionStmt = connection.prepareStatement(sqlQuery);
             ResultSet res = loadConditionStmt.executeQuery();
@@ -195,8 +204,18 @@ public class DAOImlPferd implements DAOPferd {
     public PferdID getFreeChip_Nr() throws PersistenceException {
         logger.info("getFreeSvnr()");
         int chip_nr = 0;
-        while (load(new PferdID(chip_nr)) != null) chip_nr ++;
-        return new PferdID(chip_nr);
+        while (true) {
+            try {
+                PreparedStatement loadStmt = connection.prepareStatement(loadStmtAS);
+                loadStmt.setInt(1,chip_nr);
+                ResultSet res = loadStmt.executeQuery();
+                if (!res.next()) return new PferdID(chip_nr);
+                chip_nr ++;
+            } catch (SQLException e) {
+                logger.error("could not execute db-request: " + loadStmtAS);
+                throw new PersistenceException(e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -204,6 +223,15 @@ public class DAOImlPferd implements DAOPferd {
         if(pferdID == null) return false;
         int chip_nr = pferdID.getChip_nr();
         logger.info("isFreeChip_Nr("+chip_nr+")");
-        return load(pferdID) == null;
+        try {
+            PreparedStatement loadStmt = connection.prepareStatement(loadStmtAS);
+            loadStmt.setInt(1,chip_nr);
+            ResultSet res = loadStmt.executeQuery();
+            if (!res.next()) return true;
+            return false;
+        } catch (SQLException e) {
+            logger.error("could not execute db-request: " + loadStmtAS);
+            throw new PersistenceException(e.getMessage());
+        }
     }
 }
