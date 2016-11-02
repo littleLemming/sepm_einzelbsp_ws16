@@ -7,6 +7,7 @@ CREATE TABLE Pferd
     bild varchar(255) NOT NULL,
     min_gesw double NOT NULL CHECK(40 <= min_gesw AND min_gesw <= 60),
     max_gesw double NOT NULL CHECK(40 <= max_gesw AND max_gesw <= 60),
+    deleted boolean NOT NULL,
     PRIMARY KEY(chip_nr)
     );
 
@@ -20,6 +21,7 @@ CREATE TABLE Jockey
     name varchar(255) NOT NULL,
     geburtsdatum DATE NOT NULL,
     gewicht int NOT NULL,
+    deleted boolean NOT NULL,
     PRIMARY KEY(svnr)
     );
 
