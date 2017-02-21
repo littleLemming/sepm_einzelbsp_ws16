@@ -49,13 +49,13 @@ ALTER TABLE Rennergebnis
 ALTER TABLE Rennergebnis
     ADD CONSTRAINT unique_jockey_rennen UNIQUE(renn_id,svnr);
 
-INSERT INTO "PUBLIC"."PFERD" VALUES(0,'Philidor','Trakhner',22,'0000_philidor_1.jpg',53.0,60.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(1,'Rusty','Shetland Pony',16,'0001_rusty_0.jpg',40.0,46.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(2,'Kori','Huzule',13,'0002_kori_1.jpg',40.0,51.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(3,'Jaris','Fjordpony',9,'0003_jaris_2.jpg',56.0,59.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(4,'Pia','Haflinger',17,'0004_pia_0.jpg',43.0,55.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(5,'Benji','Haflinger-Noriker',15,'0005_benji_1.jpg',40.0,44.0,false);
-INSERT INTO "PUBLIC"."PFERD" VALUES(6,'Szilja','Araber',12,'0000_szilja_0.jpg',48.0,57.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(0,'Philidor','Trakhner',22,'philidor_1.jpg',53.0,60.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(1,'Rusty','Shetland Pony',16,'rusty_0.jpg',40.0,46.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(2,'Kori','Huzule',13,'kori_1.jpg',40.0,51.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(3,'Jaris','Fjordpony',9,'jaris_2.jpg',56.0,59.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(4,'Pia','Haflinger',17,'pia_0.jpg',43.0,55.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(5,'Benji','Haflinger-Noriker',15,'benji_1.jpg',40.0,44.0,false);
+INSERT INTO "PUBLIC"."PFERD" VALUES(6,'Szilja','Araber',12,'szilja_0.jpg',48.0,57.0,false);
 
 
 INSERT INTO "PUBLIC"."JOCKEY" VALUES(0,58.0,'Pinkie Pie','2004-08-12',47,false);
