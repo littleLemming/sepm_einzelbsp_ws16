@@ -27,9 +27,10 @@ public abstract class AbstractDAOImlJockeyTest {
     /** load valid svnr **/
     @Test
     public void loadWithValid() throws PersistenceException {
-        logger.info("createWithValid()");
+        logger.info("loadWithValid()");
         Jockey jockey = new Jockey(0,58.0,"Pinkie Pie",java.sql.Date.valueOf("2004-08-12"),47);
-        Jockey loadedJockey = daoJockey.load(new JockeyID(0));
+        JockeyID jid = new JockeyID(0);
+        Jockey loadedJockey = daoJockey.load(jid);
         assertTrue(jockey.equals(loadedJockey));
     }
 
@@ -54,6 +55,9 @@ public abstract class AbstractDAOImlJockeyTest {
         jockeyList.add(new Jockey(5,287.0,"Princess Celestia",java.sql.Date.valueOf("1987-09-08"),61));
         jockeyList.add(new Jockey(6,201.0,"Princess Luna",java.sql.Date.valueOf("1990-01-04"),59));
         List<Jockey> jockeyListLoaded = daoJockey.loadAll();
+        for (Jockey jockey : jockeyListLoaded) {
+            logger.info(jockey.toString());
+        }
         for(Jockey jockey : jockeyList) {
             assertTrue(jockeyListLoaded.contains(jockey));
         }
