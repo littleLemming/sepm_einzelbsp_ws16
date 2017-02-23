@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import sepm.ws16.e1327450.domain.*;
 import sepm.ws16.e1327450.service.ServiceException;
 
+import java.io.File;
 import java.sql.Date;
 import java.util.*;
 
@@ -237,7 +238,15 @@ public class OverviewControler {
 
     @FXML
     void handlePferdViewBild() {
-
+        logger.info("handlePferdViewBild");
+        Pferd selectedPferd = pferdViewTable.getSelectionModel().getSelectedItem();
+        if (selectedPferd != null) {
+            String basePath = new File("").getAbsolutePath();
+            String picture = selectedPferd.getBild();
+            basePath = basePath + "/images/" + picture;
+            logger.info(basePath);
+            boolean okClicked = mainApp.showBild(basePath);
+        }
     }
 
     @FXML

@@ -144,6 +144,29 @@ public class MainApp extends Application {
         }
     }
 
+    boolean showBild(String picture) {
+        try {
+            logger.info(picture);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("BildView.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Bild: " + picture);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            BildViewControler controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setPicture(picture);
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
