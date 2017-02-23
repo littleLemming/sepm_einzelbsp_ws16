@@ -113,6 +113,19 @@ public class OverviewControler {
     private TableColumn<PferdJockeyPair, Integer> pferdJockeyPaarRennsimulationChipNrColumn;
     @FXML
     private TableColumn<Rennergebnis, Integer> rennergebnisRennsimulationSvnrColumn;
+    @FXML
+    private TableView<Pferd> pferdAddToStatistikTable;
+    @FXML
+    private TableView<Jockey> jockeyAddToStatistikTable;
+    @FXML
+    private TableColumn<Pferd, Integer> pferdAddToStatistikChipNrColumn;
+    @FXML
+    private TableColumn<Pferd, String> pferdAddToStatistikNameColumn;
+    @FXML
+    private TableColumn<Jockey, Integer> jockeyAddToStatistikSvnrColumn;
+    @FXML
+    private TableColumn<Jockey, String> jockeyAddToStatistikNameColumn;
+
 
     private ObservableList<Pferd> pferdViewList = FXCollections.observableArrayList();
     private ObservableList<Jockey> jockeyViewList = FXCollections.observableArrayList();
@@ -124,6 +137,8 @@ public class OverviewControler {
     private ObservableList<Pferd> pferdAddToRennsimulationList = FXCollections.observableArrayList();
     private ObservableList<PferdJockeyPair> pferdJockeyPaarRennsimulationList = FXCollections.observableArrayList();
     private ObservableList<Rennergebnis> rennergebnisRennsimulationList = FXCollections.observableArrayList();
+    private ObservableList<Pferd> pferdAddToStatistikList = FXCollections.observableArrayList();
+    private ObservableList<Jockey> jockeyAddToStatistikList = FXCollections.observableArrayList();
 
     public void setMainApp(MainApp mainApp) {
         logger.info("setMainApp");
@@ -137,6 +152,8 @@ public class OverviewControler {
             rennergebnisRennergebnisFilterList.addAll(mainApp.getService().getAllRennIDs());
             jockeyAddToRennsimulationList.addAll(mainApp.getService().loadAllJockey());
             pferdAddToRennsimulationList.addAll(mainApp.getService().loadAllPferd());
+            pferdAddToStatistikList.addAll(mainApp.getService().loadAllPferd());
+            jockeyAddToStatistikList.addAll(mainApp.getService().loadAllJockey());
         } catch (ServiceException e) {
             logger.error("SETUP OF OVERVIEWCONTROLER FAILED");
             e.printStackTrace();
@@ -151,6 +168,8 @@ public class OverviewControler {
         pferdAddToRennsimulationTable.setItems(pferdAddToRennsimulationList);
         pferdJockeyPaarRennsimulationTable.setItems(pferdJockeyPaarRennsimulationList);
         rennergebnisRennsimulationTable.setItems(rennergebnisRennsimulationList);
+        pferdAddToStatistikTable.setItems(pferdAddToStatistikList);
+        jockeyAddToStatistikTable.setItems(jockeyAddToStatistikList);
     }
 
     @FXML
@@ -189,6 +208,10 @@ public class OverviewControler {
         rennergebnisRennsimulationSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getJockey().getSvnr()));
         rennergebnisRennsimulationDurchnittlicheGeschwindigkeitColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getDgeschw()));
         rennergebnisRennsimulationPlatzColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getPlatz()));
+        pferdAddToStatistikChipNrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getChip_nr()));
+        pferdAddToStatistikNameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
+        jockeyAddToStatistikSvnrColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getSvnr()));
+        jockeyAddToStatistikNameColumn.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
     }
 
     @FXML

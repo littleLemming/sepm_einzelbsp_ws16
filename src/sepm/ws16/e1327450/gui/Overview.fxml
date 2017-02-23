@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -349,6 +350,44 @@
                            </children>
                         </AnchorPane>
                      </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Statistiken">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane layoutX="89.0" layoutY="43.0" prefHeight="367.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ToolBar layoutY="327.0" prefHeight="40.0" prefWidth="312.0">
+                                <items>
+                                  <Button mnemonicParsing="false" onAction="#handleStatistikCreate" text="Statistik erstellen" />
+                                    <Button fx:id="hanldeResetSelection" mnemonicParsing="false" text="Reset Selection" />
+                                </items>
+                              </ToolBar>
+                              <TableView fx:id="pferdAddToStatistikTable" prefHeight="328.0" prefWidth="155.0">
+                                <columns>
+                                  <TableColumn fx:id="pferdAddToStatistikChipNrColumn" prefWidth="67.0" text="Chip-Nr" />
+                                    <TableColumn fx:id="pferdAddToStatistikNameColumn" prefWidth="87.0" text="Name" />
+                                </columns>
+                              </TableView>
+                              <TableView fx:id="jockeyAddToStatistikTable" layoutX="155.0" prefHeight="327.0" prefWidth="157.0">
+                                <columns>
+                                  <TableColumn fx:id="jockeyAddToStatistikSvnrColumn" prefWidth="49.0" text="SVNR" />
+                                  <TableColumn fx:id="jockeyAddToStatistikNameColumn" prefWidth="107.0" text="Name" />
+                                </columns>
+                              </TableView>
+                              <BarChart layoutX="312.0" layoutY="3.0" prefHeight="361.0" prefWidth="585.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
               </content>
             </Tab>
         </tabs>
