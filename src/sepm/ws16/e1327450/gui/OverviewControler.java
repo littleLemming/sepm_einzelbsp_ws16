@@ -250,7 +250,18 @@ public class OverviewControler {
     }
 
     @FXML
+    void handleStatistikCreate() {
+        logger.info("handleStatistikCreate");
+    }
+
+    @FXML
+    void hanldeResetSelection() {
+        logger.info("hanldeResetSelection");
+    }
+
+    @FXML
     void handlePferdEdit() {
+        logger.info("handlePferdEdit");
         Pferd selectedPferd = pferdViewTable.getSelectionModel().getSelectedItem();
         if (selectedPferd != null) {
             boolean okClicked = mainApp.showPferdEdit(selectedPferd);
@@ -353,6 +364,7 @@ public class OverviewControler {
 
     @FXML
     void handlePferdNew() {
+        logger.info("handlePferdNew");
         boolean okClicked = mainApp.showPferdEdit(null);
         try {
             List<Pferd> removelist1 = new ArrayList<>();
@@ -435,6 +447,7 @@ public class OverviewControler {
 
     @FXML
     void handleJockeyEdit() {
+        logger.info("handleJockeyEdit");
         Jockey selectedJockey = jockeyViewTable.getSelectionModel().getSelectedItem();
         if (selectedJockey != null) {
             boolean okClicked = mainApp.showJockeyEdit(selectedJockey);
@@ -481,6 +494,7 @@ public class OverviewControler {
 
     @FXML
     void handleJockeyDelete() {
+        logger.info("handleJockeyDelete");
         Jockey selectedJockey = jockeyViewTable.getSelectionModel().getSelectedItem();
         if(selectedJockey == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -536,6 +550,7 @@ public class OverviewControler {
 
     @FXML
     void handleJockeyNew() {
+        logger.info("handleJockeyNew");
         boolean okClicked = mainApp.showJockeyEdit(null);
         try {
             List<Jockey> removelist1 = new ArrayList<>();
@@ -707,6 +722,7 @@ public class OverviewControler {
 
     @FXML
     void handleRennsimulationReset() {
+        logger.info("handleRennsimulationReset");
         List<PferdJockeyPair> removeList1 = new ArrayList<>();
         List<Rennergebnis> removeList2 = new ArrayList<>();
         for(PferdJockeyPair pair : pferdJockeyPaarRennsimulationList) {
@@ -721,6 +737,7 @@ public class OverviewControler {
 
     @FXML
     void handleRennsimulationDurchfuehren() {
+        logger.info("handleRennsimulationDurchfuehren");
         if(pferdJockeyPaarRennsimulationList == null || pferdJockeyPaarRennsimulationList.size()==0) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.initOwner(mainApp.getPrimaryStage());
