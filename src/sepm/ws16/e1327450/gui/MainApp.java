@@ -11,9 +11,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sepm.ws16.e1327450.domain.Jockey;
-import sepm.ws16.e1327450.domain.Pferd;
-import sepm.ws16.e1327450.domain.Rennergebnis;
+import sepm.ws16.e1327450.domain.*;
 import sepm.ws16.e1327450.service.ImlService;
 import sepm.ws16.e1327450.service.Service;
 import sepm.ws16.e1327450.service.ServiceException;
@@ -29,7 +27,7 @@ public class MainApp extends Application {
     private Service service;
 
     public MainApp() {
-        logger.info("MainApp()");
+        logger.info("MainApp");
         try {
             service = new ImlService();
         } catch (ServiceException e) {
@@ -49,7 +47,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        logger.info("start()");
+        logger.info("start");
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Wendy’s Rennpferde");
 
@@ -91,6 +89,7 @@ public class MainApp extends Application {
     }
 
     boolean showJockeyEdit(Jockey jockey) {
+        logger.info("showJockeyEdit");
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("JockeyEditView.fxml"));
@@ -118,6 +117,7 @@ public class MainApp extends Application {
     }
 
     boolean showPferdEdit(Pferd pferd) {
+        logger.info("showPferdEdit");
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("PferdEditView.fxml"));
@@ -146,7 +146,7 @@ public class MainApp extends Application {
 
     boolean showBild(String picture) {
         try {
-            logger.info(picture);
+            logger.info("showBild");
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("BildView.fxml"));
             AnchorPane page = (AnchorPane) loader.load();
@@ -159,6 +159,30 @@ public class MainApp extends Application {
             BildViewControler controller = loader.getController();
             controller.setDialogStage(dialogStage);
             controller.setPicture(picture);
+            dialogStage.showAndWait();
+            return controller.isOkClicked();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    boolean showStatistik(Statistik statistik, StatistikData statistikData) {
+        try {
+            logger.info("showStatistik");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("StatistikView.fxml"));
+            AnchorPane page = (AnchorPane) loader.load();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Statistik");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(primaryStage);
+            Scene scene = new Scene(page);
+            dialogStage.setScene(scene);
+            StatistikBarChartControler controller = loader.getController();
+            controller.setDialogStage(dialogStage);
+            controller.setStatistikData(statistikData);
+            controller.setStatistik(statistik);
             dialogStage.showAndWait();
             return controller.isOkClicked();
         } catch (IOException e) {

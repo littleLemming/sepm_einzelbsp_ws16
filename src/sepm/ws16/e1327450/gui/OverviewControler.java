@@ -5,6 +5,9 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -275,11 +278,47 @@ public class OverviewControler {
     @FXML
     void handleStatistikCreate() {
         logger.info("handleStatistikCreate");
+        Pferd selectedPferd = pferdAddToStatistikTable.getSelectionModel().getSelectedItem();
+        Jockey selectedJockey = jockeyAddToStatistikTable.getSelectionModel().getSelectedItem();
+        int pferdChipNr = -1;
+        int jockerSvnr = -1;
+        if (selectedPferd != null) {
+            pferdChipNr = selectedPferd.getChip_nr();
+        }
+        if (selectedJockey != null) {
+            jockerSvnr = selectedJockey.getSvnr();
+        }
+        StatistikData statistikData = new StatistikData(pferdChipNr, jockerSvnr);
+        try {
+            Statistik statistik = mainApp.getService().doStatistik(statistikData);
+            if (statistik.getStatistik() != null && statistik.getStatistik().size() != 0) {
+                for (int i : statistik.getStatistik().keySet()) {
+                    logger.info(i + " : " + statistik.getStatistik().get(i));
+                }
+                boolean okClicked = mainApp.showStatistik(statistik, statistikData);
+            } else {
+                Alert eAlert = new Alert(Alert.AlertType.INFORMATION);
+                eAlert.initOwner(mainApp.getPrimaryStage());
+                eAlert.setTitle("Leere Statistik");
+                eAlert.setHeaderText(null);
+                eAlert.setContentText("Diese Statistik wäre leer und wird daher nicht angezeigt!");
+                eAlert.showAndWait();
+                return;
+            }
+        } catch (ServiceException e) {
+            Alert eAlert = new Alert(Alert.AlertType.ERROR);
+            eAlert.initOwner(mainApp.getPrimaryStage());
+            eAlert.setTitle("Es konnte leider keine Statistik erstellt werden!");
+            eAlert.showAndWait();
+            return;
+        }
     }
 
     @FXML
     void hanldeResetSelection() {
         logger.info("hanldeResetSelection");
+        pferdAddToStatistikTable.getSelectionModel().clearSelection();
+        jockeyAddToStatistikTable.getSelectionModel().clearSelection();
     }
 
     @FXML
